@@ -783,43 +783,86 @@ function openContent(){const v=document.getElementById('content-inp').value.trim
 // ═══════════════════════════════════════
 let gCalConnected=false;
 let gCalToken=null;
+let tokenClient=null;
+let gapiReady=false;
+let gisReady=false;
 let calViewDate=new Date();
 let allEvents=[];
 const GCAL_SCOPES='https://www.googleapis.com/auth/calendar';
-const GCAL_DISCOVERY='https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest';
 
 function saveClientId(){
   const id=document.getElementById('gclient-id').value.trim();
   if(!id){alert('Please paste your Google OAuth Client ID.');return;}
   localStorage.setItem('gcal-client-id',id);
-  initGCal(id);
+  loadGoogleLibraries(id);
 }
 
 function handleGCalAuth(){
   const id=localStorage.getItem('gcal-client-id');
   if(!id){go('calendar');return;}
-  if(gCalConnected){loadCalendarEvents();}else{initGCal(id);}
+  if(gCalConnected){loadCalendarEvents();}
+  else if(gapiReady&&gisReady){requestToken();}
+  else{loadGoogleLibraries(id);}
 }
 
-function initGCal(clientId){
-  // Load Google API
-  if(window.gapi){startAuth(clientId);return;}
-  const s=document.createElement('script');
-  s.src='https://apis.google.com/js/api.js';
-  s.onload=()=>gapi.load('client:auth2',()=>startAuth(clientId));
-  document.head.appendChild(s);
-}
-
-async function startAuth(clientId){
-  try{
-    await gapi.client.init({clientId,scope:GCAL_SCOPES,discoveryDocs:[GCAL_DISCOVERY]});
-    const auth=gapi.auth2.getAuthInstance();
-    if(auth.isSignedIn.get()){onGCalSignIn();}
-    else{await auth.signIn();onGCalSignIn();}
-  }catch(e){
-    showNotif('❌ Calendar connection failed: '+e.message);
-    console.error(e);
+function loadGoogleLibraries(clientId){
+  // Load GAPI
+  if(!window.gapi){
+    const s=document.createElement('script');
+    s.src='https://apis.google.com/js/api.js';
+    s.onload=()=>{
+      gapi.load('client',async()=>{
+        await gapi.client.init({});
+        await gapi.client.load('https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest');
+        gapiReady=true;
+        if(gisReady)requestToken();
+      });
+    };
+    document.head.appendChild(s);
+  } else {
+    gapiReady=true;
   }
+  // Load GIS
+  if(!window.google?.accounts){
+    const s2=document.createElement('script');
+    s2.src='https://accounts.google.com/gsi/client';
+    s2.onload=()=>{
+      initTokenClient(clientId);
+      gisReady=true;
+      if(gapiReady)requestToken();
+    };
+    document.head.appendChild(s2);
+  } else {
+    initTokenClient(clientId);
+    gisReady=true;
+    if(gapiReady)requestToken();
+  }
+}
+
+function initTokenClient(clientId){
+  tokenClient=google.accounts.oauth2.initTokenClient({
+    client_id:clientId,
+    scope:GCAL_SCOPES,
+    callback:(resp)=>{
+      if(resp.error){
+        showNotif('❌ Calendar sign-in failed: '+resp.error);
+        return;
+      }
+      gCalToken=resp.access_token;
+      gapi.client.setToken({access_token:gCalToken});
+      onGCalSignIn();
+    }
+  });
+}
+
+function requestToken(){
+  if(!tokenClient){
+    const id=localStorage.getItem('gcal-client-id');
+    if(id)initTokenClient(id);
+    else{go('calendar');return;}
+  }
+  showNotif('🔐 Opening Google sign-in...',3000);
+  tokenClient.requestAccessToken({prompt:'consent'});
 }
 
 function onGCalSignIn(){
@@ -989,7 +1032,10 @@ async function addCalendarEvent(){
 }
 
 function signOutGCal(){
-  if(window.gapi&&gapi.auth2){gapi.auth2.getAuthInstance().signOut();}
+  if(gCalToken&&window.google?.accounts?.oauth2){
+    google.accounts.oauth2.revoke(gCalToken,()=>{});
+  }
+  gapi.client.setToken(null);
   gCalConnected=false;gCalToken=null;allEvents=[];
   document.getElementById('cal-connect-prompt').style.display='block';
   document.getElementById('cal-main').style.display='none';
@@ -998,10 +1044,13 @@ function signOutGCal(){
   showNotif('Calendar disconnected.');
 }
 
-// Auto-connect if client ID already saved
+// Auto-load libraries if client ID already saved
 window.addEventListener('load',()=>{
   const id=localStorage.getItem('gcal-client-id');
-  if(id){document.getElementById('gclient-id').value=id;setTimeout(()=>initGCal(id),2000);}
+  if(id){
+    document.getElementById('gclient-id').value=id;
+    setTimeout(()=>loadGoogleLibraries(id),1500);
+  }
 });
 
 // ═══════════════════════════════════════
