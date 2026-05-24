@@ -3,7 +3,10 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Dr. Ehsan · Executive Assistant</title>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+<meta http-equiv="Pragma" content="no-cache"/>
+<meta http-equiv="Expires" content="0"/>
+<title>Dr. Ehsan · Executive Assistant v5</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
 :root{
@@ -49,8 +52,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;background:var(--
 #clock{font-size:12px;color:var(--text2);font-weight:500;}
 .tb-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:var(--r2);font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--accent-border);background:var(--accent-bg);color:var(--accent);transition:all .15s;font-family:'Plus Jakarta Sans',sans-serif;}
 .tb-btn:hover{background:var(--accent);color:#fff;}
-.panel{display:none;animation:fadeUp .2s ease;}
-.panel.active{display:block;}
+.panel{display:none;}
+.panel.active{display:block !important;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:16px;box-shadow:var(--shadow);}
 .card-title{font-size:14px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px;margin-bottom:12px;font-family:'Playfair Display',serif;}
@@ -227,24 +230,24 @@ body{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;background:var(--
     <div class="online-pill"><span class="online-dot"></span> Assistant Active</div>
   </div>
   <div class="nav-section">Command</div>
-  <div class="nav-item active" onclick="go('dashboard')"><span class="nav-icon">⊞</span> Dashboard</div>
-  <div class="nav-item" onclick="go('assistant')"><span class="nav-icon">◈</span> AI Assistant</div>
+  <div class="nav-item active" id="nav-dashboard" onclick="go('dashboard')"><span class="nav-icon">⊞</span> Dashboard</div>
+  <div class="nav-item" id="nav-assistant" onclick="go('assistant')"><span class="nav-icon">◈</span> AI Assistant</div>
   <div class="nav-section">Academic</div>
-  <div class="nav-item" onclick="go('lecture')"><span class="nav-icon">📖</span> Lecture Prep <span class="nav-badge">!</span></div>
-  <div class="nav-item" onclick="go('phd')"><span class="nav-icon">◉</span> My Research Hub</div>
+  <div class="nav-item" id="nav-lecture" onclick="go('lecture')"><span class="nav-icon">📖</span> Lecture Prep <span class="nav-badge">!</span></div>
+  <div class="nav-item" id="nav-phd" onclick="go('phd')"><span class="nav-icon">◉</span> My Research Hub</div>
   <div class="nav-section">Productivity</div>
-  <div class="nav-item" onclick="go('calendar')"><span class="nav-icon">📅</span> Calendar <span id="cal-badge" class="nav-badge" style="display:none;">•</span></div>
-  <div class="nav-item" onclick="go('tasks')"><span class="nav-icon">☑</span> Daily Tasks</div>
+  <div class="nav-item" id="nav-calendar" onclick="go('calendar')"><span class="nav-icon">📅</span> Calendar <span id="cal-badge" class="nav-badge" style="display:none;">•</span></div>
+  <div class="nav-item" id="nav-tasks" onclick="go('tasks')"><span class="nav-icon">☑</span> Daily Tasks</div>
   <div class="nav-section">Opportunities</div>
-  <div class="nav-item" onclick="go('opportunities')"><span class="nav-icon">🔭</span> Live Search</div>
-  <div class="nav-item" onclick="go('tracked')"><span class="nav-icon">📌</span> My Fellowships</div>
+  <div class="nav-item" id="nav-opportunities" onclick="go('opportunities')"><span class="nav-icon">🔭</span> Live Search</div>
+  <div class="nav-item" id="nav-tracked" onclick="go('tracked')"><span class="nav-icon">📌</span> My Fellowships</div>
   <div class="nav-section">Research & Funding</div>
-  <div class="nav-item" onclick="go('research')"><span class="nav-icon">📄</span> Research Engine</div>
-  <div class="nav-item" onclick="go('funding')"><span class="nav-icon">💰</span> Funding Finder</div>
+  <div class="nav-item" id="nav-research" onclick="go('research')"><span class="nav-icon">📄</span> Research Engine</div>
+  <div class="nav-item" id="nav-funding" onclick="go('funding')"><span class="nav-icon">💰</span> Funding Finder</div>
   <div class="nav-section">Content</div>
-  <div class="nav-item" onclick="go('writing')"><span class="nav-icon">✦</span> Writing Studio</div>
-  <div class="nav-item" onclick="go('content')"><span class="nav-icon">▶</span> Content Hub</div>
-  <div class="sb-footer">Zhob, Balochistan · Pakistan<br><span id="clock-side"></span></div>
+  <div class="nav-item" id="nav-writing" onclick="go('writing')"><span class="nav-icon">✦</span> Writing Studio</div>
+  <div class="nav-item" id="nav-content" onclick="go('content')"><span class="nav-icon">▶</span> Content Hub</div>
+  <div class="sb-footer">Zhob, Balochistan · Pakistan<br><span id="clock-side"></span><br><span style="font-size:10px;color:var(--text3);">v5.0 · May 2026</span></div>
 </nav>
 
 <!-- ══ MAIN ══ -->
@@ -270,7 +273,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;background:var(--
         <div style="flex:1;">
           <div style="font-size:14px;font-weight:700;">📖 BUITEMS Unit 2 — Lecture Package</div>
           <div style="font-size:12px;color:var(--text2);margin-top:2px;">Monday deadline. No slides or summary prepared. Directly affects your BUITEMS reputation.</div>
-          <div class="urgency-row"><span style="font-size:11px;color:var(--warn);font-weight:600;">Urgency</span><div class="ubar"><div class="ufill" style="width:95%;background:#f0a030;"></div></div><span style="font-size:11px;font-weight:700;color:var(--warn);">95%</span><button class="btn btn-sm btn-primary" style="margin-left:8px;" onclick="go('lecture')">→ Go</button></div>
+          <div class="urgency-row"><span style="font-size:11px;color:var(--warn);font-weight:600;">Urgency</span><div class="ubar"><div class="ufill" style="width:95%;background:#f0a030;"></div></div><span style="font-size:11px;font-weight:700;color:var(--warn);">95%</span><button class="btn btn-sm btn-primary" style="margin-left:8px;" id="nav-lecture" onclick="go('lecture')">→ Go</button></div>
         </div>
       </div>
       <div class="pc pc-2">
@@ -278,7 +281,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;background:var(--
         <div style="flex:1;">
           <div style="font-size:14px;font-weight:700;">🌐 MSCA Fellowship — Call Open Now</div>
           <div style="font-size:12px;color:var(--text2);margin-top:2px;">April 9, 2026 call is open. 88% profile match. Draft proposal now.</div>
-          <div class="urgency-row"><span style="font-size:11px;color:var(--accent);font-weight:600;">Urgency</span><div class="ubar"><div class="ufill" style="width:80%;background:var(--accent);"></div></div><span style="font-size:11px;font-weight:700;color:var(--accent);">80%</span><button class="btn btn-sm btn-primary" style="margin-left:8px;" onclick="go('tracked')">→ Go</button></div>
+          <div class="urgency-row"><span style="font-size:11px;color:var(--accent);font-weight:600;">Urgency</span><div class="ubar"><div class="ufill" style="width:80%;background:var(--accent);"></div></div><span style="font-size:11px;font-weight:700;color:var(--accent);">80%</span><button class="btn btn-sm btn-primary" style="margin-left:8px;" id="nav-tracked" onclick="go('tracked')">→ Go</button></div>
         </div>
       </div>
       <div class="pc pc-3">
@@ -393,7 +396,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;background:var(--
             <button class="claude-btn claude-btn-sm" onclick="openClaude(PROMPTS.litReview)" style="justify-content:flex-start;">✦ Write literature review paragraph</button>
             <button class="claude-btn claude-btn-sm" onclick="openClaude(PROMPTS.abstract)" style="justify-content:flex-start;">✦ Draft paper abstract</button>
             <button class="claude-btn claude-btn-sm" onclick="openClaude(PROMPTS.sources)" style="justify-content:flex-start;">✦ Find key microcredentials sources</button>
-            <button class="claude-btn claude-btn-sm" onclick="go('research')" style="justify-content:flex-start;">→ Open full Research Engine</button>
+            <button class="claude-btn claude-btn-sm" id="nav-research" onclick="go('research')" style="justify-content:flex-start;">→ Open full Research Engine</button>
           </div>
         </div>
       </div>
@@ -660,7 +663,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;background:var(--
         <textarea class="ta" id="phd-inp" placeholder="E.g. Write a discussion paragraph connecting my dissertation findings on microcredentials to global HE policy debates&#10;&#10;Or: Draft a 300-word conference abstract on institutional barriers to microcredential adoption in Pakistan&#10;&#10;Or: Write a response to reviewer comment asking me to strengthen my theoretical framework..."></textarea>
         <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
           <button class="claude-btn" onclick="openPhd()">✦ Open in Claude →</button>
-          <button class="btn btn-ghost btn-sm" onclick="go('research')">→ Full paper builder</button>
+          <button class="btn btn-ghost btn-sm" id="nav-research" onclick="go('research')">→ Full paper builder</button>
         </div>
       </div>
     </div>
@@ -1345,6 +1348,105 @@ body{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;background:var(--
 </div>
 
 <script>
+// ── IMMEDIATE INIT — runs before anything else ──
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('Dr. Ehsan Assistant v6 - DOMContentLoaded fired');
+
+  // STEP 1: Hide ALL panels first
+  var allPanels = document.querySelectorAll('.panel');
+  for(var p=0; p<allPanels.length; p++){
+    allPanels[p].style.display = 'none';
+    allPanels[p].classList.remove('active');
+  }
+
+  // STEP 2: Show dashboard by default (or last visited)
+  var lastTab = 'dashboard';
+  try { lastTab = localStorage.getItem('ehsan-last-tab') || 'dashboard'; } catch(e){}
+  var startPanel = document.getElementById('panel-' + lastTab);
+  if(!startPanel){ lastTab = 'dashboard'; startPanel = document.getElementById('panel-dashboard'); }
+  if(startPanel){ startPanel.style.display = 'block'; startPanel.classList.add('active'); }
+  var startNav = document.getElementById('nav-' + lastTab);
+  if(startNav) startNav.classList.add('active');
+
+  // STEP 3: Wire ALL nav items with addEventListener (belt AND suspenders)
+  var navItems = document.querySelectorAll('.nav-item');
+  for(var i=0; i<navItems.length; i++){
+    (function(el){
+      var oc = el.getAttribute('onclick') || '';
+      var match = oc.match(/go\('([^']+)'\)/);
+      if(match){
+        var panelName = match[1];
+        el.addEventListener('click', function(e){
+          e.preventDefault();
+          e.stopPropagation();
+          go(panelName);
+        });
+      }
+    })(navItems[i]);
+  }
+
+  // STEP 4: Wire all buttons that use go() 
+  var allBtns = document.querySelectorAll('[onclick]');
+  for(var b=0; b<allBtns.length; b++){
+    (function(el){
+      var oc = el.getAttribute('onclick') || '';
+      if(oc.indexOf('go(') !== -1){
+        var match = oc.match(/go\('([^']+)'\)/);
+        if(match){
+          var pName = match[1];
+          el.addEventListener('click', function(e){
+            e.preventDefault();
+            go(pName);
+          });
+        }
+      }
+    })(allBtns[b]);
+  }
+
+  // STEP 5: Init components
+  if(typeof renderTasks === 'function') renderTasks();
+  if(typeof renderPubs === 'function') renderPubs();
+  if(typeof tick === 'function'){ // tick started in DOMContentLoaded }
+  if(typeof setStep === 'function') setStep(parseInt(localStorage.getItem('research-step')||'1'));
+  if(typeof updateSearchHint === 'function') updateSearchHint();
+
+  // STEP 6: Calendar
+  try {
+    var savedId = localStorage.getItem('gcal-client-id');
+    if(savedId){
+      var inp = document.getElementById('gclient-id');
+      if(inp) inp.value = savedId;
+      setTimeout(function(){
+        if(typeof loadGoogleLibraries === 'function') loadGoogleLibraries(savedId);
+      }, 2500);
+    }
+  } catch(e){ console.log('Calendar init skipped:', e); }
+
+  // STEP 7: Daily notification
+  try {
+    var lastNotif = localStorage.getItem('ehsan-notif-date');
+    var todayStr = new Date().toDateString();
+    if(lastNotif !== todayStr){
+      localStorage.setItem('ehsan-notif-date', todayStr);
+      setTimeout(function(){
+        if(typeof showNotif === 'function')
+          showNotif('Good day, Dr. Ehsan! Priority 1: BUITEMS Unit 2 lecture. Priority 2: MSCA fellowship proposal — call is open now.');
+      }, 2000);
+    }
+  } catch(e){}
+
+  // STEP 8: Topbar briefing button
+  var briefBtn = document.getElementById('briefing-btn');
+  if(briefBtn){
+    briefBtn.addEventListener('click', function(){
+      if(typeof openClaude === 'function') openClaude(PROMPTS.dailyBriefing);
+    });
+  }
+
+  console.log('v6 init complete. Active tab:', lastTab);
+});
+
+
 // ═══════════════════════════════════════
 // ═══════════════════════════════════════
 // DR. MUHAMMAD EHSAN — PROFILE & BRAIN
@@ -1456,33 +1558,46 @@ const TABMETA = {
   content:{title:'Content Hub',sub:'Quetta YouTube · Lumora Cosmetics'},
 };
 function go(name){
-  // Remove active from all nav items
-  var navItems = document.querySelectorAll('.nav-item');
-  for(var i=0;i<navItems.length;i++) navItems[i].classList.remove('active');
-  // Hide all panels
-  var panels = document.querySelectorAll('.panel');
-  for(var j=0;j<panels.length;j++) panels[j].classList.remove('active');
-  // Find and activate correct nav item
-  for(var k=0;k<navItems.length;k++){
-    var oc = navItems[k].getAttribute('onclick') || '';
-    if(oc.indexOf("'"+name+"'") !== -1) navItems[k].classList.add('active');
+  try {
+    // Hide all panels
+    var panels = document.querySelectorAll('.panel');
+    for(var j=0;j<panels.length;j++){
+      panels[j].style.display='none';
+      panels[j].classList.remove('active');
+    }
+    // Show target panel
+    var target = document.getElementById('panel-'+name);
+    if(target){
+      target.style.display='block';
+      target.classList.add('active');
+    }
+    // Update nav highlight
+    var navItems = document.querySelectorAll('.nav-item');
+    for(var i=0;i<navItems.length;i++) navItems[i].classList.remove('active');
+    var navEl = document.getElementById('nav-'+name);
+    if(navEl) navEl.classList.add('active');
+    // Update topbar
+    if(TABMETA && TABMETA[name]){
+      var t1 = document.getElementById('tb-title');
+      var t2 = document.getElementById('tb-sub');
+      if(t1) t1.textContent = TABMETA[name].title;
+      if(t2) t2.textContent = TABMETA[name].sub;
+    }
+    if(name==='calendar' && typeof gCalConnected !== 'undefined' && gCalConnected){
+      if(typeof renderCalendar === 'function') renderCalendar();
+    }
+    // Save last visited tab
+    try{ localStorage.setItem('ehsan-last-tab', name); }catch(e){}
+  } catch(err){
+    console.error('go() error:', err);
   }
-  // Show correct panel
-  var panel = document.getElementById('panel-'+name);
-  if(panel) panel.classList.add('active');
-  // Update topbar
-  if(TABMETA[name]){
-    document.getElementById('tb-title').textContent = TABMETA[name].title;
-    document.getElementById('tb-sub').textContent = TABMETA[name].sub;
-  }
-  if(name==='calendar' && gCalConnected) renderCalendar();
 }
 
 // ═══════════════════════════════════════
 // CLOCK
 // ═══════════════════════════════════════
 function tick(){const n=new Date();const s=n.toLocaleDateString('en-PK',{weekday:'short',month:'short',day:'numeric'})+' · '+n.toLocaleTimeString('en-PK',{hour:'2-digit',minute:'2-digit'});document.getElementById('clock').textContent=s;document.getElementById('clock-side').textContent=s;}
-tick();setInterval(tick,30000);
+// tick started in DOMContentLoaded
 
 // ═══════════════════════════════════════
 // NOTIFICATION
