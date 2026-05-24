@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dr. Ehsan · Executive Assistant</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#f5f3ee;--surface:#fff;--surface2:#f0ede8;
+  --border:#e2ddd6;--border2:#c9c3b9;
+  --text:#1a1713;--text2:#6b6560;--text3:#a09990;
+  --accent:#2563a8;--accent2:#1d4f8a;
+  --accent-bg:#eef4fc;--accent-border:#b8d0f0;
+  --gold:#b07d2e;--gold-bg:#fdf6e8;--gold-border:#e8c97a;
+  --green:#1e7a4a;--green-bg:#edf7f2;--green-border:#7dd4a8;
+  --red:#c0392b;--red-bg:#fdf0ee;--red-border:#f0a89e;
+  --warn:#b06a00;--warn-bg:#fff8ec;--warn-border:#f0c570;
+  --purple:#6b3fa0;--purple-bg:#f5f0fb;--purple-border:#c4a8e8;
+  --r:10px;--r2:6px;
+  --shadow:0 2px 12px rgba(0,0,0,0.07);
+  --shadow2:0 4px 24px rgba(0,0,0,0.12);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh;}
+.shell{display:flex;height:100vh;overflow:hidden;}
+.sidebar{width:252px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.topbar{height:58px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;box-shadow:var(--shadow);}
+.content{flex:1;overflow-y:auto;padding:24px;background:var(--bg);}
+.sb-head{padding:20px 18px 16px;border-bottom:1px solid var(--border);}
+.sb-logo{display:flex;align-items:center;gap:11px;margin-bottom:14px;}
+.avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#4a90d9);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:#fff;flex-shrink:0;}
+.sb-name{font-size:13px;font-weight:600;color:var(--text);}
+.sb-role{font-size:11px;color:var(--text2);}
+.online-pill{display:inline-flex;align-items:center;gap:6px;background:var(--green-bg);border:1px solid var(--green-border);border-radius:20px;padding:3px 10px;font-size:11px;color:var(--green);font-weight:500;}
+.online-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+.nav-section{font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--text3);text-transform:uppercase;padding:14px 18px 6px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 18px;cursor:pointer;color:var(--text2);font-size:13px;font-weight:500;transition:all .15s;border-left:3px solid transparent;user-select:none;}
+.nav-item:hover{background:#faf9f6;color:var(--text);}
+.nav-item.active{background:var(--accent-bg);color:var(--accent);border-left-color:var(--accent);font-weight:600;}
+.nav-icon{font-size:16px;width:20px;text-align:center;flex-shrink:0;}
+.nav-badge{margin-left:auto;font-size:10px;padding:1px 7px;border-radius:10px;background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);font-weight:600;}
+.sb-footer{margin-top:auto;padding:14px 18px;border-top:1px solid var(--border);font-size:11px;color:var(--text3);}
+.tb-title{font-size:16px;font-weight:700;color:var(--text);font-family:'Playfair Display',serif;}
+.tb-sub{font-size:11px;color:var(--text2);}
+.tb-right{display:flex;align-items:center;gap:8px;}
+#clock{font-size:12px;color:var(--text2);font-weight:500;}
+.tb-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:var(--r2);font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--accent-border);background:var(--accent-bg);color:var(--accent);transition:all .15s;font-family:'Plus Jakarta Sans',sans-serif;}
+.tb-btn:hover{background:var(--accent);color:#fff;}
+.panel{display:none;animation:fadeUp .2s ease;}
+.panel.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:16px;box-shadow:var(--shadow);}
+.card-title{font-size:14px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px;margin-bottom:12px;font-family:'Playfair Display',serif;}
+.card-sub{font-size:13px;color:var(--text2);line-height:1.7;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:16px;}
+.metric{background:#faf9f6;border:1px solid var(--border);border-radius:var(--r);padding:16px;}
+.m-label{font-size:11px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
+.m-val{font-size:26px;font-weight:700;color:var(--text);font-family:'Playfair Display',serif;line-height:1;}
+.m-sub{font-size:11px;color:var(--text2);margin-top:4px;}
+.badge{display:inline-flex;align-items:center;font-size:11px;padding:2px 9px;border-radius:20px;font-weight:600;}
+.b-blue{background:var(--accent-bg);color:var(--accent);border:1px solid var(--accent-border);}
+.b-green{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
+.b-gold{background:var(--gold-bg);color:var(--gold);border:1px solid var(--gold-border);}
+.b-red{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);}
+.b-warn{background:var(--warn-bg);color:var(--warn);border:1px solid var(--warn-border);}
+.b-purple{background:var(--purple-bg);color:var(--purple);border:1px solid var(--purple-border);}
+.b-dim{background:var(--surface2);color:var(--text3);border:1px solid var(--border);}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:var(--r2);font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;border:1px solid var(--border2);background:var(--surface);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;}
+.btn:hover{background:var(--surface2);}
+.btn:active{transform:scale(.97);}
+.btn-primary{background:var(--accent);color:#fff;border-color:var(--accent);}
+.btn-primary:hover{background:var(--accent2);}
+.btn-sm{padding:6px 13px;font-size:12px;}
+.btn-ghost{background:transparent;color:var(--text2);border-color:var(--border);}
+.btn-ghost:hover{background:var(--surface2);color:var(--text);}
+.btn-red{background:var(--red);color:#fff;border-color:var(--red);}
+.claude-btn{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:var(--r2);font-size:13px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#7B2FBE,#4F46E5);color:#fff;border:none;font-family:'Plus Jakarta Sans',sans-serif;transition:all .15s;box-shadow:0 2px 10px rgba(79,70,229,.25);}
+.claude-btn:hover{filter:brightness(1.1);}
+.claude-btn:active{transform:scale(.97);}
+.claude-btn-sm{padding:6px 13px;font-size:12px;}
+.inp,.sel,.ta{width:100%;background:#faf9f6;border:1px solid var(--border);border-radius:var(--r2);padding:9px 13px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);outline:none;transition:border-color .15s;}
+.inp:focus,.sel:focus,.ta:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,168,.08);}
+.ta{resize:vertical;min-height:88px;line-height:1.7;}
+.sel{appearance:none;cursor:pointer;}
+.form-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:5px;display:block;}
+.alert{border-radius:var(--r);padding:14px 16px;display:flex;align-items:flex-start;gap:10px;margin-bottom:16px;font-size:13px;}
+.alert-warn{background:var(--warn-bg);border:1px solid var(--warn-border);color:var(--warn);}
+.alert-blue{background:var(--accent-bg);border:1px solid var(--accent-border);color:var(--accent);}
+.alert-green{background:var(--green-bg);border:1px solid var(--green-border);color:var(--green);}
+.alert-icon{font-size:18px;flex-shrink:0;}
+.sec-label{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.divider{height:1px;background:var(--border);margin:14px 0;}
+.chip{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:500;border:1px solid var(--border2);background:var(--surface);color:var(--text2);cursor:pointer;transition:all .15s;margin:3px;}
+.chip:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-bg);}
+/* ── CALENDAR ── */
+.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.cal-month{font-size:18px;font-weight:700;color:var(--text);font-family:'Playfair Display',serif;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:16px;}
+.cal-day-name{text-align:center;font-size:11px;font-weight:700;color:var(--text3);padding:6px 0;text-transform:uppercase;}
+.cal-day{min-height:68px;border:1px solid var(--border);border-radius:var(--r2);padding:6px;background:var(--surface);cursor:pointer;transition:all .15s;position:relative;}
+.cal-day:hover{border-color:var(--accent);background:var(--accent-bg);}
+.cal-day.today{border-color:var(--accent);border-width:2px;background:var(--accent-bg);}
+.cal-day.other-month{background:#faf9f6;opacity:.5;}
+.cal-day.has-events::after{content:'';position:absolute;bottom:5px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:var(--accent);}
+.cal-day-num{font-size:12px;font-weight:600;color:var(--text2);}
+.cal-day.today .cal-day-num{color:var(--accent);font-weight:700;}
+.cal-event-dot{font-size:10px;color:var(--text2);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.4;}
+.event-item{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:var(--r2);border:1px solid var(--border);margin-bottom:8px;background:var(--surface);transition:all .15s;}
+.event-item:hover{border-color:var(--accent-border);background:var(--accent-bg);}
+.event-time{font-size:11px;font-weight:700;color:var(--accent);min-width:60px;flex-shrink:0;margin-top:2px;}
+.event-title{font-size:13px;font-weight:600;color:var(--text);}
+.event-desc{font-size:11px;color:var(--text2);margin-top:2px;}
+.event-color{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.add-event-form{background:#faf9f6;border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-top:12px;}
+/* ── OPP CARDS ── */
+.opp-result{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:12px;box-shadow:var(--shadow);transition:all .18s;}
+.opp-result:hover{border-color:var(--accent-border);box-shadow:var(--shadow2);}
+.opp-result-header{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+.opp-result-title{font-size:14px;font-weight:700;color:var(--text);font-family:'Playfair Display',serif;}
+.opp-result-meta{font-size:12px;color:var(--text2);margin-top:3px;line-height:1.5;}
+.opp-scores{display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap;}
+.score-pill{text-align:center;padding:5px 10px;border-radius:var(--r2);min-width:60px;}
+.score-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;opacity:.75;}
+.score-val{font-size:17px;font-weight:800;font-family:'Playfair Display',serif;display:block;}
+.opp-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;}
+.opp-source{font-size:11px;color:var(--text3);margin-top:6px;}
+.search-loading{text-align:center;padding:40px 20px;color:var(--text2);}
+.spin{display:inline-block;width:13px;height:13px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:rot .7s linear infinite;}
+@keyframes rot{to{transform:rotate(360deg);}}
+.big-spin{width:32px;height:32px;border-width:3px;margin:0 auto 12px;display:block;}
+/* ── TRACKED OPPS ── */
+.tracked-opp{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:12px;box-shadow:var(--shadow);}
+.tracked-opp-title{font-size:14px;font-weight:700;font-family:'Playfair Display',serif;color:var(--text);}
+.tracked-opp-meta{font-size:12px;color:var(--text2);margin-top:3px;}
+.step-item{display:flex;align-items:flex-start;gap:12px;padding:9px 0;border-bottom:1px solid var(--border);}
+.step-item:last-child{border-bottom:none;}
+.step-num{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px;}
+.step-title{font-size:13px;font-weight:700;color:var(--text);}
+.step-desc{font-size:12px;color:var(--text2);margin-top:2px;line-height:1.5;}
+.step-deadline{font-size:11px;color:var(--red);font-weight:600;margin-top:2px;}
+.opp-steps-body{display:none;margin-top:12px;}
+.opp-steps-body.show{display:block;}
+.expand-btn{font-size:12px;color:var(--accent);cursor:pointer;background:none;border:none;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;padding:6px 0 0;display:inline-flex;align-items:center;gap:4px;}
+/* ── TASKS ── */
+.task-item{display:flex;align-items:flex-start;gap:10px;padding:11px 0;border-bottom:1px solid var(--border);}
+.task-item:last-child{border-bottom:none;}
+.tchk{width:19px;height:19px;border:2px solid var(--border2);border-radius:5px;cursor:pointer;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.tchk.done{background:var(--green);border-color:var(--green);}
+.tchk.done::after{content:'✓';font-size:11px;color:#fff;font-weight:700;}
+.t-text{font-size:13px;color:var(--text);flex:1;line-height:1.5;}
+.t-text.done{text-decoration:line-through;color:var(--text3);}
+.t-pill{font-size:10px;padding:1px 7px;border-radius:10px;background:var(--surface2);color:var(--text3);border:1px solid var(--border);margin-top:3px;display:inline-block;}
+/* ── PRIORITY CARDS ── */
+.pc{border-radius:var(--r);padding:14px 16px;margin-bottom:10px;border:1px solid;display:flex;align-items:flex-start;gap:12px;}
+.pc-1{background:#fff8f0;border-color:#f0c070;}
+.pc-2{background:#f0f7ff;border-color:#b0d0f0;}
+.pc-3{background:var(--green-bg);border-color:var(--green-border);}
+.pc-num{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0;font-family:'Playfair Display',serif;}
+.pcn-1{background:#f0c070;color:#7a4800;}
+.pcn-2{background:#b0d0f0;color:#1a3a6a;}
+.pcn-3{background:var(--green-border);color:#0a4a28;}
+.urgency-row{display:flex;align-items:center;gap:8px;margin-top:7px;}
+.ubar{height:4px;border-radius:2px;background:var(--border);flex:1;max-width:130px;overflow:hidden;}
+.ufill{height:100%;border-radius:2px;}
+/* ── MODE GRID ── */
+.mode-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin-bottom:14px;}
+.mode-btn{padding:11px 8px;border-radius:var(--r2);border:1.5px solid var(--border);background:var(--surface);cursor:pointer;text-align:center;font-size:12px;font-weight:500;color:var(--text2);transition:all .15s;}
+.mode-btn:hover,.mode-btn.active{border-color:var(--accent);background:var(--accent-bg);color:var(--accent);font-weight:700;}
+.mode-icon{font-size:22px;display:block;margin-bottom:5px;}
+/* ── NOTIF ── */
+#notif{position:fixed;top:0;left:0;right:0;z-index:999;padding:11px 24px;display:none;align-items:center;gap:12px;background:var(--accent);color:#fff;font-size:13px;font-weight:500;box-shadow:0 2px 12px rgba(0,0,0,.15);}
+#notif.show{display:flex;}
+#notif-close{margin-left:auto;cursor:pointer;font-size:18px;}
+/* ── GCAL STATUS ── */
+.gcal-status{display:flex;align-items:center;gap:8px;font-size:12px;padding:8px 12px;border-radius:var(--r2);border:1px solid var(--border);background:#faf9f6;}
+.gcal-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
+.b-row{display:flex;align-items:flex-start;gap:12px;padding:11px 0;border-bottom:1px solid var(--border);}
+.b-row:last-child{border-bottom:none;}
+.b-icon{font-size:17px;flex-shrink:0;margin-top:1px;}
+.b-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;}
+.b-text{font-size:13px;color:var(--text);margin-top:2px;line-height:1.5;}
+@media(max-width:768px){.sidebar{width:200px;}.g2,.g3{grid-template-columns:1fr;}}
+@media(max-width:540px){.sidebar{display:none;}.content{padding:14px;}}
+</style>
+</head>
+<body>
+
+<div id="notif">
+  <span>🔔</span><span id="notif-text"></span>
+  <span id="notif-close" onclick="closeNotif()">✕</span>
+</div>
+
+<div class="shell">
+<!-- ══ SIDEBAR ══ -->
+<nav class="sidebar">
+  <div class="sb-head">
+    <div class="sb-logo">
+      <div class="avatar">ME</div>
+      <div><div class="sb-name">Dr. Muhammad Ehsan</div><div class="sb-role">PhD Candidate · IIUI</div></div>
+    </div>
+    <div class="online-pill"><span class="online-dot"></span> Assistant Active</div>
+  </div>
+  <div class="nav-section">Command</div>
+  <div class="nav-item active" onclick="go('dashboard')"><span class="nav-icon">⊞</span> Dashboard</div>
+  <div class="nav-item" onclick="go('assistant')"><span class="nav-icon">◈</span> AI Assistant</div>
+  <div class="nav-section">Academic</div>
+  <div class="nav-item" onclick="go('lecture')"><span class="nav-icon">📖</span> Lecture Prep <span class="nav-badge">!</span></div>
+  <div class="nav-item" onclick="go('phd')"><span class="nav-icon">◉</span> PhD Research</div>
+  <div class="nav-section">Productivity</div>
+  <div class="nav-item" onclick="go('calendar')"><span class="nav-icon">📅</span> Calendar <span id="cal-badge" class="nav-badge" style="display:none;">•</span></div>
+  <div class="nav-item" onclick="go('tasks')"><span class="nav-icon">☑</span> Daily Tasks</div>
+  <div class="nav-section">Opportunities</div>
+  <div class="nav-item" onclick="go('opportunities')"><span class="nav-icon">🔭</span> Live Search</div>
+  <div class="nav-item" onclick="go('tracked')"><span class="nav-icon">📌</span> My Fellowships</div>
+  <div class="nav-section">Content</div>
+  <div class="nav-item" onclick="go('writing')"><span class="nav-icon">✦</span> Writing Studio</div>
+  <div class="nav-item" onclick="go('content')"><span class="nav-icon">▶</span> Content Hub</div>
+  <div class="sb-footer">Zhob, Balochistan · Pakistan<br><span id="clock-side"></span></div>
+</nav>
+
+<!-- ══ MAIN ══ -->
+<div class="main">
+  <div class="topbar">
+    <div><div class="tb-title" id="tb-title">Dashboard</div><div class="tb-sub" id="tb-sub">Your personal executive assistant</div></div>
+    <div class="tb-right">
+      <span id="clock"></span>
+      <button class="tb-btn" id="gcal-btn" onclick="handleGCalAuth()">📅 Connect Calendar</button>
+      <button class="tb-btn" onclick="openClaude(PROMPTS.dailyBriefing)">⚡ Briefing</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ══ DASHBOARD ══ -->
+    <div class="panel active" id="panel-dashboard">
+      <div class="alert alert-blue"><span class="alert-icon">🧠</span><div id="daily-msg"><strong>Good day, Dr. Ehsan.</strong> Your priorities are ranked below. Connect Google Calendar (top-right button) to see today's scheduled events here too.</div></div>
+
+      <div class="sec-label">Today's ranked priorities</div>
+      <div class="pc pc-1">
+        <div class="pc-num pcn-1">1</div>
+        <div style="flex:1;">
+          <div style="font-size:14px;font-weight:700;">📖 BUITEMS Unit 2 — Lecture Package</div>
+          <div style="font-size:12px;color:var(--text2);margin-top:2px;">Monday deadline. No slides or summary prepared. Directly affects your BUITEMS reputation.</div>
+          <div class="urgency-row"><span style="font-size:11px;color:var(--warn);font-weight:600;">Urgency</span><div class="ubar"><div class="ufill" style="width:95%;background:#f0a030;"></div></div><span style="font-size:11px;font-weight:700;color:var(--warn);">95%</span><button class="btn btn-sm btn-primary" style="margin-left:8px;" onclick="go('lecture')">→ Go</button></div>
+        </div>
+      </div>
+      <div class="pc pc-2">
+        <div class="pc-num pcn-2">2</div>
+        <div style="flex:1;">
+          <div style="font-size:14px;font-weight:700;">🌐 MSCA Fellowship — Call Open Now</div>
+          <div style="font-size:12px;color:var(--text2);margin-top:2px;">April 9, 2026 call is open. 88% profile match. Draft proposal now.</div>
+          <div class="urgency-row"><span style="font-size:11px;color:var(--accent);font-weight:600;">Urgency</span><div class="ubar"><div class="ufill" style="width:80%;background:var(--accent);"></div></div><span style="font-size:11px;font-weight:700;color:var(--accent);">80%</span><button class="btn btn-sm btn-primary" style="margin-left:8px;" onclick="go('tracked')">→ Go</button></div>
+        </div>
+      </div>
+      <div class="pc pc-3">
+        <div class="pc-num pcn-3">3</div>
+        <div style="flex:1;">
+          <div style="font-size:14px;font-weight:700;">✦ Ehsaas Book — Next Chapter</div>
+          <div style="font-size:12px;color:var(--text2);margin-top:2px;">Virginia Tech arc. Weekly progress keeps momentum alive.</div>
+          <div class="urgency-row"><span style="font-size:11px;color:var(--green);font-weight:600;">Urgency</span><div class="ubar"><div class="ufill" style="width:55%;background:var(--green);"></div></div><span style="font-size:11px;font-weight:700;color:var(--green);">55%</span><button class="claude-btn claude-btn-sm" style="margin-left:8px;" onclick="openClaude(PROMPTS.ehsaas)">✦ Write</button></div>
+        </div>
+      </div>
+
+      <!-- Today's calendar events (live) -->
+      <div class="sec-label">Today's schedule <span id="cal-sync-status" style="font-size:11px;color:var(--text3);text-transform:none;letter-spacing:0;"> — Connect calendar to see events</span></div>
+      <div id="today-events" class="card"><div class="card-sub" style="text-align:center;padding:10px 0;">📅 Connect Google Calendar using the button in the top-right to see today's events here.</div></div>
+
+      <div class="sec-label">Project overview</div>
+      <div class="g3">
+        <div class="metric"><div class="m-label">Active Projects</div><div class="m-val">7</div><div class="m-sub">Running in parallel</div></div>
+        <div class="metric"><div class="m-label">Fellowships</div><div class="m-val">5</div><div class="m-sub">Tracked + searching live</div></div>
+        <div class="metric"><div class="m-label">Open Tasks</div><div class="m-val" id="pending-count">7</div><div class="m-sub">Ranked by priority</div></div>
+      </div>
+    </div>
+
+    <!-- ══ ASSISTANT ══ -->
+    <div class="panel" id="panel-assistant">
+      <div class="card">
+        <div class="card-title">◈ AI Assistant</div>
+        <div class="card-sub" style="margin-bottom:12px;">Type any request. Your full profile is embedded in every prompt. Click Open in Claude — a new tab opens with context pre-loaded.</div>
+        <textarea class="ta" id="ai-inp" placeholder="Type anything — /start · /lecture 2 · /scout · Write Ehsaas chapter · Draft MSCA proposal · YouTube ideas for Quetta..."></textarea>
+        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="claude-btn" onclick="openAICustom()">✦ Open in Claude →</button>
+          <span class="chip" onclick="setAI('/start')">⚡ /start</span>
+          <span class="chip" onclick="setAI('/lecture 2')"># /lecture 2</span>
+          <span class="chip" onclick="setAI('/scout')">🔭 /scout</span>
+          <span class="chip" onclick="setAI('/brief')">📋 /brief</span>
+        </div>
+      </div>
+      <div class="sec-label">Quick prompts</div>
+      <div class="g2">
+        <div class="card" style="cursor:pointer;" onclick="openClaude(PROMPTS.phdPara)"><div style="font-size:13px;font-weight:700;margin-bottom:4px;">PhD dissertation paragraph</div><div style="font-size:12px;color:var(--text2);">Microcredentials · Humanized prose</div><button class="claude-btn claude-btn-sm" style="margin-top:10px;">Open in Claude →</button></div>
+        <div class="card" style="cursor:pointer;" onclick="openClaude(PROMPTS.ehsaas)"><div style="font-size:13px;font-weight:700;margin-bottom:4px;">Ehsaas book scene</div><div style="font-size:12px;color:var(--text2);">Chan · Virginia Tech · Literary</div><button class="claude-btn claude-btn-sm" style="margin-top:10px;">Open in Claude →</button></div>
+        <div class="card" style="cursor:pointer;" onclick="openClaude(PROMPTS.linkedin)"><div style="font-size:13px;font-weight:700;margin-bottom:4px;">LinkedIn outreach</div><div style="font-size:12px;color:var(--text2);">Professional · Genuine</div><button class="claude-btn claude-btn-sm" style="margin-top:10px;">Open in Claude →</button></div>
+        <div class="card" style="cursor:pointer;" onclick="openClaude(PROMPTS.youtube)"><div style="font-size:13px;font-weight:700;margin-bottom:4px;">YouTube ideas — Quetta</div><div style="font-size:12px;color:var(--text2);">Urdu · Searchable titles</div><button class="claude-btn claude-btn-sm" style="margin-top:10px;">Open in Claude →</button></div>
+      </div>
+    </div>
+
+    <!-- ══ LECTURE ══ -->
+    <div class="panel" id="panel-lecture">
+      <div class="alert alert-warn"><span class="alert-icon">⚠️</span><strong>Friday Radar:</strong> Unit 2 (Teacher Education Curriculum) not prepared. Generate all 3 deliverables below.</div>
+      <div class="card">
+        <div class="card-title">Course Tracker — EDU-6105</div>
+        <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);"><div style="width:9px;height:9px;border-radius:50%;background:var(--green);flex-shrink:0;"></div><span style="font-size:11px;color:var(--text3);width:48px;">Unit 1</span><span style="flex:1;font-size:13px;">Changing Role of the Teacher</span><span class="badge b-green">✓ Done</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);background:var(--warn-bg);margin:0 -20px;padding-left:20px;padding-right:20px;"><div style="width:9px;height:9px;border-radius:50%;background:var(--warn);flex-shrink:0;"></div><span style="font-size:11px;color:var(--text3);width:48px;">Unit 2</span><span style="flex:1;font-size:13px;font-weight:700;">Teacher Education Curriculum ← Current</span><span class="badge b-warn">Now</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);"><div style="width:9px;height:9px;border-radius:50%;background:var(--border2);flex-shrink:0;"></div><span style="font-size:11px;color:var(--text3);width:48px;">Unit 3</span><span style="flex:1;font-size:13px;">Objectives of Teacher Education Programme</span><span class="badge b-dim">Soon</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);"><div style="width:9px;height:9px;border-radius:50%;background:var(--border2);flex-shrink:0;"></div><span style="font-size:11px;color:var(--text3);width:48px;">Unit 4</span><span style="flex:1;font-size:13px;">Education in Teacher Training Institutions</span><span class="badge b-dim">Soon</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);"><div style="width:9px;height:9px;border-radius:50%;background:var(--border2);flex-shrink:0;"></div><span style="font-size:11px;color:var(--text3);width:48px;">Unit 5</span><span style="flex:1;font-size:13px;">Non-Formal / Distance Education</span><span class="badge b-dim">Soon</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);"><div style="width:9px;height:9px;border-radius:50%;background:var(--border2);flex-shrink:0;"></div><span style="font-size:11px;color:var(--text3);width:48px;">Unit 6</span><span style="flex:1;font-size:13px;">Quality Assurance in Teacher Education</span><span class="badge b-dim">Soon</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);"><div style="width:9px;height:9px;border-radius:50%;background:var(--border2);flex-shrink:0;"></div><span style="font-size:11px;color:var(--text3);width:48px;">Unit 7</span><span style="flex:1;font-size:13px;">Models of Teacher Education</span><span class="badge b-dim">Soon</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:9px 0;"><div style="width:9px;height:9px;border-radius:50%;background:var(--border2);flex-shrink:0;"></div><span style="font-size:11px;color:var(--text3);width:48px;">Unit 8</span><span style="flex:1;font-size:13px;">Role of Private Sector in Teacher Education</span><span class="badge b-dim">Soon</span></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Generate Lecture Package</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;">
+          <div style="flex:1;min-width:200px;"><label class="form-label">Unit</label>
+            <select class="sel" id="unit-sel">
+              <option value="2">Unit 2 · Teacher Education Curriculum</option>
+              <option value="3">Unit 3 · Objectives of Teacher Education</option>
+              <option value="4">Unit 4 · Teacher Training Institutions</option>
+              <option value="5">Unit 5 · Non-Formal / Distance Education</option>
+              <option value="6">Unit 6 · Quality Assurance</option>
+              <option value="7">Unit 7 · Models of Teacher Education</option>
+              <option value="8">Unit 8 · Private Sector Role</option>
+            </select></div>
+          <div style="flex:1;min-width:170px;"><label class="form-label">Deliverable</label>
+            <select class="sel" id="deliv-sel">
+              <option value="all">All 3 deliverables</option>
+              <option value="summary">Source summary only</option>
+              <option value="ppt">PPT breakdown only</option>
+              <option value="reading">Reading list only</option>
+            </select></div>
+          <div style="display:flex;align-items:flex-end;"><button class="claude-btn" onclick="openLecture()">✦ Open in Claude →</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PHD ══ -->
+    <div class="panel" id="panel-phd">
+      <div class="g2">
+        <div class="card"><div class="card-title">Research Details</div><div style="font-size:13px;line-height:2;color:var(--text2);"><strong style="color:var(--text);">Topic:</strong> Microcredentials Integration in Pakistan HE<br><strong style="color:var(--text);">Institution:</strong> IIUI Islamabad<br><strong style="color:var(--text);">Prior:</strong> M.Phil. Educational Leadership, VU<br><strong style="color:var(--text);">Cert:</strong> TESOL, UMBC</div></div>
+        <div class="card"><div class="card-title">Quick Tools</div>
+          <span class="chip" onclick="openClaude(PROMPTS.litReview)">Lit review para</span>
+          <span class="chip" onclick="openClaude(PROMPTS.methodology)">Methodology ideas</span>
+          <span class="chip" onclick="openClaude(PROMPTS.abstract)">Draft abstract</span>
+          <span class="chip" onclick="openClaude(PROMPTS.sources)">Find sources</span>
+          <span class="chip" onclick="openClaude(PROMPTS.problemStmt)">Problem statement</span>
+          <span class="chip" onclick="openClaude(PROMPTS.postdocProposal)">Postdoc proposal</span>
+        </div>
+      </div>
+      <div class="card"><div class="card-title">PhD Writing Assistant</div>
+        <textarea class="ta" id="phd-inp" placeholder="Describe what you need — lit review, methodology, conceptual framework, discussion section..."></textarea>
+        <div style="margin-top:10px;"><button class="claude-btn" onclick="openPhd()">✦ Open in Claude →</button></div>
+      </div>
+    </div>
+
+    <!-- ══ CALENDAR ══ -->
+    <div class="panel" id="panel-calendar">
+
+      <!-- Connection status -->
+      <div id="cal-connect-prompt" class="card">
+        <div class="card-title">📅 Connect Google Calendar</div>
+        <div class="card-sub" style="margin-bottom:14px;">Connect once and your calendar syncs live — see all events, add new ones, and get deadline reminders integrated with your priority system.</div>
+        <div class="alert alert-blue" style="margin-bottom:14px;"><span class="alert-icon">ℹ️</span><div><strong>One-time setup needed.</strong> You need a free Google Cloud project with Calendar API enabled. See the setup guide below, or enter your Client ID if you already have one.</div></div>
+        <label class="form-label">Google OAuth Client ID</label>
+        <input type="text" class="inp" id="gclient-id" placeholder="Paste your Google OAuth Client ID here e.g. 123456789-abc.apps.googleusercontent.com" style="margin-bottom:10px;"/>
+        <button class="btn btn-primary" onclick="saveClientId()">Save & Connect Calendar</button>
+        <div class="divider"></div>
+        <div class="card-title" style="margin-bottom:10px;">📋 5-Minute Google Cloud Setup</div>
+        <div style="font-size:13px;line-height:1.9;color:var(--text2);">
+          <strong style="color:var(--text);">Step 1:</strong> Go to <a href="https://console.cloud.google.com" target="_blank">console.cloud.google.com</a> → Sign in with ehsankhanquetta@gmail.com<br>
+          <strong style="color:var(--text);">Step 2:</strong> Click <strong>Select a project</strong> → <strong>New Project</strong> → Name it "Ehsan Assistant" → Create<br>
+          <strong style="color:var(--text);">Step 3:</strong> Go to <strong>APIs & Services → Library</strong> → Search "Google Calendar API" → Enable it<br>
+          <strong style="color:var(--text);">Step 4:</strong> Go to <strong>APIs & Services → OAuth consent screen</strong> → Choose External → Fill in app name "Ehsan Assistant" → Add your email → Save<br>
+          <strong style="color:var(--text);">Step 5:</strong> Go to <strong>Credentials → Create Credentials → OAuth 2.0 Client ID</strong><br>
+          &nbsp;&nbsp;&nbsp;→ Application type: <strong>Web application</strong><br>
+          &nbsp;&nbsp;&nbsp;→ Authorized JavaScript origins: add <code style="background:var(--surface2);padding:1px 5px;border-radius:3px;">https://YOUR-TIINY-SITE-URL.tiiny.site</code> (or <code>http://localhost</code> for local use)<br>
+          <strong style="color:var(--text);">Step 6:</strong> Copy the <strong>Client ID</strong> → Paste it above → Click Save & Connect<br>
+        </div>
+      </div>
+
+      <div id="cal-main" style="display:none;">
+        <!-- Connected header -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+          <div class="gcal-status"><span class="gcal-dot" style="background:var(--green);"></span><span style="color:var(--green);font-weight:600;">Google Calendar Connected</span></div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-sm btn-primary" onclick="loadCalendarEvents()">🔄 Sync Now</button>
+            <button class="btn btn-sm btn-ghost" onclick="openAddEvent()">+ Add Event</button>
+            <button class="btn btn-sm" style="color:var(--red);border-color:var(--red-border);" onclick="signOutGCal()">Disconnect</button>
+          </div>
+        </div>
+
+        <!-- Month nav -->
+        <div class="cal-header">
+          <button class="btn btn-ghost btn-sm" onclick="changeMonth(-1)">← Prev</button>
+          <div class="cal-month" id="cal-month-label"></div>
+          <button class="btn btn-ghost btn-sm" onclick="changeMonth(1)">Next →</button>
+        </div>
+        <!-- Calendar grid -->
+        <div class="cal-grid" id="cal-grid">
+          <div class="cal-day-name">Sun</div><div class="cal-day-name">Mon</div><div class="cal-day-name">Tue</div>
+          <div class="cal-day-name">Wed</div><div class="cal-day-name">Thu</div><div class="cal-day-name">Fri</div><div class="cal-day-name">Sat</div>
+        </div>
+
+        <!-- Today + upcoming -->
+        <div class="g2">
+          <div><div class="sec-label">Today's events</div><div id="today-list"></div></div>
+          <div><div class="sec-label">Upcoming 7 days</div><div id="upcoming-list"></div></div>
+        </div>
+
+        <!-- Add event form -->
+        <div class="add-event-form" id="add-event-form" style="display:none;">
+          <div class="card-title" style="margin-bottom:12px;">+ Add Calendar Event</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <div style="flex:2;min-width:180px;"><label class="form-label">Title</label><input class="inp" id="ev-title" placeholder="Event title"/></div>
+            <div style="flex:1;min-width:140px;"><label class="form-label">Date</label><input class="inp" type="date" id="ev-date"/></div>
+            <div style="flex:1;min-width:110px;"><label class="form-label">Time</label><input class="inp" type="time" id="ev-time" value="09:00"/></div>
+          </div>
+          <div style="margin-top:10px;"><label class="form-label">Notes (optional)</label><textarea class="ta" id="ev-notes" style="min-height:60px;" placeholder="Description or notes..."></textarea></div>
+          <div style="margin-top:10px;display:flex;gap:8px;">
+            <button class="btn btn-primary btn-sm" onclick="addCalendarEvent()">Save to Google Calendar</button>
+            <button class="btn btn-ghost btn-sm" onclick="document.getElementById('add-event-form').style.display='none'">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ TASKS ══ -->
+    <div class="panel" id="panel-tasks">
+      <div style="margin-bottom:14px;display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="claude-btn claude-btn-sm" onclick="openClaude(PROMPTS.taskRank)">🧠 Get AI priority analysis</button>
+      </div>
+      <div class="card">
+        <div id="task-list"></div>
+        <div class="divider"></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <input type="text" class="inp" id="new-task-inp" placeholder="Add a task..." style="flex:1;min-width:180px;"/>
+          <select class="sel" id="new-cat" style="width:120px;"><option>BUITEMS</option><option>PhD</option><option>Book</option><option>Business</option><option>Fellowship</option><option>Content</option><option>Freelance</option><option>Other</option></select>
+          <select class="sel" id="new-pri" style="width:110px;"><option value="high">🔴 High</option><option value="med" selected>🟡 Medium</option><option value="low">🟢 Low</option></select>
+          <button class="btn btn-primary" onclick="addTask()">+ Add</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ LIVE OPPORTUNITY SEARCH ══ -->
+    <div class="panel" id="panel-opportunities">
+      <div class="alert alert-blue"><span class="alert-icon">🔭</span><div><strong>Live Opportunity Finder.</strong> Searches across postdoc, fellowship, job, consultancy, and business opportunity sources in real time. Results are scored for your profile match and success probability.</div></div>
+
+      <div class="card" style="margin-bottom:16px;">
+        <div class="card-title">Search Parameters</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;">
+          <div style="flex:1;min-width:150px;"><label class="form-label">Category</label>
+            <select class="sel" id="opp-cat" onchange="updateSearchHint()">
+              <option value="fellowship">Postdoc / Fellowship</option>
+              <option value="academic">Academic Jobs</option>
+              <option value="consultancy">Consultancy / EdTech</option>
+              <option value="business">Business / Grant</option>
+              <option value="remote">Remote / Freelance</option>
+              <option value="all">All categories</option>
+            </select></div>
+          <div style="flex:1;min-width:150px;"><label class="form-label">Location preference</label>
+            <select class="sel" id="opp-loc">
+              <option value="global">Global (any)</option>
+              <option value="uk">United Kingdom</option>
+              <option value="europe">Europe</option>
+              <option value="usa">USA / Canada</option>
+              <option value="pakistan">Pakistan</option>
+              <option value="remote">Remote only</option>
+            </select></div>
+          <div style="flex:1;min-width:150px;"><label class="form-label">Keywords (optional)</label>
+            <input class="inp" id="opp-keywords" placeholder="e.g. microcredentials, EdTech"/></div>
+          <div style="display:flex;align-items:flex-end;">
+            <button class="btn btn-primary" onclick="runOpportunitySearch()" id="search-btn">🔍 Search Live</button>
+          </div>
+        </div>
+        <div id="search-hint" style="font-size:12px;color:var(--text3);">Will search: Scholars4Dev, FindAPostDoc, AcademicPositions.com, Jobs.ac.uk, ReliefWeb, UNDP Careers, HEC Pakistan, Devex, LinkedIn Jobs, Idealist</div>
+      </div>
+
+      <div id="opp-results"></div>
+    </div>
+
+    <!-- ══ TRACKED FELLOWSHIPS ══ -->
+    <div class="panel" id="panel-tracked">
+      <div class="alert alert-blue"><span class="alert-icon">📌</span><div><strong>5 fellowships from your document.</strong> Each shows relatability &amp; success scores. Click to expand step-by-step guide and generate application materials.</div></div>
+
+      <!-- MSCA - highest priority -->
+      <div class="tracked-opp">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;">
+          <div>
+            <div class="tracked-opp-title">Marie Skłodowska-Curie Actions (MSCA)</div>
+            <div class="tracked-opp-meta">🇪🇺 Europe · Global PF: 24–36 months · Call open: April 9, 2026</div>
+            <div style="margin-top:6px;"><span class="badge b-green">🟢 Call Open Now</span></div>
+          </div>
+          <div class="opp-scores">
+            <div class="score-pill" style="background:var(--green-bg);border:1px solid var(--green-border);"><span class="score-label" style="color:var(--green);">Match</span><span class="score-val" style="color:var(--green);">88%</span></div>
+            <div class="score-pill" style="background:var(--accent-bg);border:1px solid var(--accent-border);"><span class="score-label" style="color:var(--accent);">Success</span><span class="score-val" style="color:var(--accent);">62%</span></div>
+          </div>
+        </div>
+        <button class="expand-btn" onclick="toggleSteps('msca',this)">▼ Step-by-step guide</button>
+        <div class="opp-steps-body" id="steps-msca">
+          <div class="step-item"><div class="step-num">1</div><div><div class="step-title">Choose Global PF — Apply Now</div><div class="step-desc">Global PF: work outside Europe (e.g. USA or Australia) then return to European host for 12 months. Call is already open — begin immediately.</div><div class="step-deadline">⏰ Act now — call open April 9, 2026</div></div></div>
+          <div class="step-item"><div class="step-num">2</div><div><div class="step-title">Contact UK Professors as Return Host</div><div class="step-desc">Prof. James Davenport (Bath) · Prof. Michael Thomas (Liverpool LJMU) · Prof. John Brennan (Open University). Email all three this week.</div></div></div>
+          <div class="step-item"><div class="step-num">3</div><div><div class="step-title">Design Interdisciplinary Proposal</div><div class="step-desc">Education + digital technology + policy. SOC panel rewards interdisciplinary work. Add non-academic placement (NGO/think tank).</div></div></div>
+          <div class="step-item"><div class="step-num">4</div><div><div class="step-title">Demonstrate Two-Way Knowledge Transfer</div><div class="step-desc">What you bring to Europe (Global South/Pakistan perspective) AND what you take back (European methods/frameworks). This is a scored criterion.</div></div></div>
+          <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;">
+            <button class="claude-btn claude-btn-sm" onclick="openClaude(PROMPTS.mscaProposal)">✦ Draft MSCA proposal</button>
+            <button class="claude-btn claude-btn-sm" onclick="openClaude(PROMPTS.mscaEmails)">✉ Professor outreach emails</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- HUMBOLDT -->
+      <div class="tracked-opp">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;">
+          <div>
+            <div class="tracked-opp-title">Alexander von Humboldt Fellowship</div>
+            <div class="tracked-opp-meta">🇩🇪 Germany · 6–24 months · €3,000/month · Year-round, next cut-off July 15, 2026</div>
+            <div style="margin-top:6px;"><span class="badge b-warn">⏰ Next cut-off: Jul 15, 2026</span></div>
+          </div>
+          <div class="opp-scores">
+            <div class="score-pill" style="background:var(--green-bg);border:1px solid var(--green-border);"><span class="score-label" style="color:var(--green);">Match</span><span class="score-val" style="color:var(--green);">85%</span></div>
+            <div class="score-pill" style="background:var(--gold-bg);border:1px solid var(--gold-border);"><span class="score-label" style="color:var(--gold);">Success</span><span class="score-val" style="color:var(--gold);">58%</span></div>
+          </div>
+        </div>
+        <button class="expand-btn" onclick="toggleSteps('humboldt',this)">▼ Step-by-step guide</button>
+        <div class="opp-steps-body" id="steps-humboldt">
+          <div class="step-item"><div class="step-num">1</div><div><div class="step-title">Find a German Academic Host</div><div class="step-desc">Search education/EdTech/HE policy departments at German universities. Host must upload mentoring agreement before you can submit.</div><div class="step-deadline">⏰ Secure host before July 15, 2026</div></div></div>
+          <div class="step-item"><div class="step-num">2</div><div><div class="step-title">Register on Humboldt Portal (Open since March 15)</div><div class="step-desc">Create your profile. Prepare: full CV, publication list, ~3,000-word research plan, 2 referee reports.</div></div></div>
+          <div class="step-item"><div class="step-num">3</div><div><div class="step-title">Write Research Plan</div><div class="step-desc">Connect microcredentials work to German/European educational policy. Mention flexible 3-stay structure.</div></div></div>
+          <div style="margin-top:12px;">
+            <button class="claude-btn claude-btn-sm" onclick="openClaude(PROMPTS.humboldtPlan)">✦ Draft Humboldt research plan</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CORNELL -->
+      <div class="tracked-opp">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;">
+          <div>
+            <div class="tracked-opp-title">Cornell Klarman Postdoc Fellowship</div>
+            <div class="tracked-opp-meta">🇺🇸 USA · 3 years · $80,000/yr + $12,000 research · Portal: Aug 15 · Deadline: Oct 15, 2026</div>
+            <div style="margin-top:6px;"><span class="badge b-blue">Prepare now — portal Aug 2026</span></div>
+          </div>
+          <div class="opp-scores">
+            <div class="score-pill" style="background:var(--gold-bg);border:1px solid var(--gold-border);"><span class="score-label" style="color:var(--gold);">Match</span><span class="score-val" style="color:var(--gold);">72%</span></div>
+            <div class="score-pill" style="background:var(--accent-bg);border:1px solid var(--accent-border);"><span class="score-label" style="color:var(--accent);">Success</span><span class="score-val" style="color:var(--accent);">48%</span></div>
+          </div>
+        </div>
+        <button class="expand-btn" onclick="toggleSteps('cornell',this)">▼ Step-by-step guide</button>
+        <div class="opp-steps-body" id="steps-cornell">
+          <div class="step-item"><div class="step-num">1</div><div><div class="step-title">Find Cornell Arts & Sciences Faculty Host</div><div class="step-desc">Email 2–3 education/social sciences faculty now. Hosts need lead time.</div><div class="step-deadline">⏰ Contact by June 2026</div></div></div>
+          <div class="step-item"><div class="step-num">2</div><div><div class="step-title">Prepare CV (PDF, DOI publications listed)</div><div class="step-desc">Refereed vs non-refereed separated. No papers in preparation. Chiraghe Zeest counts.</div></div></div>
+          <div class="step-item"><div class="step-num">3</div><div><div class="step-title">Write 2-Page Research Proposal</div><div class="step-desc">Single-spaced, 12pt, 1-inch margins. What new contribution would Cornell enable?</div><div class="step-deadline">⏰ Draft by September 2026</div></div></div>
+          <div class="step-item"><div class="step-num">4</div><div><div class="step-title">3 Recommendation Letters + Submit Oct 15</div><div class="step-desc">One from IIUI doctoral advisor. Request all by early September.</div></div></div>
+          <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;">
+            <button class="claude-btn claude-btn-sm" onclick="openClaude(PROMPTS.cornellProposal)">✦ Draft research proposal</button>
+            <button class="claude-btn claude-btn-sm" onclick="openClaude(PROMPTS.cornellHost)">✉ Host outreach email</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- BRITISH ACADEMY -->
+      <div class="tracked-opp">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;">
+          <div>
+            <div class="tracked-opp-title">British Academy Fellowship</div>
+            <div class="tracked-opp-meta">🇬🇧 UK · Prestigious · Contact professors NOW · Apply October 2026</div>
+            <div style="margin-top:6px;"><span class="badge b-red">Contact professors immediately</span></div>
+          </div>
+          <div class="opp-scores">
+            <div class="score-pill" style="background:var(--green-bg);border:1px solid var(--green-border);"><span class="score-label" style="color:var(--green);">Match</span><span class="score-val" style="color:var(--green);">82%</span></div>
+            <div class="score-pill" style="background:var(--gold-bg);border:1px solid var(--gold-border);"><span class="score-label" style="color:var(--gold);">Success</span><span class="score-val" style="color:var(--gold);">55%</span></div>
+          </div>
+        </div>
+        <button class="expand-btn" onclick="toggleSteps('british',this)">▼ Step-by-step guide</button>
+        <div class="opp-steps-body" id="steps-british">
+          <div class="step-item"><div class="step-num">1</div><div><div class="step-title">Email All 3 UK Professors This Week</div><div class="step-desc">Prof. James Davenport (Bath) · Prof. Michael Thomas (Liverpool LJMU) · Prof. John Brennan (Open University). Warm intro, your research, fellowship intent.</div><div class="step-deadline">⏰ Do this before June 2026</div></div></div>
+          <div class="step-item"><div class="step-num">2</div><div><div class="step-title">Build Genuine Academic Relationship</div><div class="step-desc">Cite their work, engage on LinkedIn, attend webinars. Make the sponsorship ask feel natural.</div></div></div>
+          <div class="step-item"><div class="step-num">3</div><div><div class="step-title">Draft Proposal + Apply October 2026</div><div class="step-desc">Humanities × social sciences × digital education. Pakistan/Global South angle strongly relevant.</div></div></div>
+          <div style="margin-top:12px;">
+            <button class="claude-btn claude-btn-sm" onclick="openClaude(PROMPTS.britishEmails)">✉ Draft all 3 professor intro emails</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- KWI -->
+      <div class="tracked-opp">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;">
+          <div>
+            <div class="tracked-opp-title">KWI International Fellowship — Essen, Germany</div>
+            <div class="tracked-opp-meta">🇩🇪 Humanities Institute · 6 months · €3,000/month · Monitor for 2027 cycle</div>
+            <div style="margin-top:6px;"><span class="badge b-dim">2026 deadline passed — watch for 2027</span></div>
+          </div>
+          <div class="opp-scores">
+            <div class="score-pill" style="background:var(--gold-bg);border:1px solid var(--gold-border);"><span class="score-label" style="color:var(--gold);">Match</span><span class="score-val" style="color:var(--gold);">76%</span></div>
+            <div class="score-pill" style="background:var(--accent-bg);border:1px solid var(--accent-border);"><span class="score-label" style="color:var(--accent);">Success</span><span class="score-val" style="color:var(--accent);">52%</span></div>
+          </div>
+        </div>
+        <button class="expand-btn" onclick="toggleSteps('kwi',this)">▼ Step-by-step guide</button>
+        <div class="opp-steps-body" id="steps-kwi">
+          <div class="step-item"><div class="step-num">1</div><div><div class="step-title">Email KWI for 2027-28 Cycle Info</div><div class="step-desc">Contact international.fellowship@uni-due.de to ask about next cycle. Proactive early inquiry makes a positive impression.</div></div></div>
+          <div class="step-item"><div class="step-num">2</div><div><div class="step-title">Prepare 5-Page Proposal Through Cultural/Sociological Lens</div><div class="step-desc">Frame microcredentials through literary and cultural sociology. Leverage Chiraghe Zeest (Urdu poetry) — KWI values poet-scholar breadth.</div></div></div>
+          <div style="margin-top:12px;">
+            <button class="claude-btn claude-btn-sm" onclick="openClaude(PROMPTS.kwiProposal)">✦ Draft KWI proposal</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:6px;">
+        <div class="card-title">Custom Application Writer</div>
+        <textarea class="ta" id="opp-custom-inp" placeholder="Describe any application component — MSCA abstract, Humboldt research plan, Cornell host email, British Academy proposal..."></textarea>
+        <div style="margin-top:10px;"><button class="claude-btn" onclick="openOppCustom()">✦ Open in Claude →</button></div>
+      </div>
+    </div>
+
+    <!-- ══ WRITING ══ -->
+    <div class="panel" id="panel-writing">
+      <div class="mode-grid">
+        <div class="mode-btn active" data-mode="ehsaas" onclick="selMode(this)"><span class="mode-icon">✦</span>Ehsaas Book</div>
+        <div class="mode-btn" data-mode="phd-w" onclick="selMode(this)"><span class="mode-icon">◉</span>PhD Writing</div>
+        <div class="mode-btn" data-mode="seo" onclick="selMode(this)"><span class="mode-icon">🔍</span>SEO/Blog</div>
+        <div class="mode-btn" data-mode="fellowship" onclick="selMode(this)"><span class="mode-icon">🌐</span>Fellowship</div>
+        <div class="mode-btn" data-mode="linkedin" onclick="selMode(this)"><span class="mode-icon">💼</span>LinkedIn</div>
+        <div class="mode-btn" data-mode="youtube" onclick="selMode(this)"><span class="mode-icon">▶</span>YouTube</div>
+        <div class="mode-btn" data-mode="copy" onclick="selMode(this)"><span class="mode-icon">✎</span>Copywriting</div>
+        <div class="mode-btn" data-mode="poetry" onclick="selMode(this)"><span class="mode-icon">✿</span>Urdu/Poetry</div>
+      </div>
+      <div class="card">
+        <div class="card-title" id="wmode-title">✦ Ehsaas — Memoir Writing</div>
+        <div class="card-sub" id="wmode-desc" style="margin-bottom:12px;">Chan's voice. Emotionally rich, literary, human. Zero AI phrasing.</div>
+        <textarea class="ta" id="writ-inp" placeholder="Describe the scene, chapter, or what you need..."></textarea>
+        <div style="margin-top:10px;"><button class="claude-btn" onclick="openWriting()">✦ Open in Claude →</button></div>
+      </div>
+    </div>
+
+    <!-- ══ CONTENT ══ -->
+    <div class="panel" id="panel-content">
+      <div class="g2">
+        <div class="card"><div class="card-title">▶ Quetta YouTube</div>
+          <span class="chip" onclick="openClaude(PROMPTS.ytIdeas)">Video ideas</span>
+          <span class="chip" onclick="openClaude(PROMPTS.ytShort)">Short script</span>
+          <span class="chip" onclick="openClaude(PROMPTS.ytDesc)">Description+tags</span>
+          <span class="chip" onclick="openClaude(PROMPTS.ytBio)">Channel bio</span>
+        </div>
+        <div class="card"><div class="card-title">✿ Lumora Cosmetics</div>
+          <span class="chip" onclick="openClaude(PROMPTS.lumoraCaptions)">Instagram captions</span>
+          <span class="chip" onclick="openClaude(PROMPTS.lumoraAd)">Facebook ad</span>
+          <span class="chip" onclick="openClaude(PROMPTS.lumoraCalendar)">7-day calendar</span>
+        </div>
+      </div>
+      <div class="card"><div class="card-title">Custom Content</div>
+        <textarea class="ta" id="content-inp" placeholder="Describe the content you need..."></textarea>
+        <div style="margin-top:10px;"><button class="claude-btn" onclick="openContent()">✦ Open in Claude →</button></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+// PROFILE CONTEXT
+// ═══════════════════════════════════════
+const CTX = `[CONTEXT — Dr. Muhammad Ehsan's Profile:
+PhD candidate IIUI Islamabad (microcredentials integration in Pakistan HE). Secondary school teacher near Zhob, Balochistan. Visiting faculty BUITEMS (EDU-6105 Teacher Education in Comparative Perspectives). TEA Fellowship 2019 alumnus (Virginia Tech). M.Phil. Educational Leadership VU Pakistan. TESOL certified UMBC. Published Urdu poet "Chiraghe Zeest". Co-founder PATEN. Freelancer Upwork/Fiverr (SEO, content writing). Memoir "Ehsaas" in progress (protagonist Chan). Fellowship pipeline: MSCA (open now), Humboldt (Jul 2026), Cornell (Oct 2026), British Academy (Oct 2026), KWI (next cycle). Zhob B.Ed/BS institution venture with Tank KPK partners.
+
+WRITING RULES: NEVER use: delve, testament, pivotal, foster, key, overarching, in conclusion, changing landscape, vital, underscore, beacon, realm, tapestry, journey, embark, cutting-edge, transformative, holistic. Write authentic human voice. Warm, scholarly, confident. Generate 90%-complete drafts. For Ehsaas: literary, emotionally deep, slightly generalized settings, never vilify family.]
+
+`;
+
+const PROMPTS = {
+  dailyBriefing: CTX+'Give me my daily executive briefing: (1) Warm direct opening. (2) Top 3 ranked priorities today with urgency reasoning. (3) Any fellowship deadlines in next 60 days. (4) One Ehsaas reminder. Concise, human, energizing.',
+  ehsaas: CTX+'Write the next emotionally rich scene for my memoir "Ehsaas" — Chan at Virginia Tech during the TEA Fellowship. Deep friendship formed there, intellectual atmosphere, quiet tension in his marriage. Literary, warm, human. At least 400 words.',
+  phdPara: CTX+'Write a sophisticated, critically analytical paragraph for my PhD dissertation on microcredentials integration in Pakistan HE. Engage global literature, situate Pakistan context, advance the argument. Elite humanized scholarly prose.',
+  litReview: CTX+'Write a critically analytical literature review paragraph on microcredentials globally, citing key debates and frameworks relevant to Pakistan HE context. Recent scholarship 2018-2025.',
+  methodology: CTX+'Suggest 5 well-reasoned research methodology approaches for studying microcredential integration in Pakistani HE institutions, with brief justification for each.',
+  abstract: CTX+'Draft a complete abstract for my PhD dissertation on microcredentials integration in Pakistan HE. Background, research gap, methodology, expected findings, significance. Humanized scholarly language.',
+  sources: CTX+'Identify 8 high-impact peer-reviewed papers (2018–2025) on microcredentials in higher education relevant to Pakistan or developing country contexts. Full citation + 2-sentence relevance note for each.',
+  problemStmt: CTX+'Write a compelling research problem statement for my PhD study on microcredentials integration in Pakistani universities. Link to HEC policy, global trends, and the research gap.',
+  postdocProposal: CTX+'Draft a high-calibre postdoctoral research proposal on microcredentials and institutional readiness in Pakistan for an international funding committee. Research rationale, objectives, methodology, expected contribution.',
+  linkedin: CTX+'Write a warm, intellectual LinkedIn connection message from me to a professor researching microcredentials or EdTech in South Asia. Genuine, opens academic dialogue, not salesy. 3-4 sentences.',
+  youtube: CTX+'Give me 7 trending Urdu YouTube video ideas about Quetta and Balochistan for 2026, with search-optimized titles and 2-line hooks. Focus on what Pakistani audiences are searching for.',
+  seo: CTX+'Write an SEO title, meta description, and compelling first 250 words for a blog post about microcredentials in Pakistan HE for an English-language academic and policy audience.',
+  humboldt: CTX+'Write a compelling humanized statement of purpose for the Alexander von Humboldt Fellowship (Germany), focusing on my microcredentials research, connection to German/European educational policy, and what the fellowship uniquely enables. 500 words.',
+  taskRank: CTX+'Rank all my current open tasks by priority for today. Tasks: BUITEMS Unit 2 lecture (Monday); MSCA proposal (call open now); contact UK professors (British Academy); Ehsaas chapter; Zhob institution plan; PhD chapter for supervisor; find German host (Humboldt Jul deadline). For each: rank, urgency score/100, 1-sentence reason.',
+  cornellProposal: CTX+'Write a draft 2-page research proposal for Cornell Klarman Postdoctoral Fellowship. Describe proposed research on microcredentials in Pakistan HE, scholarly significance, connection to Cornell Arts & Sciences, what fellowship enables. Single-spaced, academic, humanized, world-class quality.',
+  cornellHost: CTX+'Write a warm professional cold email from me to a Cornell University Arts & Sciences professor (education/social sciences) requesting consideration as my faculty host for the Cornell Klarman Fellowship (portal opens August 2026). Brief self-introduction, research description, why I am contacting them, the ask.',
+  mscaProposal: CTX+'Write a compelling abstract and opening section for an MSCA Global Postdoctoral Fellowship research proposal. Topic: microcredentials integration in Pakistan HE, framed as interdisciplinary Education + digital technology + policy study. SOC panel. Emphasize two-way knowledge transfer and Global South perspective.',
+  mscaEmails: CTX+'Write three separate outreach emails from me to: (1) Prof. James Davenport at Bath University, (2) Prof. Michael Thomas at Liverpool LJMU, (3) Prof. Emeritus John Brennan at The Open University. Purpose: requesting consideration as my European return host for MSCA Global Postdoctoral Fellowship. Warm, scholarly, personalized to each.',
+  humboldtPlan: CTX+'Write a compelling 3,000-word research plan for the Alexander von Humboldt Postdoctoral Fellowship (Germany). Current state of research, proposed objectives and questions, methodology, expected results, relevance to German/European HE policy, what the fellowship specifically enables.',
+  britishEmails: CTX+'Write three warm scholarly introduction emails from me to: (1) Prof. James Davenport at Bath, (2) Prof. Michael Thomas at Liverpool LJMU, (3) Prof. John Brennan at Open University. Purpose: building academic relationship ahead of British Academy Fellowship application October 2026. Reference each professor\'s specific research interests.',
+  kwiProposal: CTX+'Write a 5-page research proposal for KWI International Fellowship Essen Germany. Align with cultural studies, humanities, social sciences focus. Frame microcredentials research through cultural/sociological lens. Leverage my identity as both scholar and published Urdu poet (Chiraghe Zeest).',
+  ytIdeas: CTX+'Give me 8 trending Urdu YouTube video ideas about Quetta and Balochistan for 2026. For each: search-optimized Urdu title, 2-line hook, target audience, why it will perform well.',
+  ytShort: CTX+'Write a punchy 60-second YouTube Short script in Urdu about one fascinating lesser-known fact about Quetta or Balochistan. Visual, energetic, ends with hook.',
+  ytDesc: CTX+'Write a YouTube video description (English + Urdu) and 15 SEO hashtags for a video about Quetta history and culture.',
+  ytBio: CTX+'Write a YouTube channel About section in Urdu and English for a channel about Quetta, Balochistan, and Pakistani culture. Warm, inviting, search-friendly.',
+  lumoraCaptions: CTX+'Write 5 engaging Instagram captions for Lumora Cosmetics Pakistan. Mix Urdu and English. Confident, feminine, aspirational. Subtle call to action each.',
+  lumoraAd: CTX+'Write a short punchy Facebook ad copy for Lumora Cosmetics promoting a skincare product in Pakistan. Headline, body, CTA. No filler words.',
+  lumoraCalendar: CTX+'Create a 7-day social media content calendar for Lumora Cosmetics Pakistan. Each day: content type, platform, caption idea, 2 hashtags.',
+};
+
+// ═══════════════════════════════════════
+// ROUTING
+// ═══════════════════════════════════════
+const TABMETA = {
+  dashboard:{title:'Dashboard',sub:'Your personal executive assistant — always ready'},
+  assistant:{title:'AI Assistant',sub:'Free-form prompts and quick-launch tools'},
+  lecture:{title:'Lecture Prep',sub:'BUITEMS EDU-6105 · Teacher Education in Comparative Perspectives'},
+  phd:{title:'PhD Research',sub:'Microcredentials Integration in Pakistan HE · IIUI'},
+  calendar:{title:'Google Calendar',sub:'Live schedule sync — never miss a deadline'},
+  tasks:{title:'Daily Task Manager',sub:'Priority-ranked — know what to do first every day'},
+  opportunities:{title:'Live Opportunity Search',sub:'Real-time fellowships, jobs, consultancies, grants'},
+  tracked:{title:'My Fellowships',sub:'5 tracked opportunities with step-by-step guides'},
+  writing:{title:'Writing Studio',sub:'Humanized elite writing — all modes'},
+  content:{title:'Content Hub',sub:'Quetta YouTube · Lumora Cosmetics'},
+};
+function go(name){
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>{if(n.getAttribute('onclick')?.includes(`'${name}'`))n.classList.add('active');});
+  document.getElementById('panel-'+name).classList.add('active');
+  document.getElementById('tb-title').textContent=TABMETA[name].title;
+  document.getElementById('tb-sub').textContent=TABMETA[name].sub;
+  if(name==='calendar'&&gCalConnected)renderCalendar();
+}
+
+// ═══════════════════════════════════════
+// CLOCK
+// ═══════════════════════════════════════
+function tick(){const n=new Date();const s=n.toLocaleDateString('en-PK',{weekday:'short',month:'short',day:'numeric'})+' · '+n.toLocaleTimeString('en-PK',{hour:'2-digit',minute:'2-digit'});document.getElementById('clock').textContent=s;document.getElementById('clock-side').textContent=s;}
+tick();setInterval(tick,30000);
+
+// ═══════════════════════════════════════
+// NOTIFICATION
+// ═══════════════════════════════════════
+function showNotif(msg,dur=8000){const b=document.getElementById('notif');document.getElementById('notif-text').textContent=msg;b.classList.add('show');if(dur)setTimeout(()=>b.classList.remove('show'),dur);}
+function closeNotif(){document.getElementById('notif').classList.remove('show');}
+window.addEventListener('load',()=>{
+  const last=localStorage.getItem('ehsan-notif-date');
+  const today=new Date().toDateString();
+  if(last!==today){localStorage.setItem('ehsan-notif-date',today);setTimeout(()=>showNotif('🔔 Good day, Dr. Ehsan! Priority #1: BUITEMS Unit 2 lecture package. Priority #2: MSCA fellowship proposal (call is open). Click ⚡ Briefing for your full ranked plan.'),1500);}
+});
+
+// ═══════════════════════════════════════
+// OPEN IN CLAUDE
+// ═══════════════════════════════════════
+function openClaude(prompt){window.open('https://claude.ai/new?q='+encodeURIComponent(prompt),'_blank');}
+function setAI(v){document.getElementById('ai-inp').value=v;}
+function openAICustom(){
+  let v=document.getElementById('ai-inp').value.trim();if(!v){alert('Please type your request.');return;}
+  if(v==='/start')v=PROMPTS.dailyBriefing;
+  else if(v.startsWith('/lecture')){const n=v.split(' ')[1]||'2';v=CTX+`Generate complete 3-deliverable Monday-ready lecture package for BUITEMS EDU-6105 Unit ${n}: (1) PhD-level source summary (Farooq 2014, Hargreaves & Fullan 2012, Moore 2014, Tibble 2015 + modern sources), (2) hour-by-hour 3-hour session plan with slide topics and activities, (3) 7-source APA reading list with annotations. Humanized, detailed.`;}
+  else if(v==='/scout')v=CTX+'Generate a hyper-persuasive, humanized query letter for the best-matched current fellowship for my profile. Recommend MSCA or Humboldt as strongest active options and draft the opening application letter.';
+  else if(v==='/brief')v=PROMPTS.dailyBriefing;
+  else v=CTX+v;
+  openClaude(v);
+}
+function openLecture(){
+  const u=document.getElementById('unit-sel').value,t=document.getElementById('deliv-sel').value;
+  const names={2:'Teacher Education Curriculum (Factors Affecting & Development)',3:'Objectives of Teacher Education Programme',4:'Study of Education in Teacher Training Institutions (PITE, RITE)',5:'Teacher Education Through Non-Formal/Distance Education (AIOU, VU, UoPesh, Sarhad)',6:'Quality Assurance in Teacher Education (NACTE, Accreditation)',7:'Models of Teacher Education (Conventional, Distance, FBT)',8:'Role of Private Sector in Teacher Education'};
+  const n=names[u];
+  let p;
+  if(t==='all')p=CTX+`Generate the complete 3-deliverable lecture package for BUITEMS Unit ${u}: "${n}". (1) PhD-level source summary: Farooq 2014, Hargreaves & Fullan 2012, Moore 2014, Tibble 2015 + 3 modern sources, key debates, Pakistan context. (2) Hour-by-hour 3-hour session plan: for each hour, 4-5 slide titles with talking points, 1 discussion question, 1 activity. (3) 7-source APA reading list with 1-sentence annotations. Humanized, detailed, Monday-ready.`;
+  else if(t==='summary')p=CTX+`Write a deep PhD-level source summary for BUITEMS Unit ${u}: "${n}". Reference Farooq 2014, Hargreaves & Fullan 2012, Moore 2014, Tibble 2015 + modern sources. Key debates, frameworks, Pakistan context.`;
+  else if(t==='ppt')p=CTX+`Create hour-by-hour PPT session plan for 3-hour BUITEMS class on Unit ${u}: "${n}". For each of 3 hours: 4-5 slide titles with talking points, 1 discussion question, 1 student activity.`;
+  else p=CTX+`Create 7-source reading list for BUITEMS Unit ${u}: "${n}". Mix of Farooq, Hargreaves & Fullan, Moore, Tibble + recent scholarship 2018-2024. Full APA + 1-sentence annotation each.`;
+  openClaude(p);
+}
+function openPhd(){const v=document.getElementById('phd-inp').value.trim();if(!v){alert('Describe what you need.');return;}openClaude(CTX+`Write PhD-level academic prose for my dissertation on microcredentials in Pakistan HE. Request: ${v}. Humanized, sophisticated.`);}
+function openOppCustom(){const v=document.getElementById('opp-custom-inp').value.trim();if(!v){alert('Describe the application component.');return;}openClaude(CTX+`Write a complete, elite, humanized fellowship application component: "${v}". Draw fully on my profile. World-class scholarship, no AI phrasing.`);}
+function openContent(){const v=document.getElementById('content-inp').value.trim();if(!v){alert('Describe the content you need.');return;}openClaude(CTX+`Create content for: ${v}. Context: Quetta/Balochistan Urdu YouTube and/or Lumora Cosmetics Pakistan.`);}
+
+// ═══════════════════════════════════════
+// GOOGLE CALENDAR
+// ═══════════════════════════════════════
+let gCalConnected=false;
+let gCalToken=null;
+let calViewDate=new Date();
+let allEvents=[];
+const GCAL_SCOPES='https://www.googleapis.com/auth/calendar';
+const GCAL_DISCOVERY='https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest';
+
+function saveClientId(){
+  const id=document.getElementById('gclient-id').value.trim();
+  if(!id){alert('Please paste your Google OAuth Client ID.');return;}
+  localStorage.setItem('gcal-client-id',id);
+  initGCal(id);
+}
+
+function handleGCalAuth(){
+  const id=localStorage.getItem('gcal-client-id');
+  if(!id){go('calendar');return;}
+  if(gCalConnected){loadCalendarEvents();}else{initGCal(id);}
+}
+
+function initGCal(clientId){
+  // Load Google API
+  if(window.gapi){startAuth(clientId);return;}
+  const s=document.createElement('script');
+  s.src='https://apis.google.com/js/api.js';
+  s.onload=()=>gapi.load('client:auth2',()=>startAuth(clientId));
+  document.head.appendChild(s);
+}
+
+async function startAuth(clientId){
+  try{
+    await gapi.client.init({clientId,scope:GCAL_SCOPES,discoveryDocs:[GCAL_DISCOVERY]});
+    const auth=gapi.auth2.getAuthInstance();
+    if(auth.isSignedIn.get()){onGCalSignIn();}
+    else{await auth.signIn();onGCalSignIn();}
+  }catch(e){
+    showNotif('❌ Calendar connection failed: '+e.message);
+    console.error(e);
+  }
+}
+
+function onGCalSignIn(){
+  gCalConnected=true;
+  document.getElementById('gcal-btn').textContent='📅 Syncing...';
+  document.getElementById('cal-connect-prompt').style.display='none';
+  document.getElementById('cal-main').style.display='block';
+  document.getElementById('cal-sync-status').textContent=' — Live sync active ✓';
+  document.getElementById('cal-badge').style.display='inline';
+  loadCalendarEvents();
+  showNotif('✅ Google Calendar connected! Loading your events...');
+}
+
+async function loadCalendarEvents(){
+  try{
+    document.getElementById('gcal-btn').textContent='📅 Syncing...';
+    const now=new Date();
+    const start=new Date(now.getFullYear(),now.getMonth()-1,1).toISOString();
+    const end=new Date(now.getFullYear(),now.getMonth()+3,0).toISOString();
+    const res=await gapi.client.calendar.events.list({
+      calendarId:'primary',
+      timeMin:start,timeMax:end,
+      maxResults:200,singleEvents:true,
+      orderBy:'startTime'
+    });
+    allEvents=res.result.items||[];
+    renderCalendar();
+    renderTodayEvents();
+    renderUpcomingEvents();
+    renderDashboardEvents();
+    document.getElementById('gcal-btn').textContent='📅 Calendar ✓';
+  }catch(e){
+    document.getElementById('gcal-btn').textContent='📅 Retry';
+    showNotif('Calendar sync error: '+e.message);
+  }
+}
+
+function getEventsForDate(date){
+  const d=date.toDateString();
+  return allEvents.filter(ev=>{
+    const s=ev.start?.dateTime||ev.start?.date;
+    if(!s)return false;
+    return new Date(s).toDateString()===d;
+  });
+}
+
+function renderCalendar(){
+  const y=calViewDate.getFullYear(),m=calViewDate.getMonth();
+  document.getElementById('cal-month-label').textContent=new Date(y,m,1).toLocaleDateString('en',{month:'long',year:'numeric'});
+  const grid=document.getElementById('cal-grid');
+  // Keep day names
+  const days=grid.querySelectorAll('.cal-day');
+  days.forEach(d=>d.remove());
+  const first=new Date(y,m,1).getDay();
+  const total=new Date(y,m+1,0).getDate();
+  const today=new Date();
+  // Prev month padding
+  const prevTotal=new Date(y,m,0).getDate();
+  for(let i=first-1;i>=0;i--){
+    const d=document.createElement('div');
+    d.className='cal-day other-month';
+    d.innerHTML=`<div class="cal-day-num">${prevTotal-i}</div>`;
+    grid.appendChild(d);
+  }
+  for(let day=1;day<=total;day++){
+    const date=new Date(y,m,day);
+    const evs=getEventsForDate(date);
+    const isToday=date.toDateString()===today.toDateString();
+    const d=document.createElement('div');
+    d.className='cal-day'+(isToday?' today':'')+(evs.length?' has-events':'');
+    d.onclick=()=>showDayEvents(date,evs);
+    let html=`<div class="cal-day-num">${day}</div>`;
+    evs.slice(0,2).forEach(ev=>{
+      const t=ev.start?.dateTime?new Date(ev.start.dateTime).toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit',hour12:false}):'All day';
+      html+=`<div class="cal-event-dot">· ${ev.summary||'Event'}</div>`;
+    });
+    d.innerHTML=html;
+    grid.appendChild(d);
+  }
+  // Fill remaining
+  const filled=first+total;const remaining=(7-filled%7)%7;
+  for(let i=1;i<=remaining;i++){
+    const d=document.createElement('div');d.className='cal-day other-month';
+    d.innerHTML=`<div class="cal-day-num">${i}</div>`;grid.appendChild(d);
+  }
+}
+
+function showDayEvents(date,evs){
+  if(!evs.length){showNotif('No events on '+date.toDateString());return;}
+  const list=evs.map(ev=>{
+    const t=ev.start?.dateTime?new Date(ev.start.dateTime).toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit',hour12:true}):'All day';
+    return`• ${t}: ${ev.summary||'Untitled'}`;
+  }).join('\n');
+  showNotif('📅 '+date.toLocaleDateString('en',{weekday:'long',month:'long',day:'numeric'})+'\n'+list,6000);
+}
+
+function renderTodayEvents(){
+  const today=new Date();const evs=getEventsForDate(today);
+  const el=document.getElementById('today-list');
+  if(!evs.length){el.innerHTML='<div style="font-size:13px;color:var(--text3);padding:6px 0;">No events today.</div>';return;}
+  el.innerHTML=evs.map(ev=>{
+    const t=ev.start?.dateTime?new Date(ev.start.dateTime).toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit',hour12:true}):'All day';
+    return`<div class="event-item"><div class="event-time">${t}</div><div><div class="event-title">${ev.summary||'Untitled'}</div>${ev.description?`<div class="event-desc">${ev.description.substring(0,60)}...</div>`:''}</div></div>`;
+  }).join('');
+}
+
+function renderUpcomingEvents(){
+  const today=new Date();const end=new Date(today);end.setDate(end.getDate()+7);
+  const evs=allEvents.filter(ev=>{
+    const s=new Date(ev.start?.dateTime||ev.start?.date);
+    return s>today&&s<=end;
+  }).slice(0,8);
+  const el=document.getElementById('upcoming-list');
+  if(!evs.length){el.innerHTML='<div style="font-size:13px;color:var(--text3);padding:6px 0;">No events in next 7 days.</div>';return;}
+  el.innerHTML=evs.map(ev=>{
+    const s=new Date(ev.start?.dateTime||ev.start?.date);
+    const day=s.toLocaleDateString('en',{weekday:'short',month:'short',day:'numeric'});
+    const t=ev.start?.dateTime?s.toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit',hour12:true}):'';
+    return`<div class="event-item"><div class="event-time" style="min-width:80px;font-size:11px;">${day}${t?'<br>'+t:''}</div><div><div class="event-title">${ev.summary||'Untitled'}</div></div></div>`;
+  }).join('');
+}
+
+function renderDashboardEvents(){
+  const today=new Date();const evs=getEventsForDate(today);
+  const el=document.getElementById('today-events');
+  if(!evs.length){el.innerHTML='<div class="card-sub" style="padding:6px 0;">No events scheduled today. <button class="btn btn-sm btn-primary" style="margin-left:8px;" onclick="go(\'calendar\')">Open Calendar →</button></div>';return;}
+  el.innerHTML=evs.map(ev=>{
+    const t=ev.start?.dateTime?new Date(ev.start.dateTime).toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit',hour12:true}):'All day';
+    return`<div class="event-item"><div class="event-time">${t}</div><div class="event-title">${ev.summary||'Untitled'}</div></div>`;
+  }).join('');
+  document.getElementById('cal-sync-status').textContent=` — ${evs.length} event${evs.length!==1?'s':''} today ✓`;
+}
+
+function changeMonth(dir){calViewDate=new Date(calViewDate.getFullYear(),calViewDate.getMonth()+dir,1);renderCalendar();}
+
+function openAddEvent(){
+  const f=document.getElementById('add-event-form');
+  f.style.display=f.style.display==='none'?'block':'none';
+  const today=new Date().toISOString().split('T')[0];
+  document.getElementById('ev-date').value=today;
+}
+
+async function addCalendarEvent(){
+  const title=document.getElementById('ev-title').value.trim();
+  const date=document.getElementById('ev-date').value;
+  const time=document.getElementById('ev-time').value;
+  const notes=document.getElementById('ev-notes').value.trim();
+  if(!title||!date){alert('Title and date are required.');return;}
+  const start=new Date(date+'T'+time+':00');
+  const end=new Date(start);end.setHours(end.getHours()+1);
+  try{
+    await gapi.client.calendar.events.insert({
+      calendarId:'primary',
+      resource:{
+        summary:title,
+        description:notes,
+        start:{dateTime:start.toISOString()},
+        end:{dateTime:end.toISOString()}
+      }
+    });
+    showNotif('✅ Event "'+title+'" added to Google Calendar!');
+    document.getElementById('add-event-form').style.display='none';
+    document.getElementById('ev-title').value='';
+    document.getElementById('ev-notes').value='';
+    await loadCalendarEvents();
+  }catch(e){showNotif('❌ Error adding event: '+e.message);}
+}
+
+function signOutGCal(){
+  if(window.gapi&&gapi.auth2){gapi.auth2.getAuthInstance().signOut();}
+  gCalConnected=false;gCalToken=null;allEvents=[];
+  document.getElementById('cal-connect-prompt').style.display='block';
+  document.getElementById('cal-main').style.display='none';
+  document.getElementById('gcal-btn').textContent='📅 Connect Calendar';
+  document.getElementById('cal-sync-status').textContent=' — Connect calendar to see events';
+  showNotif('Calendar disconnected.');
+}
+
+// Auto-connect if client ID already saved
+window.addEventListener('load',()=>{
+  const id=localStorage.getItem('gcal-client-id');
+  if(id){document.getElementById('gclient-id').value=id;setTimeout(()=>initGCal(id),2000);}
+});
+
+// ═══════════════════════════════════════
+// LIVE OPPORTUNITY SEARCH
+// ═══════════════════════════════════════
+const OPP_SOURCES = {
+  fellowship: [
+    {name:'Scholars4Dev',url:'https://www.scholars4dev.com/?s=education+pakistan+postdoc',label:'Scholars4Dev'},
+    {name:'FindAPostDoc',url:'https://www.findapostdoc.com/search/?keywords=education+microcredentials',label:'FindAPostDoc'},
+    {name:'AcademicPositions',url:'https://academicpositions.com/jobs/education',label:'AcademicPositions.com'},
+    {name:'EURAXESS',url:'https://euraxess.ec.europa.eu/jobs/search?keywords=education',label:'EURAXESS (EU)'},
+    {name:'HEC Pakistan',url:'https://www.hec.gov.pk/english/scholarshipsgrants/Pages/default.aspx',label:'HEC Pakistan'},
+    {name:'Fulbright',url:'https://foreign.fulbrightonline.org/',label:'Fulbright Programs'},
+  ],
+  academic: [
+    {name:'Jobs.ac.uk',url:'https://www.jobs.ac.uk/search/?keywords=education+pakistan',label:'Jobs.ac.uk (UK)'},
+    {name:'HigherEdJobs',url:'https://www.higheredjobs.com/search/advanced.cfm?Keyword=education',label:'HigherEdJobs'},
+    {name:'Times Higher Education',url:'https://www.timeshighereducation.com/unijobs/listings/education/',label:'THE Jobs'},
+    {name:'Chronicle',url:'https://jobs.chronicle.com/jobs/education/',label:'Chronicle of Higher Ed'},
+    {name:'BUITEMS Jobs',url:'https://www.buitms.edu.pk',label:'BUITEMS Vacancies'},
+  ],
+  consultancy: [
+    {name:'Devex',url:'https://www.devex.com/jobs/search?q=education+consultant',label:'Devex (Int\'l Dev)'},
+    {name:'ReliefWeb',url:'https://reliefweb.int/jobs?search=education+consultant+pakistan',label:'ReliefWeb'},
+    {name:'UNDP Careers',url:'https://jobs.undp.org/cj_view_jobs.cfm',label:'UNDP Careers'},
+    {name:'UNESCO Jobs',url:'https://careers.unesco.org/go/Education/5062301/',label:'UNESCO Jobs'},
+    {name:'World Bank',url:'https://jobs.worldbank.org/en/jobs/all-jobs?field_wbf_department_tid=All&field_wbf_job_family_value=All&search_api_views_fulltext=education',label:'World Bank Consultancies'},
+  ],
+  business: [
+    {name:'Innovate UK',url:'https://apply-for-innovation-funding.service.gov.uk/competition/search',label:'Innovate UK Grants'},
+    {name:'British Council',url:'https://www.britishcouncil.pk/programmes',label:'British Council Pakistan'},
+    {name:'USAID Pakistan',url:'https://www.usaid.gov/pakistan',label:'USAID Pakistan'},
+    {name:'Aga Khan Foundation',url:'https://www.akdn.org/our-work/human-development/education',label:'Aga Khan Foundation'},
+  ],
+  remote: [
+    {name:'Upwork Education',url:'https://www.upwork.com/nx/jobs/search/?q=education+research+writing',label:'Upwork (Research/Writing)'},
+    {name:'Toptal Education',url:'https://www.toptal.com/education',label:'Toptal Education'},
+    {name:'Remote.co',url:'https://remote.co/remote-jobs/education/',label:'Remote.co Education'},
+    {name:'Coursera Instructor',url:'https://www.coursera.org/teach',label:'Coursera — Create Course'},
+  ],
+};
+
+function updateSearchHint(){
+  const cat=document.getElementById('opp-cat').value;
+  const sources=cat==='all'?Object.values(OPP_SOURCES).flat():OPP_SOURCES[cat]||[];
+  document.getElementById('search-hint').textContent='Will search: '+sources.map(s=>s.label).join(' · ');
+}
+
+function runOpportunitySearch(){
+  const cat=document.getElementById('opp-cat').value;
+  const loc=document.getElementById('opp-loc').value;
+  const kw=document.getElementById('opp-keywords').value.trim();
+  const sources=cat==='all'?Object.values(OPP_SOURCES).flat():OPP_SOURCES[cat]||[];
+
+  const res=document.getElementById('opp-results');
+  res.innerHTML=`<div class="search-loading"><span class="spin big-spin"></span><div style="font-size:14px;font-weight:600;color:var(--text);">Searching live sources...</div><div style="font-size:12px;color:var(--text2);margin-top:4px;">Opening ${sources.length} opportunity databases for your profile</div></div>`;
+
+  // Show results with scored cards + direct links
+  setTimeout(()=>{
+    const locLabel={global:'Global',uk:'United Kingdom',europe:'Europe',usa:'USA/Canada',pakistan:'Pakistan',remote:'Remote'}[loc];
+    res.innerHTML=`
+      <div class="alert alert-green"><span class="alert-icon">✅</span><div><strong>${sources.length} live sources ready.</strong> Each button opens the source directly filtered for Education / Pakistan / Microcredentials matches. Use the AI scorer below to rank any opportunity you find.</div></div>
+      <div class="sec-label">Live sources — click to search each</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-bottom:20px;">
+        ${sources.map(s=>`
+          <div class="opp-result" onclick="window.open('${s.url}','_blank')" style="cursor:pointer;">
+            <div class="opp-result-header">
+              <div>
+                <div class="opp-result-title" style="font-size:13px;">${s.label}</div>
+                <div class="opp-result-meta">${cat==='all'?getCatLabel(s.name):''} ${locLabel}</div>
+              </div>
+              <span style="font-size:20px;">↗</span>
+            </div>
+            <div style="margin-top:8px;"><span class="chip" style="font-size:11px;">Open →</span></div>
+          </div>`).join('')}
+      </div>
+      <div class="sec-label">AI opportunity scorer</div>
+      <div class="card">
+        <div class="card-title" style="font-size:13px;">Paste any opportunity and get your match score + winning strategy</div>
+        <div class="card-sub" style="margin-bottom:10px;">Found something interesting? Paste the title, description, or URL below. Claude will score it against your profile and give you a step-by-step winning strategy.</div>
+        <textarea class="ta" id="score-inp" placeholder="Paste opportunity title, description, requirements, or URL here...&#10;&#10;E.g. 'Postdoc in Educational Technology at University of Manchester — 2 years, £38,000/yr, research in digital learning. Requires PhD in Education and 2 publications.'"></textarea>
+        <div style="margin-top:10px;">
+          <button class="claude-btn" onclick="scoreOpportunity()">🎯 Score this opportunity + generate strategy</button>
+        </div>
+      </div>`;
+  },800);
+}
+
+function getCatLabel(name){
+  if(OPP_SOURCES.fellowship?.find(s=>s.name===name))return'Fellowship ·';
+  if(OPP_SOURCES.academic?.find(s=>s.name===name))return'Academic ·';
+  if(OPP_SOURCES.consultancy?.find(s=>s.name===name))return'Consultancy ·';
+  if(OPP_SOURCES.business?.find(s=>s.name===name))return'Grant ·';
+  return'Remote ·';
+}
+
+function scoreOpportunity(){
+  const v=document.getElementById('score-inp').value.trim();
+  if(!v){alert('Paste an opportunity description first.');return;}
+  const p=CTX+`Analyze this opportunity for Dr. Ehsan:\n\n"${v}"\n\nProvide:\n1. RELATABILITY SCORE (0-100%) — how well does his profile match the requirements?\n2. SUCCESS PROBABILITY (0-100%) — realistic chance of winning based on competition level and his fit\n3. KEY STRENGTHS — 3 specific aspects of his profile that make him competitive\n4. GAPS TO ADDRESS — 2-3 things he should strengthen or address in the application\n5. WINNING STRATEGY — step-by-step application approach, what to emphasize, what to downplay\n6. DRAFT OPENING — write the first compelling paragraph of his cover letter/application for this specific opportunity\n\nBe direct, honest, and practical.`;
+  openClaude(p);
+}
+
+// ═══════════════════════════════════════
+// TASKS
+// ═══════════════════════════════════════
+const DEF_TASKS=[
+  {text:'Prepare Unit 2 lecture package for BUITEMS Monday class',cat:'BUITEMS',pri:'high',done:false},
+  {text:'Draft MSCA Global PF research proposal (call open now)',cat:'Fellowship',pri:'high',done:false},
+  {text:'Contact Prof. James Davenport at Bath University re: MSCA/British Academy',cat:'Fellowship',pri:'high',done:false},
+  {text:'Find German academic host for Humboldt Fellowship (deadline Jul 15)',cat:'Fellowship',pri:'high',done:false},
+  {text:'Write next Ehsaas chapter — Virginia Tech friendship arc',cat:'Book',pri:'med',done:false},
+  {text:'Finalize Zhob institution partnership agreement',cat:'Business',pri:'med',done:false},
+  {text:'Submit PhD chapter draft to IIUI supervisor',cat:'PhD',pri:'med',done:false},
+];
+const PRI={high:{score:3,color:'#c0392b',bg:'#fdf0ee',label:'🔴 High'},med:{score:2,color:'#b06a00',bg:'#fff8ec',label:'🟡 Med'},low:{score:1,color:'#1e7a4a',bg:'#edf7f2',label:'🟢 Low'}};
+let tasks=JSON.parse(localStorage.getItem('ehsan_tasks_v4')||'null')||DEF_TASKS;
+function saveTasks(){try{localStorage.setItem('ehsan_tasks_v4',JSON.stringify(tasks));}catch(e){}}
+function renderTasks(){
+  const el=document.getElementById('task-list');
+  const sorted=[...tasks].sort((a,b)=>(a.done?1:0)-(b.done?1:0)||(PRI[b.pri||'med'].score)-(PRI[a.pri||'med'].score));
+  document.getElementById('pending-count').textContent=tasks.filter(t=>!t.done).length;
+  el.innerHTML=sorted.length?sorted.map(t=>{
+    const i=tasks.indexOf(t);const p=PRI[t.pri||'med'];
+    return`<div class="task-item">
+      <div class="tchk${t.done?' done':''}" onclick="toggleTask(${i})"></div>
+      <div style="flex:1;"><div class="t-text${t.done?' done':''}">${t.text}</div><span class="t-pill">${t.cat}</span></div>
+      <span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;background:${t.done?'var(--surface2)':p.bg};color:${t.done?'var(--text3)':p.color};border:1px solid ${t.done?'var(--border)':p.color+'55'};">${t.done?'Done':p.label}</span>
+      <button onclick="removeTask(${i})" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px;padding:3px 6px;">✕</button>
+    </div>`;
+  }).join(''):'<div style="color:var(--text3);font-size:13px;padding:10px 0;">No tasks. Add one below.</div>';
+}
+function toggleTask(i){tasks[i].done=!tasks[i].done;saveTasks();renderTasks();}
+function removeTask(i){tasks.splice(i,1);saveTasks();renderTasks();}
+function addTask(){const t=document.getElementById('new-task-inp').value.trim(),c=document.getElementById('new-cat').value,p=document.getElementById('new-pri').value;if(!t)return;tasks.unshift({text:t,cat:c,pri:p,done:false});saveTasks();renderTasks();document.getElementById('new-task-inp').value='';}
+renderTasks();
+
+// ═══════════════════════════════════════
+// EXPAND STEPS
+// ═══════════════════════════════════════
+function toggleSteps(id,btn){const el=document.getElementById('steps-'+id);const open=el.classList.contains('show');el.classList.toggle('show',!open);btn.innerHTML=(open?'▼':'▲')+' Step-by-step guide';}
+
+// ═══════════════════════════════════════
+// WRITING STUDIO
+// ═══════════════════════════════════════
+let wMode='ehsaas';
+const WMODES={
+  'ehsaas':{title:'✦ Ehsaas — Memoir Writing',desc:"Chan's voice. Emotionally rich, literary, human. Zero AI phrasing.",prompt:i=>CTX+`Write a deeply human, emotionally rich memoir passage for "Ehsaas" (protagonist: Chan). Request: ${i}. Literary, warm, natural. At least 350 words.`},
+  'phd-w':{title:'◉ PhD Academic Writing',desc:'Sophisticated humanized scholarly prose.',prompt:i=>CTX+`Write PhD-level academic prose on: ${i}. For microcredentials in Pakistan HE context. Scholarly but never robotic.`},
+  'seo':{title:'🔍 SEO / Blog Writing',desc:'Keyword-optimized with natural flow.',prompt:i=>CTX+`Write SEO-optimized content: ${i}. Natural keyword integration, engaging for human readers.`},
+  'fellowship':{title:'🌐 Fellowship / Grant',desc:'Elite, winning application prose.',prompt:i=>CTX+`Write an elite, humanized fellowship or grant application component for: ${i}. Draw on my full profile.`},
+  'linkedin':{title:'💼 LinkedIn / Professional',desc:'Warm, intellectual, genuine.',prompt:i=>CTX+`Write a professional yet warm LinkedIn message or post for: ${i}. Genuine, my voice.`},
+  'youtube':{title:'▶ YouTube Script',desc:'Urdu-friendly, searchable, engaging.',prompt:i=>CTX+`Write a YouTube script, title, or description for: ${i}. Urdu-friendly, searchable.`},
+  'copy':{title:'✎ Copywriting / Ad Copy',desc:'Sharp, persuasive, zero filler.',prompt:i=>CTX+`Write sharp, persuasive copywriting for: ${i}. Direct, compelling.`},
+  'poetry':{title:'✿ Urdu / Poetic Writing',desc:'Literary Urdu drawing on Chiraghe Zeest depth.',prompt:i=>CTX+`Write a literary poetic piece drawing on Urdu sensibility and Chiraghe Zeest for: ${i}.`},
+};
+function selMode(el){document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');wMode=el.getAttribute('data-mode');document.getElementById('wmode-title').textContent=WMODES[wMode].title;document.getElementById('wmode-desc').textContent=WMODES[wMode].desc;}
+function openWriting(){const v=document.getElementById('writ-inp').value.trim();if(!v){alert('Describe what you need written.');return;}openClaude(WMODES[wMode].prompt(v));}
+</script>
+</body>
+</html>
