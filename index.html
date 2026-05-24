@@ -1350,100 +1350,91 @@ body{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;background:var(--
 <script>
 // ── IMMEDIATE INIT — runs before anything else ──
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('Dr. Ehsan Assistant v6 - DOMContentLoaded fired');
+  console.log('Dr. Ehsan Assistant v7 loaded');
 
-  // STEP 1: Hide ALL panels first
+  // Hide all panels
   var allPanels = document.querySelectorAll('.panel');
   for(var p=0; p<allPanels.length; p++){
     allPanels[p].style.display = 'none';
     allPanels[p].classList.remove('active');
   }
 
-  // STEP 2: Show dashboard by default (or last visited)
+  // Show dashboard by default
   var lastTab = 'dashboard';
-  try { lastTab = localStorage.getItem('ehsan-last-tab') || 'dashboard'; } catch(e){}
+  try{ lastTab = localStorage.getItem('ehsan-last-tab') || 'dashboard'; }catch(e){}
   var startPanel = document.getElementById('panel-' + lastTab);
-  if(!startPanel){ lastTab = 'dashboard'; startPanel = document.getElementById('panel-dashboard'); }
-  if(startPanel){ startPanel.style.display = 'block'; startPanel.classList.add('active'); }
+  if(!startPanel){ lastTab='dashboard'; startPanel=document.getElementById('panel-dashboard'); }
+  if(startPanel){ startPanel.style.display='block'; startPanel.classList.add('active'); }
   var startNav = document.getElementById('nav-' + lastTab);
   if(startNav) startNav.classList.add('active');
 
-  // STEP 3: Wire ALL nav items with addEventListener (belt AND suspenders)
-  var navItems = document.querySelectorAll('.nav-item');
-  for(var i=0; i<navItems.length; i++){
-    (function(el){
-      var oc = el.getAttribute('onclick') || '';
-      var match = oc.match(/go\('([^']+)'\)/);
-      if(match){
-        var panelName = match[1];
+  // Wire nav items using their IDs - NO REGEX NEEDED
+  var navMap = ['dashboard','assistant','lecture','phd','calendar','tasks','opportunities','tracked','research','funding','writing','content'];
+  for(var n=0; n<navMap.length; n++){
+    (function(tabName){
+      var el = document.getElementById('nav-' + tabName);
+      if(el){
         el.addEventListener('click', function(e){
           e.preventDefault();
-          e.stopPropagation();
-          go(panelName);
+          go(tabName);
         });
       }
-    })(navItems[i]);
+    })(navMap[n]);
   }
 
-  // STEP 4: Wire all buttons that use go() 
-  var allBtns = document.querySelectorAll('[onclick]');
-  for(var b=0; b<allBtns.length; b++){
+  // Wire go() buttons inside panels
+  var goBtns = document.querySelectorAll('[onclick]');
+  for(var b=0; b<goBtns.length; b++){
     (function(el){
       var oc = el.getAttribute('onclick') || '';
-      if(oc.indexOf('go(') !== -1){
-        var match = oc.match(/go\('([^']+)'\)/);
-        if(match){
-          var pName = match[1];
-          el.addEventListener('click', function(e){
-            e.preventDefault();
-            go(pName);
-          });
+      if(oc.indexOf('go(') === 0 || oc.indexOf("go('") !== -1){
+        var s = oc.indexOf("'") + 1;
+        var e2 = oc.indexOf("'", s);
+        if(s > 0 && e2 > s){
+          var pName = oc.substring(s, e2);
+          if(navMap.indexOf(pName) !== -1){
+            el.addEventListener('click', function(ev){
+              ev.preventDefault();
+              go(pName);
+            });
+          }
         }
       }
-    })(allBtns[b]);
+    })(goBtns[b]);
   }
 
-  // STEP 5: Init components
-  if(typeof renderTasks === 'function') renderTasks();
-  if(typeof renderPubs === 'function') renderPubs();
-  if(typeof tick === 'function'){ // tick started in DOMContentLoaded }
-  if(typeof setStep === 'function') setStep(parseInt(localStorage.getItem('research-step')||'1'));
-  if(typeof updateSearchHint === 'function') updateSearchHint();
+  // Init components
+  try{ if(typeof renderTasks==='function') renderTasks(); }catch(e){}
+  try{ if(typeof renderPubs==='function') renderPubs(); }catch(e){}
+  try{ if(typeof tick==='function'){ tick(); setInterval(tick,30000); } }catch(e){}
+  try{ if(typeof setStep==='function') setStep(parseInt(localStorage.getItem('research-step')||'1')); }catch(e){}
+  try{ if(typeof updateSearchHint==='function') updateSearchHint(); }catch(e){}
+  try{ if(typeof autoLoadJournal==='function') autoLoadJournal(); }catch(e){}
 
-  // STEP 6: Calendar
-  try {
+  // Calendar auto-connect
+  try{
     var savedId = localStorage.getItem('gcal-client-id');
     if(savedId){
       var inp = document.getElementById('gclient-id');
       if(inp) inp.value = savedId;
-      setTimeout(function(){
-        if(typeof loadGoogleLibraries === 'function') loadGoogleLibraries(savedId);
-      }, 2500);
+      setTimeout(function(){ if(typeof loadGoogleLibraries==='function') loadGoogleLibraries(savedId); },2500);
     }
-  } catch(e){ console.log('Calendar init skipped:', e); }
+  }catch(e){}
 
-  // STEP 7: Daily notification
-  try {
-    var lastNotif = localStorage.getItem('ehsan-notif-date');
-    var todayStr = new Date().toDateString();
-    if(lastNotif !== todayStr){
-      localStorage.setItem('ehsan-notif-date', todayStr);
+  // Daily notification
+  try{
+    var lastN = localStorage.getItem('ehsan-notif-date');
+    var todayN = new Date().toDateString();
+    if(lastN !== todayN){
+      localStorage.setItem('ehsan-notif-date', todayN);
       setTimeout(function(){
-        if(typeof showNotif === 'function')
-          showNotif('Good day, Dr. Ehsan! Priority 1: BUITEMS Unit 2 lecture. Priority 2: MSCA fellowship proposal — call is open now.');
-      }, 2000);
+        if(typeof showNotif==='function')
+          showNotif('Good day, Dr. Ehsan! Priority 1: BUITEMS Unit 2 lecture. Priority 2: MSCA fellowship proposal.');
+      },2000);
     }
-  } catch(e){}
+  }catch(e){}
 
-  // STEP 8: Topbar briefing button
-  var briefBtn = document.getElementById('briefing-btn');
-  if(briefBtn){
-    briefBtn.addEventListener('click', function(){
-      if(typeof openClaude === 'function') openClaude(PROMPTS.dailyBriefing);
-    });
-  }
-
-  console.log('v6 init complete. Active tab:', lastTab);
+  console.log('v7 init complete. Tab:', lastTab);
 });
 
 
@@ -1597,7 +1588,7 @@ function go(name){
 // CLOCK
 // ═══════════════════════════════════════
 function tick(){const n=new Date();const s=n.toLocaleDateString('en-PK',{weekday:'short',month:'short',day:'numeric'})+' · '+n.toLocaleTimeString('en-PK',{hour:'2-digit',minute:'2-digit'});document.getElementById('clock').textContent=s;document.getElementById('clock-side').textContent=s;}
-// tick started in DOMContentLoaded
+
 
 // ═══════════════════════════════════════
 // NOTIFICATION
