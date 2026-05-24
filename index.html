@@ -1456,13 +1456,26 @@ const TABMETA = {
   content:{title:'Content Hub',sub:'Quetta YouTube · Lumora Cosmetics'},
 };
 function go(name){
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>{if(n.getAttribute('onclick')?.includes(`'${name}'`))n.classList.add('active');});
-  document.getElementById('panel-'+name).classList.add('active');
-  document.getElementById('tb-title').textContent=TABMETA[name].title;
-  document.getElementById('tb-sub').textContent=TABMETA[name].sub;
-  if(name==='calendar'&&gCalConnected)renderCalendar();
+  // Remove active from all nav items
+  var navItems = document.querySelectorAll('.nav-item');
+  for(var i=0;i<navItems.length;i++) navItems[i].classList.remove('active');
+  // Hide all panels
+  var panels = document.querySelectorAll('.panel');
+  for(var j=0;j<panels.length;j++) panels[j].classList.remove('active');
+  // Find and activate correct nav item
+  for(var k=0;k<navItems.length;k++){
+    var oc = navItems[k].getAttribute('onclick') || '';
+    if(oc.indexOf("'"+name+"'") !== -1) navItems[k].classList.add('active');
+  }
+  // Show correct panel
+  var panel = document.getElementById('panel-'+name);
+  if(panel) panel.classList.add('active');
+  // Update topbar
+  if(TABMETA[name]){
+    document.getElementById('tb-title').textContent = TABMETA[name].title;
+    document.getElementById('tb-sub').textContent = TABMETA[name].sub;
+  }
+  if(name==='calendar' && gCalConnected) renderCalendar();
 }
 
 // ═══════════════════════════════════════
@@ -1485,7 +1498,13 @@ window.addEventListener('load',()=>{
 // ═══════════════════════════════════════
 // OPEN IN CLAUDE
 // ═══════════════════════════════════════
-function openClaude(prompt){window.open('https://claude.ai/new?q='+encodeURIComponent(prompt),'_blank');}
+function openClaude(prompt){
+  try {
+    var url = 'https://claude.ai/new?q=' + encodeURIComponent(prompt);
+    var win = window.open(url, '_blank');
+    if(!win) { alert('Please allow popups for this site, then try again.'); }
+  } catch(e) { console.error('openClaude error:', e); }
+}
 function setAI(v){document.getElementById('ai-inp').value=v;}
 function openAICustom(){
   let v=document.getElementById('ai-inp').value.trim();if(!v){alert('Please type your request.');return;}
@@ -1926,7 +1945,13 @@ renderTasks();
 // ═══════════════════════════════════════
 // EXPAND STEPS
 // ═══════════════════════════════════════
-function toggleSteps(id,btn){const el=document.getElementById('steps-'+id);const open=el.classList.contains('show');el.classList.toggle('show',!open);btn.innerHTML=(open?'▼':'▲')+' Step-by-step guide';}
+function toggleSteps(id,btn){
+  var el = document.getElementById('steps-'+id);
+  if(!el) return;
+  var open = el.classList.contains('show');
+  if(open){ el.classList.remove('show'); btn.innerHTML='▼ Step-by-step guide'; }
+  else { el.classList.add('show'); btn.innerHTML='▲ Step-by-step guide'; }
+}
 
 // ═══════════════════════════════════════
 // WRITING STUDIO
@@ -1942,7 +1967,16 @@ const WMODES={
   'copy':{title:'✎ Copywriting / Ad Copy',desc:'Sharp, persuasive, zero filler.',prompt:i=>CTX+`Write sharp, persuasive copywriting for: ${i}. Direct, compelling.`},
   'poetry':{title:'✿ Urdu / Creative Writing',desc:'Urdu and English creative writing with literary depth.',prompt:i=>CTX+`Write a literary creative piece in Urdu or English for: ${i}. Natural voice, human depth, no AI phrasing.`},
 };
-function selMode(el){document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');wMode=el.getAttribute('data-mode');document.getElementById('wmode-title').textContent=WMODES[wMode].title;document.getElementById('wmode-desc').textContent=WMODES[wMode].desc;}
+function selMode(el){
+  var btns = document.querySelectorAll('.mode-btn');
+  for(var i=0;i<btns.length;i++) btns[i].classList.remove('active');
+  el.classList.add('active');
+  wMode = el.getAttribute('data-mode');
+  if(WMODES[wMode]){
+    document.getElementById('wmode-title').textContent = WMODES[wMode].title;
+    document.getElementById('wmode-desc').textContent = WMODES[wMode].desc;
+  }
+}
 function openWriting(){const v=document.getElementById('writ-inp').value.trim();if(!v){alert('Describe what you need written.');return;}openClaude(WMODES[wMode].prompt(v));}
 
 // ═══════════════════════════════════════
@@ -2609,14 +2643,14 @@ const MANUSCRIPTS = {
 
 function autoLoadJournal() {
   const sel = document.getElementById('journal-sel').value;
-  const bar = document.getElementById('journal-status-bar');
-  const qa = document.getElementById('quick-actions');
+  var bar = document.getElementById('journal-status-bar');
+  var qa = document.getElementById('quick-actions');
   if (!sel) { bar.style.display='none'; return; }
   const m = MANUSCRIPTS[sel];
   if (!m) return;
   bar.style.display = 'block';
   bar.innerHTML = `<strong>${m.name}</strong> &nbsp;·&nbsp; ${m.indexing} &nbsp;·&nbsp; <strong style="color:var(--green);">${m.fee}</strong> &nbsp;·&nbsp; Review: ${m.reviewTime} &nbsp;·&nbsp; Acceptance: ${m.acceptanceRate}`;
-  if(qa) qa.style.display = 'flex';
+  if(qa){ qa.style.display = 'flex'; }
 }
 
 function buildAutoPrompt(sel, action, draft) {
@@ -2733,11 +2767,14 @@ function showManuscriptGuide() { autoLoadJournal(); }
 // ═══════════════════════════════════════
 
 function getPaperInputs() {
-  const topic = (document.getElementById('paper-topic')||{}).value?.trim() || '';
-  const notes = (document.getElementById('paper-notes')||{}).value?.trim() || '';
-  const journalKey = (document.getElementById('paper-journal-target')||{}).value || 'none';
-  const m = journalKey !== 'none' ? MANUSCRIPTS[journalKey] : null;
-  return { topic, notes, journalKey, m };
+  var topicEl = document.getElementById('paper-topic');
+  var notesEl = document.getElementById('paper-notes');
+  var journalEl = document.getElementById('paper-journal-target');
+  var topic = topicEl ? topicEl.value.trim() : '';
+  var notes = notesEl ? notesEl.value.trim() : '';
+  var journalKey = journalEl ? journalEl.value : 'none';
+  var m = (journalKey && journalKey !== 'none') ? MANUSCRIPTS[journalKey] : null;
+  return { topic: topic, notes: notes, journalKey: journalKey, m: m };
 }
 
 function generateFullPaper() {
