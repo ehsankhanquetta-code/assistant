@@ -231,7 +231,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;background:var(--
   <div class="nav-item" onclick="go('assistant')"><span class="nav-icon">◈</span> AI Assistant</div>
   <div class="nav-section">Academic</div>
   <div class="nav-item" onclick="go('lecture')"><span class="nav-icon">📖</span> Lecture Prep <span class="nav-badge">!</span></div>
-  <div class="nav-item" onclick="go('phd')"><span class="nav-icon">◉</span> PhD Research</div>
+  <div class="nav-item" onclick="go('phd')"><span class="nav-icon">◉</span> My Research Hub</div>
   <div class="nav-section">Productivity</div>
   <div class="nav-item" onclick="go('calendar')"><span class="nav-icon">📅</span> Calendar <span id="cal-badge" class="nav-badge" style="display:none;">•</span></div>
   <div class="nav-item" onclick="go('tasks')"><span class="nav-icon">☑</span> Daily Tasks</div>
@@ -366,20 +366,302 @@ body{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;background:var(--
 
     <!-- ══ PHD ══ -->
     <div class="panel" id="panel-phd">
+
+      <div class="alert alert-blue"><span class="alert-icon">◉</span>
+        <div><strong>Dr. Ehsan's Post-PhD Research Hub.</strong> Your PhD is complete. This section is now your active research career workspace — publishing in microcredentials, building your academic profile, and preparing postdoc applications. Use the Research Engine tab for full paper building.</div>
+      </div>
+
+      <!-- ACADEMIC IDENTITY CARD -->
+      <div class="sec-label">Your research identity</div>
       <div class="g2">
-        <div class="card"><div class="card-title">Research Details</div><div style="font-size:13px;line-height:2;color:var(--text2);"><strong style="color:var(--text);">Topic:</strong> Microcredentials Integration in Pakistan HE<br><strong style="color:var(--text);">Institution:</strong> IIUI Islamabad<br><strong style="color:var(--text);">Prior:</strong> M.Phil. Educational Leadership, VU<br><strong style="color:var(--text);">Cert:</strong> TESOL, UMBC</div></div>
-        <div class="card"><div class="card-title">Quick Tools</div>
-          <span class="chip" onclick="openClaude(PROMPTS.litReview)">Lit review para</span>
-          <span class="chip" onclick="openClaude(PROMPTS.methodology)">Methodology ideas</span>
-          <span class="chip" onclick="openClaude(PROMPTS.abstract)">Draft abstract</span>
-          <span class="chip" onclick="openClaude(PROMPTS.sources)">Find sources</span>
-          <span class="chip" onclick="openClaude(PROMPTS.problemStmt)">Problem statement</span>
-          <span class="chip" onclick="openClaude(PROMPTS.postdocProposal)">Postdoc proposal</span>
+        <div class="card">
+          <div class="card-title">◉ Academic Profile</div>
+          <div style="font-size:13px;line-height:2.1;color:var(--text2);">
+            <strong style="color:var(--text);">Name:</strong> Dr. Muhammad Ehsan<br>
+            <strong style="color:var(--text);">PhD:</strong> Education, IIUI Islamabad — January 2026<br>
+            <strong style="color:var(--text);">Dissertation:</strong> Integration of microcredentials in degree programs in Pakistan's higher education system<br>
+            <strong style="color:var(--text);">M.Phil.:</strong> Educational Leadership & Management, VU Pakistan<br>
+            <strong style="color:var(--text);">Certificate:</strong> TESOL Methodology, UMBC<br>
+            <strong style="color:var(--text);">Current post:</strong> Teacher, Zhob Balochistan + Visiting Faculty, BUITEMS<br>
+            <strong style="color:var(--text);">Research area:</strong> Microcredentials, HE Policy, Teacher Education, EdTech
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">⚡ Quick Research Actions</div>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px;">
+            <button class="claude-btn claude-btn-sm" onclick="openClaude(PROMPTS.postdocProposal)" style="justify-content:flex-start;">✦ Draft postdoc research proposal</button>
+            <button class="claude-btn claude-btn-sm" onclick="openClaude(PROMPTS.litReview)" style="justify-content:flex-start;">✦ Write literature review paragraph</button>
+            <button class="claude-btn claude-btn-sm" onclick="openClaude(PROMPTS.abstract)" style="justify-content:flex-start;">✦ Draft paper abstract</button>
+            <button class="claude-btn claude-btn-sm" onclick="openClaude(PROMPTS.sources)" style="justify-content:flex-start;">✦ Find key microcredentials sources</button>
+            <button class="claude-btn claude-btn-sm" onclick="go('research')" style="justify-content:flex-start;">→ Open full Research Engine</button>
+          </div>
         </div>
       </div>
-      <div class="card"><div class="card-title">PhD Writing Assistant</div>
-        <textarea class="ta" id="phd-inp" placeholder="Describe what you need — lit review, methodology, conceptual framework, discussion section..."></textarea>
-        <div style="margin-top:10px;"><button class="claude-btn" onclick="openPhd()">✦ Open in Claude →</button></div>
+
+      <!-- MICROCREDENTIALS JOURNAL DIRECTORY -->
+      <div class="sec-label">Journals publishing microcredentials research — your field</div>
+
+      <!-- FREE JOURNALS ONLY -->
+      <div class="alert" style="background:linear-gradient(135deg,#edf7f2,#f5f0fb);border:1px solid var(--green-border);border-radius:var(--r);padding:14px 16px;display:flex;align-items:flex-start;gap:10px;margin-bottom:16px;font-size:13px;">
+        <span style="font-size:18px;flex-shrink:0;">💚</span>
+        <div><strong style="color:var(--green);">100% Free Publication Policy.</strong> <span style="color:var(--text2);">Every journal listed below charges <strong>zero APC, zero submission fee, zero processing fee</strong> — at all times, for all authors, regardless of country. No waiver applications, no financial forms, no surprises. Submit, get reviewed, get published. Free.</span></div>
+      </div>
+
+      <!-- TIER 1: FREE Q1/HIGH-IMPACT -->
+      <div class="sec-label">Tier 1 — Free, High-Impact, WOS/Scopus Indexed</div>
+      <div class="card" style="margin-bottom:12px;">
+        <div class="card-title" style="color:var(--gold);">🏆 Free Journals with Strong Impact & Citation Records</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:12px;">WOS / Scopus indexed · Zero fees · Peer-reviewed · Strong citation records · High credibility for postdoc applications</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+
+          <div style="border:1px solid var(--border);border-radius:var(--r2);padding:12px;border-left:4px solid var(--gold);">
+            <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;align-items:flex-start;">
+              <div><div style="font-size:13px;font-weight:700;">International Review of Research in Open and Distributed Learning (IRRODL)</div>
+              <div style="font-size:11px;color:var(--text2);">Athabasca University · WOS ESCI + Scopus Q1 · Completely Free</div></div>
+              <div style="display:flex;gap:5px;flex-wrap:wrap;"><span class="badge b-gold">Q1 Scopus</span><span class="badge b-green">Zero fee always</span></div>
+            </div>
+            <div style="font-size:12px;color:var(--text2);margin-top:6px;line-height:1.6;">One of the most respected free journals in education globally. No APC ever — institutional funding covers all costs. Covers open learning, digital credentials, distance education, and microcredentials directly. Strong citation record. Widely read by researchers in South Asia, Middle East, and globally. <a href="https://www.irrodl.org" target="_blank">→ Submit here</a></div>
+            <div style="margin-top:6px;background:var(--gold-bg);border-radius:var(--r2);padding:6px 10px;font-size:11px;color:var(--gold);font-weight:600;">Paper angle: Microcredentials as a mode of open and distributed learning in Pakistan — policy gaps and learner readiness.</div>
+          </div>
+
+          <div style="border:1px solid var(--border);border-radius:var(--r2);padding:12px;border-left:4px solid var(--gold);">
+            <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;align-items:flex-start;">
+              <div><div style="font-size:13px;font-weight:700;">Journal of Microcredentials</div>
+              <div style="font-size:11px;color:var(--text2);">Taylor & Francis · Scopus emerging · Free to publish</div></div>
+              <div style="display:flex;gap:5px;flex-wrap:wrap;"><span class="badge b-purple">Exact niche</span><span class="badge b-green">Zero fee</span></div>
+            </div>
+            <div style="font-size:12px;color:var(--text2);margin-top:6px;line-height:1.6;">Launched 2023 — dedicated entirely to microcredentials research. Currently free to publish as it builds its author base. This is your most direct niche journal and the one where your dissertation research fits most naturally. Submit here first before the journal grows and potentially introduces fees. <a href="https://www.tandfonline.com/journals/rmcr20" target="_blank">→ Submit here</a></div>
+            <div style="margin-top:6px;background:var(--purple-bg);border-radius:var(--r2);padding:6px 10px;font-size:11px;color:var(--purple);font-weight:600;">Paper angle: Integration of microcredentials in degree programmes in Pakistan — a thematic analysis of institutional and policy barriers.</div>
+          </div>
+
+          <div style="border:1px solid var(--border);border-radius:var(--r2);padding:12px;border-left:4px solid var(--gold);">
+            <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;align-items:flex-start;">
+              <div><div style="font-size:13px;font-weight:700;">Turkish Online Journal of Distance Education (TOJDE)</div>
+              <div style="font-size:11px;color:var(--text2);">Anadolu University, Turkey · WOS ESCI + Scopus · Completely Free</div></div>
+              <div style="display:flex;gap:5px;flex-wrap:wrap;"><span class="badge b-green">Zero fee always</span><span class="badge b-blue">4–8 weeks review</span></div>
+            </div>
+            <div style="font-size:12px;color:var(--text2);margin-top:6px;line-height:1.6;">Genuinely free — no fees of any kind. Covers distance education, open learning, digital credentials. Muslim-majority country context (Pakistan, Turkey, Gulf) is actively welcomed. Well-cited across South Asia and the Middle East. Has published Pakistan-focused research extensively. <a href="https://tojde.anadolu.edu.tr" target="_blank">→ Submit here</a></div>
+            <div style="margin-top:6px;background:var(--green-bg);border-radius:var(--r2);padding:6px 10px;font-size:11px;color:var(--green);font-weight:600;">Paper angle: Microcredentials as a pathway to lifelong learning in Pakistan — challenges and prospects. Conceptual-empirical blend using your dissertation literature.</div>
+          </div>
+
+          <div style="border:1px solid var(--border);border-radius:var(--r2);padding:12px;border-left:4px solid var(--gold);">
+            <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;align-items:flex-start;">
+              <div><div style="font-size:13px;font-weight:700;">International Journal of Emerging Technologies in Learning (iJET)</div>
+              <div style="font-size:11px;color:var(--text2);">Kassel University Press, Germany · WOS ESCI + Scopus · Completely Free</div></div>
+              <div style="display:flex;gap:5px;flex-wrap:wrap;"><span class="badge b-green">Zero fee always</span><span class="badge b-blue">6–10 weeks review</span></div>
+            </div>
+            <div style="font-size:12px;color:var(--text2);margin-top:6px;line-height:1.6;">No APC ever — published by a German university press as a public academic service. WOS and Scopus indexed. Covers EdTech, e-learning, digital credentials, and emerging technologies in education. Well-suited for your microcredentials + digital learning angle. <a href="https://online-journals.org/index.php/i-jet" target="_blank">→ Submit here</a></div>
+            <div style="margin-top:6px;background:var(--green-bg);border-radius:var(--r2);padding:6px 10px;font-size:11px;color:var(--green);font-weight:600;">Paper angle: Digital microcredential platforms in higher education — a comparative analysis of adoption models in developing countries.</div>
+          </div>
+
+          <div style="border:1px solid var(--border);border-radius:var(--r2);padding:12px;border-left:4px solid var(--gold);">
+            <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;align-items:flex-start;">
+              <div><div style="font-size:13px;font-weight:700;">Journal of University Teaching and Learning Practice (JUTLP)</div>
+              <div style="font-size:11px;color:var(--text2);">University of Wollongong · WOS ESCI + Scopus · Completely Free</div></div>
+              <div style="display:flex;gap:5px;flex-wrap:wrap;"><span class="badge b-green">Zero fee always</span><span class="badge b-blue">8–12 weeks review</span></div>
+            </div>
+            <div style="font-size:12px;color:var(--text2);margin-top:6px;line-height:1.6;">Australian university-published, fully free. Peer-reviewed research on HE teaching, curriculum, and learning design. Microcredentials as a teaching and curriculum innovation fits squarely here. Your BUITEMS visiting faculty experience adds practitioner authority. <a href="https://ro.uow.edu.au/jutlp/" target="_blank">→ Submit here</a></div>
+            <div style="margin-top:6px;background:var(--green-bg);border-radius:var(--r2);padding:6px 10px;font-size:11px;color:var(--green);font-weight:600;">Paper angle: Designing microcredential-integrated courses in teacher education programmes — a practical framework for developing country contexts.</div>
+          </div>
+
+          <div style="border:1px solid var(--border);border-radius:var(--r2);padding:12px;border-left:4px solid var(--gold);">
+            <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;align-items:flex-start;">
+              <div><div style="font-size:13px;font-weight:700;">Electronic Journal of e-Learning (EJEL)</div>
+              <div style="font-size:11px;color:var(--text2);">Academic Conferences International · WOS ESCI + Scopus · Completely Free</div></div>
+              <div style="display:flex;gap:5px;flex-wrap:wrap;"><span class="badge b-green">Zero fee always</span><span class="badge b-blue">6–10 weeks review</span></div>
+            </div>
+            <div style="font-size:12px;color:var(--text2);margin-top:6px;line-height:1.6;">Freely available e-learning research journal with no fees. Covers online and blended learning, digital credentials, and technology in education. Widely cited in developing country EdTech research. Accepts empirical and conceptual papers. <a href="https://www.ejel.org" target="_blank">→ Submit here</a></div>
+            <div style="margin-top:6px;background:var(--green-bg);border-radius:var(--r2);padding:6px 10px;font-size:11px;color:var(--green);font-weight:600;">Paper angle: Student awareness and acceptance of e-learning-based microcredentials in Pakistani higher education — a quantitative survey.</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- TIER 2: FREE WOS FAST-TRACK -->
+      <div class="sec-label">Tier 2 — Free WOS Journals, Fast Review, High Acceptance</div>
+      <div class="card" style="margin-bottom:12px;">
+        <div class="card-title" style="color:var(--green);">⚡ Free + Fast + WOS Indexed — Build Your Record Quickly</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:6px;">All free · WOS indexed · 35–50% acceptance · 4–10 week turnaround · Good for momentum and postdoc CV building</div>
+        <div style="background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--r2);padding:10px 12px;margin-bottom:14px;font-size:12px;color:var(--green);">
+          <strong>Strategy:</strong> Submit to Tier 1 for prestige. While it is under review (8–16 weeks), prepare and submit a Tier 2 paper. By the time Tier 1 responds, Tier 2 is already accepted or in revision. You always have momentum. A rejection from Tier 1 immediately moves to Tier 2. A paper never sits idle.
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+
+          <div style="border:1px solid var(--border);border-radius:var(--r2);padding:12px;border-left:4px solid var(--green);">
+            <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;align-items:flex-start;">
+              <div><div style="font-size:13px;font-weight:700;">Journal of Educators Online (JEO)</div>
+              <div style="font-size:11px;color:var(--text2);">University of South Alabama · WOS ESCI · Completely Free</div></div>
+              <div style="display:flex;gap:5px;flex-wrap:wrap;"><span class="badge b-green">~40% acceptance</span><span class="badge b-blue">6–8 weeks</span></div>
+            </div>
+            <div style="font-size:12px;color:var(--text2);margin-top:6px;line-height:1.6;">No submission or publication fees. Covers online education, digital learning, and HE. Microcredentials as online qualifications fits the scope. Indexed in WOS. Pakistan-focused research published here previously. <a href="https://www.thejeo.com" target="_blank">→ Submit here</a></div>
+            <div style="margin-top:6px;background:var(--green-bg);border-radius:var(--r2);padding:6px 10px;font-size:11px;color:var(--green);font-weight:600;">Paper angle: Instructor readiness for online microcredential delivery in Pakistani universities.</div>
+          </div>
+
+          <div style="border:1px solid var(--border);border-radius:var(--r2);padding:12px;border-left:4px solid var(--green);">
+            <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;align-items:flex-start;">
+              <div><div style="font-size:13px;font-weight:700;">Malaysian Online Journal of Educational Technology (MOJET)</div>
+              <div style="font-size:11px;color:var(--text2);">University of Malaya · WOS ESCI + Scopus · Completely Free</div></div>
+              <div style="display:flex;gap:5px;flex-wrap:wrap;"><span class="badge b-green">~42% acceptance</span><span class="badge b-blue">5–8 weeks</span></div>
+            </div>
+            <div style="font-size:12px;color:var(--text2);margin-top:6px;line-height:1.6;">Free to publish. Muslim-majority country context (Malaysia, Pakistan, Indonesia, Gulf) well-received. EdTech and digital learning in developing countries. Your Pakistan HE research would be a natural fit here — same regional development challenges. <a href="https://mojet.net" target="_blank">→ Submit here</a></div>
+            <div style="margin-top:6px;background:var(--green-bg);border-radius:var(--r2);padding:6px 10px;font-size:11px;color:var(--green);font-weight:600;">Paper angle: Technology infrastructure readiness for microcredential implementation in Pakistani universities — a needs analysis.</div>
+          </div>
+
+          <div style="border:1px solid var(--border);border-radius:var(--r2);padding:12px;border-left:4px solid var(--green);">
+            <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;align-items:flex-start;">
+              <div><div style="font-size:13px;font-weight:700;">Journal of Open, Flexible and Distance Learning (JOFDL)</div>
+              <div style="font-size:11px;color:var(--text2);">Distance Learning Association NZ · WOS ESCI · Completely Free</div></div>
+              <div style="display:flex;gap:5px;flex-wrap:wrap;"><span class="badge b-green">~38% acceptance</span><span class="badge b-blue">6–10 weeks</span></div>
+            </div>
+            <div style="font-size:12px;color:var(--text2);margin-top:6px;line-height:1.6;">Completely free. Covers open, flexible, and distance learning — all three intersect with microcredentials. Pakistan distance education context (AIOU, Virtual University) connects well. Smaller journal but WOS indexed and well-regarded in its niche. <a href="https://www.jofdl.nz" target="_blank">→ Submit here</a></div>
+            <div style="margin-top:6px;background:var(--green-bg);border-radius:var(--r2);padding:6px 10px;font-size:11px;color:var(--green);font-weight:600;">Paper angle: Microcredentials and flexible learning pathways — implications for open universities in Pakistan.</div>
+          </div>
+
+          <div style="border:1px solid var(--border);border-radius:var(--r2);padding:12px;border-left:4px solid var(--green);">
+            <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;align-items:flex-start;">
+              <div><div style="font-size:13px;font-weight:700;">International Journal of Technology in Education (IJTE)</div>
+              <div style="font-size:11px;color:var(--text2);">ISTES Organization · WOS ESCI + Scopus · Completely Free</div></div>
+              <div style="display:flex;gap:5px;flex-wrap:wrap;"><span class="badge b-green">~44% acceptance</span><span class="badge b-blue">4–8 weeks</span></div>
+            </div>
+            <div style="font-size:12px;color:var(--text2);margin-top:6px;line-height:1.6;">No fees at all. EdTech focused, WOS and Scopus indexed. Frequently publishes developing country research. Fast and fair review process. Good citation growth trajectory. <a href="https://www.ijte.net" target="_blank">→ Submit here</a></div>
+            <div style="margin-top:6px;background:var(--green-bg);border-radius:var(--r2);padding:6px 10px;font-size:11px;color:var(--green);font-weight:600;">Paper angle: EdTech adoption and microcredential delivery in resource-limited higher education settings — evidence from Pakistan.</div>
+          </div>
+
+          <div style="border:1px solid var(--border);border-radius:var(--r2);padding:12px;border-left:4px solid var(--green);">
+            <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;align-items:flex-start;">
+              <div><div style="font-size:13px;font-weight:700;">Pakistan Journal of Distance and Online Learning (PJDOL)</div>
+              <div style="font-size:11px;color:var(--text2);">Allama Iqbal Open University · HEC Recognized · Completely Free</div></div>
+              <div style="display:flex;gap:5px;flex-wrap:wrap;"><span class="badge b-green">~45% acceptance</span><span class="badge b-blue">6–10 weeks</span></div>
+            </div>
+            <div style="font-size:12px;color:var(--text2);margin-top:6px;line-height:1.6;">Pakistan-based, HEC recognized, completely free. Covers distance education, open learning, and digital education in Pakistan. Your research context is the exact scope of this journal — no one knows Pakistan's HE distance education challenges better than you. Strong platform for Pakistan-specific findings before expanding internationally. <a href="https://pjdol.aiou.edu.pk" target="_blank">→ Submit here</a></div>
+            <div style="margin-top:6px;background:var(--green-bg);border-radius:var(--r2);padding:6px 10px;font-size:11px;color:var(--green);font-weight:600;">Paper angle: Distance learning infrastructure and microcredential readiness at Pakistani open universities — a mixed-methods study.</div>
+          </div>
+
+          <div style="border:1px solid var(--border);border-radius:var(--r2);padding:12px;border-left:4px solid var(--green);">
+            <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;align-items:flex-start;">
+              <div><div style="font-size:13px;font-weight:700;">Bulletin of Education and Research (BER)</div>
+              <div style="font-size:11px;color:var(--text2);">Institute of Education & Research, Punjab University · HEC W · Completely Free</div></div>
+              <div style="display:flex;gap:5px;flex-wrap:wrap;"><span class="badge b-green">~40% acceptance</span><span class="badge b-blue">6–12 weeks</span></div>
+            </div>
+            <div style="font-size:12px;color:var(--text2);margin-top:6px;line-height:1.6;">HEC recognized, completely free, widely read in Pakistan academic circles. Covers all aspects of education including HE policy, curriculum, teacher education. A publication here carries weight for Pakistani HEC recognition and local career advancement. <a href="https://www.ber.org.pk" target="_blank">→ Submit here</a></div>
+            <div style="margin-top:6px;background:var(--green-bg);border-radius:var(--r2);padding:6px 10px;font-size:11px;color:var(--green);font-weight:600;">Paper angle: HEC policy on microcredentials — a critical analysis of implementation frameworks in Pakistani public universities.</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- FREE SUBSCRIPTION JOURNALS -->
+      <div class="sec-label">Tier 3 — Traditional Subscription Journals (Free to Submit, Free to Publish)</div>
+      <div class="card" style="margin-bottom:12px;">
+        <div class="card-title" style="color:var(--accent);">📚 Subscription Journals — Zero Author Fee, High Prestige</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:6px;">Authors pay nothing · Readers access via library subscriptions · Highest WOS/Scopus rankings · Competitive but most prestigious for postdoc CV</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+
+          <div style="border:1px solid var(--border);border-radius:var(--r2);padding:12px;border-left:4px solid var(--accent);">
+            <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;align-items:flex-start;">
+              <div><div style="font-size:13px;font-weight:700;">Studies in Higher Education</div>
+              <div style="font-size:11px;color:var(--text2);">Taylor & Francis · WOS SSCI + Scopus Q1 · IF: 5.1 · Free to authors</div></div>
+              <div style="display:flex;gap:5px;flex-wrap:wrap;"><span class="badge b-gold">Q1 · IF 5.1</span><span class="badge b-green">Zero author fee</span></div>
+            </div>
+            <div style="font-size:12px;color:var(--text2);margin-top:6px;line-height:1.6;">Authors pay nothing — the journal operates on library subscription revenue. One of the most respected HE policy journals globally. Regularly publishes developing country research. Your microcredentials + Pakistan HE policy angle is publishable here — but needs strong theoretical framing. <a href="https://www.tandfonline.com/journals/cshe20" target="_blank">→ Submit here</a></div>
+            <div style="margin-top:6px;background:var(--gold-bg);border-radius:var(--r2);padding:6px 10px;font-size:11px;color:var(--gold);font-weight:600;">Paper angle: Microcredential policy adoption in Pakistan's higher education — institutional theory perspective. Must be rigorous and theoretically grounded.</div>
+          </div>
+
+          <div style="border:1px solid var(--border);border-radius:var(--r2);padding:12px;border-left:4px solid var(--accent);">
+            <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;align-items:flex-start;">
+              <div><div style="font-size:13px;font-weight:700;">Higher Education</div>
+              <div style="font-size:11px;color:var(--text2);">Springer · WOS SSCI + Scopus Q1 · IF: 5.4 · Free to authors</div></div>
+              <div style="display:flex;gap:5px;flex-wrap:wrap;"><span class="badge b-gold">Q1 · IF 5.4</span><span class="badge b-green">Zero author fee</span></div>
+            </div>
+            <div style="font-size:12px;color:var(--text2);margin-top:6px;line-height:1.6;">No author fee. High IF, high prestige. Comparative and international HE research. Pakistan-focused research on HE transformation is accepted here — but needs solid methodology and global theoretical positioning. <a href="https://link.springer.com/journal/10734" target="_blank">→ Submit here</a></div>
+            <div style="margin-top:6px;background:var(--gold-bg);border-radius:var(--r2);padding:6px 10px;font-size:11px;color:var(--gold);font-weight:600;">Paper angle: Credentialing in transition — how South Asian universities are responding to the microcredentials movement. Comparative angle strengthens the submission.</div>
+          </div>
+
+          <div style="border:1px solid var(--border);border-radius:var(--r2);padding:12px;border-left:4px solid var(--accent);">
+            <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;align-items:flex-start;">
+              <div><div style="font-size:13px;font-weight:700;">Teaching and Teacher Education</div>
+              <div style="font-size:11px;color:var(--text2);">Elsevier · WOS SSCI + Scopus Q1 · IF: 4.5 · Free to authors</div></div>
+              <div style="display:flex;gap:5px;flex-wrap:wrap;"><span class="badge b-gold">Q1 · IF 4.5</span><span class="badge b-green">Zero author fee</span></div>
+            </div>
+            <div style="font-size:12px;color:var(--text2);margin-top:6px;line-height:1.6;">No author fee. Covers teacher education, professional development, and curriculum. Your BUITEMS teaching + microcredentials dissertation gives you direct practitioner-researcher authority here. <a href="https://www.journals.elsevier.com/teaching-and-teacher-education" target="_blank">→ Submit here</a></div>
+            <div style="margin-top:6px;background:var(--gold-bg);border-radius:var(--r2);padding:6px 10px;font-size:11px;color:var(--gold);font-weight:600;">Paper angle: Microcredentials in teacher professional development — perceptions of teacher educators in Pakistani universities.</div>
+          </div>
+
+          <div style="border:1px solid var(--border);border-radius:var(--r2);padding:12px;border-left:4px solid var(--accent);">
+            <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;align-items:flex-start;">
+              <div><div style="font-size:13px;font-weight:700;">Compare: A Journal of Comparative and International Education</div>
+              <div style="font-size:11px;color:var(--text2);">Taylor & Francis · WOS SSCI + Scopus Q2 · Free to authors</div></div>
+              <div style="display:flex;gap:5px;flex-wrap:wrap;"><span class="badge b-blue">Q2</span><span class="badge b-green">Zero author fee</span></div>
+            </div>
+            <div style="font-size:12px;color:var(--text2);margin-top:6px;line-height:1.6;">No author fees. Comparative and international education focus. A paper comparing microcredential policies across two or three developing or Muslim-majority countries — Pakistan, Malaysia, Turkey — would be strong here. <a href="https://www.tandfonline.com/journals/ccom20" target="_blank">→ Submit here</a></div>
+            <div style="margin-top:6px;background:var(--accent-bg);border-radius:var(--r2);padding:6px 10px;font-size:11px;color:var(--accent);font-weight:600;">Paper angle: Comparative microcredential policy frameworks in South and Southeast Asia — lessons for Pakistan.</div>
+          </div>
+
+          <div style="border:1px solid var(--border);border-radius:var(--r2);padding:12px;border-left:4px solid var(--accent);">
+            <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;align-items:flex-start;">
+              <div><div style="font-size:13px;font-weight:700;">Journal of Further and Higher Education</div>
+              <div style="font-size:11px;color:var(--text2);">Taylor & Francis · WOS SSCI + Scopus Q2 · Free to authors</div></div>
+              <div style="display:flex;gap:5px;flex-wrap:wrap;"><span class="badge b-blue">Q2</span><span class="badge b-green">Zero author fee</span></div>
+            </div>
+            <div style="font-size:12px;color:var(--text2);margin-top:6px;line-height:1.6;">No author fees. Covers curriculum, policy, student experience and credential design in HE. Microcredentials as short-course qualifications in degree systems fits this scope. More accessible acceptance rate than Q1 Taylor & Francis titles. <a href="https://www.tandfonline.com/journals/cjfh20" target="_blank">→ Submit here</a></div>
+            <div style="margin-top:6px;background:var(--accent-bg);border-radius:var(--r2);padding:6px 10px;font-size:11px;color:var(--accent);font-weight:600;">Paper angle: Stackable microcredentials in degree programmes — student and faculty perspectives in a developing country context.</div>
+          </div>
+
+          <div style="border:1px solid var(--border);border-radius:var(--r2);padding:12px;border-left:4px solid var(--accent);">
+            <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;align-items:flex-start;">
+              <div><div style="font-size:13px;font-weight:700;">Asia Pacific Education Review</div>
+              <div style="font-size:11px;color:var(--text2);">Springer · WOS SSCI + Scopus Q2 · Free to authors</div></div>
+              <div style="display:flex;gap:5px;flex-wrap:wrap;"><span class="badge b-blue">Q2</span><span class="badge b-green">Zero author fee</span></div>
+            </div>
+            <div style="font-size:12px;color:var(--text2);margin-top:6px;line-height:1.6;">No author fees. Specifically covers education reform and policy in the Asia-Pacific including South Asia. Pakistan-focused research is strongly welcomed here. Your geographical context is not a limitation — it is the paper's strength. <a href="https://link.springer.com/journal/12564" target="_blank">→ Submit here</a></div>
+            <div style="margin-top:6px;background:var(--accent-bg);border-radius:var(--r2);padding:6px 10px;font-size:11px;color:var(--accent);font-weight:600;">Paper angle: Higher education reform and microcredential readiness in South Asia — a Pakistan case study.</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ANNUAL PUBLICATION CALENDAR -->
+      <div class="sec-label">12-Month Free Publication Calendar — No Fees, No Gaps</div>
+      <div class="card" style="margin-bottom:12px;">
+        <div class="card-title" style="color:var(--accent);">📅 Your Annual Publishing Plan — All Free Journals</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:12px;">One paper submitted every 5–6 weeks. Tier 1 and Tier 2 alternating. Always 2 papers active simultaneously. Zero fees throughout.</div>
+        <div style="overflow-x:auto;">
+          <table style="width:100%;border-collapse:collapse;font-size:12px;">
+            <thead>
+              <tr style="background:var(--surface2);">
+                <th style="text-align:left;padding:8px 10px;border:1px solid var(--border);font-weight:700;min-width:110px;">Month</th>
+                <th style="text-align:left;padding:8px 10px;border:1px solid var(--border);font-weight:700;">Action</th>
+                <th style="text-align:left;padding:8px 10px;border:1px solid var(--border);font-weight:700;min-width:160px;">Target journal</th>
+                <th style="text-align:left;padding:8px 10px;border:1px solid var(--border);font-weight:700;">Fee</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td style="padding:7px 10px;border:1px solid var(--border);font-weight:600;">May–Jun 2026</td><td style="padding:7px 10px;border:1px solid var(--border);">Write &amp; submit Paper 1 — dissertation-derived, fastest to write</td><td style="padding:7px 10px;border:1px solid var(--border);"><span class="badge b-purple" style="font-size:10px;">Journal of Microcredentials</span></td><td style="padding:7px 10px;border:1px solid var(--border);"><span class="badge b-green" style="font-size:10px;">Free</span></td></tr>
+              <tr style="background:var(--bg3);"><td style="padding:7px 10px;border:1px solid var(--border);font-weight:600;">Jun–Jul 2026</td><td style="padding:7px 10px;border:1px solid var(--border);">Write &amp; submit Paper 2 — policy paper, theoretically framed</td><td style="padding:7px 10px;border:1px solid var(--border);"><span class="badge b-gold" style="font-size:10px;">Studies in Higher Education</span></td><td style="padding:7px 10px;border:1px solid var(--border);"><span class="badge b-green" style="font-size:10px;">Free</span></td></tr>
+              <tr><td style="padding:7px 10px;border:1px solid var(--border);font-weight:600;">Jul–Aug 2026</td><td style="padding:7px 10px;border:1px solid var(--border);">Paper 1 decision likely. Write Paper 3 — EdTech angle</td><td style="padding:7px 10px;border:1px solid var(--border);"><span class="badge b-green" style="font-size:10px;">iJET</span></td><td style="padding:7px 10px;border:1px solid var(--border);"><span class="badge b-green" style="font-size:10px;">Free</span></td></tr>
+              <tr style="background:var(--bg3);"><td style="padding:7px 10px;border:1px solid var(--border);font-weight:600;">Aug–Sep 2026</td><td style="padding:7px 10px;border:1px solid var(--border);">Write Paper 4 — open learning angle</td><td style="padding:7px 10px;border:1px solid var(--border);"><span class="badge b-gold" style="font-size:10px;">IRRODL (Q1)</span></td><td style="padding:7px 10px;border:1px solid var(--border);"><span class="badge b-green" style="font-size:10px;">Free</span></td></tr>
+              <tr><td style="padding:7px 10px;border:1px solid var(--border);font-weight:600;">Sep–Oct 2026</td><td style="padding:7px 10px;border:1px solid var(--border);">Write Paper 5 — teacher education angle</td><td style="padding:7px 10px;border:1px solid var(--border);"><span class="badge b-blue" style="font-size:10px;">TOJDE</span></td><td style="padding:7px 10px;border:1px solid var(--border);"><span class="badge b-green" style="font-size:10px;">Free</span></td></tr>
+              <tr style="background:var(--bg3);"><td style="padding:7px 10px;border:1px solid var(--border);font-weight:600;">Oct–Nov 2026</td><td style="padding:7px 10px;border:1px solid var(--border);">Write Paper 6 — Pakistan policy, strong methodology</td><td style="padding:7px 10px;border:1px solid var(--border);"><span class="badge b-gold" style="font-size:10px;">Higher Education (Q1)</span></td><td style="padding:7px 10px;border:1px solid var(--border);"><span class="badge b-green" style="font-size:10px;">Free</span></td></tr>
+              <tr><td style="padding:7px 10px;border:1px solid var(--border);font-weight:600;">Nov–Dec 2026</td><td style="padding:7px 10px;border:1px solid var(--border);">Write Paper 7 — Balochistan context, practitioner angle</td><td style="padding:7px 10px;border:1px solid var(--border);"><span class="badge b-blue" style="font-size:10px;">BER / PJDOL</span></td><td style="padding:7px 10px;border:1px solid var(--border);"><span class="badge b-green" style="font-size:10px;">Free</span></td></tr>
+              <tr style="background:var(--bg3);"><td style="padding:7px 10px;border:1px solid var(--border);font-weight:600;">Jan–Feb 2027</td><td style="padding:7px 10px;border:1px solid var(--border);">Write Paper 8 — comparative South Asia angle</td><td style="padding:7px 10px;border:1px solid var(--border);"><span class="badge b-gold" style="font-size:10px;">Teaching & Teacher Ed (Q1)</span></td><td style="padding:7px 10px;border:1px solid var(--border);"><span class="badge b-green" style="font-size:10px;">Free</span></td></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="margin-top:12px;padding:12px;background:var(--accent-bg);border:1px solid var(--accent-border);border-radius:var(--r2);font-size:12px;color:var(--text2);line-height:1.8;">
+          <strong style="color:var(--accent);">The one rule that protects your pipeline:</strong> The moment a journal sends a rejection, redirect that paper to the next journal on the list within 48 hours. Do not revise extensively before redirecting — read the reviewer comments, make targeted improvements, resubmit. A paper that sits for 3 weeks after rejection is a wasted 3 weeks. Keep the clock running.
+        </div>
+      </div>
+
+      <!-- RESEARCH WRITING TOOL -->
+      <div class="sec-label">Research writing assistant</div>
+      <div class="card">
+        <div class="card-title">✍ Post-PhD Research Writing</div>
+        <div class="card-sub" style="margin-bottom:10px;">Describe what you need — a journal paper section, a postdoc proposal paragraph, a conference abstract, a response to reviewers, or a research argument you want to develop.</div>
+        <textarea class="ta" id="phd-inp" placeholder="E.g. Write a discussion paragraph connecting my dissertation findings on microcredentials to global HE policy debates&#10;&#10;Or: Draft a 300-word conference abstract on institutional barriers to microcredential adoption in Pakistan&#10;&#10;Or: Write a response to reviewer comment asking me to strengthen my theoretical framework..."></textarea>
+        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="claude-btn" onclick="openPhd()">✦ Open in Claude →</button>
+          <button class="btn btn-ghost btn-sm" onclick="go('research')">→ Full paper builder</button>
+        </div>
       </div>
     </div>
 
@@ -646,7 +928,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;background:var(--
     <div class="panel" id="panel-writing">
       <div class="mode-grid">
         <div class="mode-btn active" data-mode="career" onclick="selMode(this)"><span class="mode-icon">🎯</span>Career/Jobs</div>
-        <div class="mode-btn" data-mode="phd-w" onclick="selMode(this)"><span class="mode-icon">◉</span>PhD Writing</div>
+        <div class="mode-btn" data-mode="phd-w" onclick="selMode(this)"><span class="mode-icon">◉</span>Research</div>
         <div class="mode-btn" data-mode="seo" onclick="selMode(this)"><span class="mode-icon">🔍</span>SEO/Blog</div>
         <div class="mode-btn" data-mode="fellowship" onclick="selMode(this)"><span class="mode-icon">🌐</span>Fellowship</div>
         <div class="mode-btn" data-mode="linkedin" onclick="selMode(this)"><span class="mode-icon">💼</span>LinkedIn</div>
@@ -733,22 +1015,64 @@ body{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;background:var(--
       </div>
 
       <!-- PAPER BUILDER -->
-      <div class="sec-label">Steps 2–7 — Paper builder</div>
-      <div class="card">
-        <div class="card-title">✍ Section-by-section paper builder</div>
-        <div class="card-sub" style="margin-bottom:12px;">Paste your chosen topic or title below, select the section you need, and generate a complete, Q1/Q2-ready draft. Every section is written in your voice — no AI phrasing, no generic academic filler.</div>
-        <div style="margin-bottom:10px;"><label class="form-label">Paper title or topic</label>
-          <input class="inp" id="paper-topic" placeholder="E.g. Institutional readiness for microcredential integration in Pakistani universities: a mixed-methods study"/></div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
-          <button class="btn btn-sm btn-primary" onclick="buildSection('researchOutline')">📋 Full outline</button>
-          <button class="btn btn-sm" onclick="buildSection('researchIntro')">1. Introduction</button>
-          <button class="btn btn-sm" onclick="buildSection('researchLitReview')">2. Literature Review</button>
-          <button class="btn btn-sm" onclick="buildSection('researchMethodology')">3. Methodology</button>
-          <button class="btn btn-sm" onclick="buildSection('researchDraft')">4. Results/Discussion</button>
-          <button class="btn btn-sm" onclick="buildSection('researchAbstract')">5. Abstract</button>
-          <button class="btn btn-sm btn-ghost" onclick="buildSection('plagiarismCheck')">🔍 AI/Plagiarism check</button>
+      <div class="sec-label">Full paper generator — provide topic and notes, system writes everything</div>
+
+      <!-- FULL AUTO PAPER GENERATOR -->
+      <div class="card" style="border:2px solid var(--accent);margin-bottom:14px;">
+        <div class="card-title" style="color:var(--accent);">🤖 Generate Complete Paper — You Provide Topic + Notes Only</div>
+        <div class="card-sub" style="margin-bottom:14px;">You do not write the paper. You provide: (1) a topic or title, (2) a few bullet points of what you found or want to argue, (3) your target journal. The system generates the complete, submission-ready manuscript — Introduction, Literature Review, Methodology, Results, Discussion, Conclusion, Abstract, and References — all in your voice, all meeting the journal's exact requirements.</div>
+
+        <div style="margin-bottom:10px;">
+          <label class="form-label">Paper topic or working title</label>
+          <input class="inp" id="paper-topic" placeholder="E.g. Institutional readiness for microcredential integration in Pakistani universities" style="margin-bottom:8px;"/>
         </div>
-        <div style="font-size:12px;color:var(--text3);">Each section opens in Claude with your full profile context. Copy the output, paste it back here to check for AI patterns, then refine until it reads as purely yours.</div>
+
+        <div style="margin-bottom:10px;">
+          <label class="form-label">Your research notes, findings, or bullet points <span style="font-weight:400;color:var(--text3);">(can be rough — even a few sentences)</span></label>
+          <textarea class="ta" id="paper-notes" style="min-height:100px;" placeholder="Write anything you know about this topic — even roughly. Examples:&#10;&#10;• I surveyed 120 university faculty at BUITEMS and 3 other universities in Balochistan&#10;• Most faculty (78%) had never heard the term microcredential&#10;• University administrators said HEC has no clear policy framework yet&#10;• Students showed more interest than faculty&#10;• Main barriers: lack of awareness, no institutional policy, no technical infrastructure&#10;&#10;Or paste notes from your dissertation. Or describe what you want the paper to argue.&#10;The rougher the better — the system will structure and write everything."></textarea>
+        </div>
+
+        <div style="margin-bottom:14px;">
+          <label class="form-label">Target journal <span style="font-weight:400;color:var(--text3);">(optional — applies manuscript rules automatically)</span></label>
+          <select class="sel" id="paper-journal-target">
+            <option value="none">No specific journal — write for general Q1/Q2 standard</option>
+            <option value="irrodl">IRRODL</option>
+            <option value="jmicro">Journal of Microcredentials</option>
+            <option value="tojde">TOJDE</option>
+            <option value="ijet">iJET</option>
+            <option value="jutlp">JUTLP</option>
+            <option value="ejel">EJEL</option>
+            <option value="jeo">Journal of Educators Online</option>
+            <option value="mojet">MOJET</option>
+            <option value="jofdl">JOFDL</option>
+            <option value="ijte">IJTE</option>
+            <option value="pjdol">PJDOL</option>
+            <option value="ber">BER</option>
+            <option value="she">Studies in Higher Education</option>
+            <option value="he">Higher Education (Springer)</option>
+            <option value="tte">Teaching and Teacher Education</option>
+            <option value="compare">Compare</option>
+            <option value="jfhe">Journal of Further and Higher Education</option>
+            <option value="aper">Asia Pacific Education Review</option>
+          </select>
+        </div>
+
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="claude-btn" style="flex:1;justify-content:center;padding:12px;font-size:14px;" onclick="generateFullPaper()">
+            🤖 Generate complete paper now
+          </button>
+        </div>
+
+        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-sm btn-ghost" onclick="generateSection('outline')">📋 Outline first</button>
+          <button class="btn btn-sm btn-ghost" onclick="generateSection('intro')">Intro only</button>
+          <button class="btn btn-sm btn-ghost" onclick="generateSection('lit')">Lit review only</button>
+          <button class="btn btn-sm btn-ghost" onclick="generateSection('method')">Methodology only</button>
+          <button class="btn btn-sm btn-ghost" onclick="generateSection('results')">Results/Discussion</button>
+          <button class="btn btn-sm btn-ghost" onclick="generateSection('abstract')">Abstract only</button>
+          <button class="btn btn-sm btn-ghost" onclick="generateSection('aicheck')">🔍 AI/plagiarism check</button>
+        </div>
+        <div style="margin-top:8px;font-size:11px;color:var(--text3);">Each button generates that specific section from your notes above. Use section buttons to build the paper piece by piece if you prefer. Use the big button to generate everything at once.</div>
       </div>
 
       <!-- JOURNAL TARGETS -->
@@ -776,6 +1100,128 @@ body{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;background:var(--
             <div>• <strong>Compare: A Journal of Comparative Education</strong></div>
             <div>• <strong>Educational Research for Policy and Practice</strong></div>
             <div>• <strong>Journal of Education for Teaching</strong></div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- AUTOMATED MANUSCRIPT SYSTEM -->
+      <div class="sec-label">📋 Automated Manuscript Preparation System</div>
+
+      <div class="alert alert-blue" style="margin-bottom:14px;">
+        <span class="alert-icon">🤖</span>
+        <div><strong>This system works for you, not the other way around.</strong> Select a journal and paste your draft. The system automatically applies all manuscript rules — structure, word count, referencing, formatting, checklist compliance, and AI-pattern removal — without you reading a single guideline.</div>
+      </div>
+
+      <!-- ONE ACTION CARD -->
+      <div class="card" style="margin-bottom:14px;">
+        <div class="card-title">📄 Manuscript Preparation — One Step</div>
+        <div class="card-sub" style="margin-bottom:14px;">Select your target journal. Paste your draft. Click one button. The system does everything else — it knows every rule for every journal and applies them automatically.</div>
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;">
+          <div style="flex:2;min-width:220px;">
+            <label class="form-label">Target journal</label>
+            <select class="sel" id="journal-sel" onchange="autoLoadJournal()">
+              <option value="">-- Select your journal --</option>
+              <optgroup label="Tier 1 — Free, High-Impact">
+                <option value="irrodl">IRRODL</option>
+                <option value="jmicro">Journal of Microcredentials</option>
+                <option value="tojde">TOJDE</option>
+                <option value="ijet">iJET</option>
+                <option value="jutlp">JUTLP</option>
+                <option value="ejel">EJEL</option>
+              </optgroup>
+              <optgroup label="Tier 2 — Free WOS Fast-Track">
+                <option value="jeo">Journal of Educators Online (JEO)</option>
+                <option value="mojet">MOJET</option>
+                <option value="jofdl">JOFDL</option>
+                <option value="ijte">IJTE</option>
+                <option value="pjdol">PJDOL</option>
+                <option value="ber">BER</option>
+              </optgroup>
+              <optgroup label="Tier 3 — Subscription, Free to Authors">
+                <option value="she">Studies in Higher Education</option>
+                <option value="he">Higher Education (Springer)</option>
+                <option value="tte">Teaching and Teacher Education</option>
+                <option value="compare">Compare</option>
+                <option value="jfhe">Journal of Further and Higher Education</option>
+                <option value="aper">Asia Pacific Education Review</option>
+              </optgroup>
+            </select>
+          </div>
+          <div style="flex:1;min-width:130px;">
+            <label class="form-label">What do you need?</label>
+            <select class="sel" id="ms-action">
+              <option value="full">Full paper preparation</option>
+              <option value="abstract">Abstract only</option>
+              <option value="intro">Introduction only</option>
+              <option value="litreview">Literature review only</option>
+              <option value="method">Methodology only</option>
+              <option value="discussion">Discussion/Results only</option>
+              <option value="conclusion">Conclusion only</option>
+              <option value="check">Compliance audit only</option>
+              <option value="cover">Cover letter for submission</option>
+              <option value="response">Response to reviewers</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Auto status bar -->
+        <div id="journal-status-bar" style="display:none;background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--r2);padding:10px 14px;margin-bottom:12px;font-size:12px;color:var(--green);"></div>
+
+        <div style="margin-bottom:12px;">
+          <label class="form-label">Paste your draft here</label>
+          <textarea class="ta" id="manuscript-inp" style="min-height:140px;" placeholder="Paste your paper draft, rough notes, or any section here.&#10;&#10;Even rough, unformatted text works — the system will restructure, reformat, and clean everything automatically according to the selected journal's exact requirements.&#10;&#10;You do not need to format it first. Just write and paste."></textarea>
+        </div>
+
+        <!-- SINGLE BIG BUTTON -->
+        <button class="claude-btn" style="width:100%;justify-content:center;padding:12px;font-size:14px;" onclick="autoProcessManuscript()">
+          🤖 Prepare manuscript for selected journal automatically
+        </button>
+
+        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;" id="quick-actions" style="display:none;">
+          <button class="btn btn-sm btn-ghost" onclick="autoAction('check')">📋 Compliance audit</button>
+          <button class="btn btn-sm btn-ghost" onclick="autoAction('cover')">✉ Write cover letter</button>
+          <button class="btn btn-sm btn-ghost" onclick="autoAction('response')">💬 Response to reviewers</button>
+          <button class="btn btn-sm btn-ghost" onclick="autoAction('abstract')">📝 Rewrite abstract only</button>
+        </div>
+      </div>
+
+      <!-- WHAT THE SYSTEM DOES AUTOMATICALLY -->
+      <div class="card" style="margin-bottom:14px;background:var(--bg3);">
+        <div class="card-title" style="font-size:13px;">🤖 What happens automatically when you click the button</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;">
+          <div style="display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--text2);">
+            <span style="color:var(--green);font-weight:700;flex-shrink:0;">✓</span>
+            <span>Restructures your paper into the exact required section order for that journal</span>
+          </div>
+          <div style="display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--text2);">
+            <span style="color:var(--green);font-weight:700;flex-shrink:0;">✓</span>
+            <span>Rewrites the abstract to match word count and structural requirements</span>
+          </div>
+          <div style="display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--text2);">
+            <span style="color:var(--green);font-weight:700;flex-shrink:0;">✓</span>
+            <span>Applies the correct referencing style (APA 7th, IEEE, or journal-specific)</span>
+          </div>
+          <div style="display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--text2);">
+            <span style="color:var(--green);font-weight:700;flex-shrink:0;">✓</span>
+            <span>Removes all AI-pattern phrasing and rewrites it in your scholarly voice</span>
+          </div>
+          <div style="display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--text2);">
+            <span style="color:var(--green);font-weight:700;flex-shrink:0;">✓</span>
+            <span>Adds required elements: Highlights (Elsevier), Disclosure statement, Recommendations section (PJDOL), etc.</span>
+          </div>
+          <div style="display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--text2);">
+            <span style="color:var(--green);font-weight:700;flex-shrink:0;">✓</span>
+            <span>Flags word count violations and suggests what to cut or expand</span>
+          </div>
+          <div style="display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--text2);">
+            <span style="color:var(--green);font-weight:700;flex-shrink:0;">✓</span>
+            <span>Applies journal-specific rules that cause desk rejection if missed</span>
+          </div>
+          <div style="display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--text2);">
+            <span style="color:var(--green);font-weight:700;flex-shrink:0;">✓</span>
+            <span>Delivers submission-ready text — copy, paste into journal template, submit</span>
           </div>
         </div>
       </div>
@@ -999,7 +1445,7 @@ const TABMETA = {
   dashboard:{title:'Dashboard',sub:'Your personal executive assistant — always ready'},
   assistant:{title:'AI Assistant',sub:'Free-form prompts and quick-launch tools'},
   lecture:{title:'Lecture Prep',sub:'BUITEMS EDU-6105 · Teacher Education in Comparative Perspectives'},
-  phd:{title:'PhD Research',sub:'Microcredentials Integration in Pakistan HE · IIUI'},
+  phd:{title:'My Research Hub',sub:'Post-PhD academic research, publications, and microcredentials scholarship'},
   calendar:{title:'Google Calendar',sub:'Live schedule sync — never miss a deadline'},
   tasks:{title:'Daily Task Manager',sub:'Priority-ranked — know what to do first every day'},
   opportunities:{title:'Live Opportunity Search',sub:'Real-time fellowships, jobs, consultancies, grants'},
@@ -1488,7 +1934,7 @@ function toggleSteps(id,btn){const el=document.getElementById('steps-'+id);const
 let wMode='ehsaas';
 const WMODES={
   'career':{title:'🎯 Career & Job Applications',desc:'Cover letters, job applications, consultancy pitches. Every document structurally unique. No AI phrasing.',prompt:i=>CTX+`Write a job application, cover letter, or career document for: ${i}. Open with a structurally unique approach — not a standard opener. Argument-first. No AI vocabulary. Direct, confident, grounded in real experience.`},
-  'phd-w':{title:'◉ PhD Academic Writing',desc:'Sophisticated humanized scholarly prose.',prompt:i=>CTX+`Write PhD-level academic prose on: ${i}. For microcredentials in Pakistan HE context. Scholarly but never robotic.`},
+  'phd-w':{title:'◉ Research Writing',desc:'Post-PhD academic writing — papers, proposals, conference abstracts. No AI phrasing.',prompt:i=>CTX+`Write rigorous, humanized research prose for Dr. Ehsan's post-PhD academic work on microcredentials and education. Request: ${i}. Argument-driven, no AI sentence patterns, no hollow academic filler.`},
   'seo':{title:'🔍 SEO / Blog Writing',desc:'Keyword-optimized with natural flow.',prompt:i=>CTX+`Write SEO-optimized content: ${i}. Natural keyword integration, engaging for human readers.`},
   'fellowship':{title:'🌐 Fellowship / Grant',desc:'Elite, winning application prose.',prompt:i=>CTX+`Write an elite, humanized fellowship or grant application component for: ${i}. Draw on my full profile.`},
   'linkedin':{title:'💼 LinkedIn / Professional',desc:'Warm, intellectual, genuine.',prompt:i=>CTX+`Write a professional yet warm LinkedIn message or post for: ${i}. Genuine, my voice.`},
@@ -1678,6 +2124,742 @@ function genFundingProposal() {
   const v = document.getElementById('fund-prop-inp').value.trim();
   if(!v){alert('Describe the funding opportunity and your research idea.');return;}
   openClaude(PROMPTS.fundingProposal.replace('the opportunity provided', v));
+}
+
+
+// ═══════════════════════════════════════
+// MANUSCRIPT GUIDELINES DATABASE
+// ═══════════════════════════════════════
+const MANUSCRIPTS = {
+  irrodl: {
+    name: "International Review of Research in Open and Distributed Learning (IRRODL)",
+    publisher: "Athabasca University Press",
+    fee: "Zero — completely free always",
+    indexing: "WOS ESCI, Scopus Q1",
+    wordLimit: "6,000–8,000 words including references",
+    abstract: "150–200 words, unstructured (no subheadings), keywords: 5–7",
+    structure: ["Abstract + Keywords","Introduction","Literature Review","Methodology","Results / Findings","Discussion","Conclusion","References"],
+    referencing: "APA 7th edition",
+    format: "Double-spaced, Times New Roman 12pt, 1-inch margins, MS Word (.docx)",
+    figures: "Minimum 300 DPI, embedded in document, numbered (Figure 1, Figure 2)",
+    tables: "Numbered (Table 1, Table 2), title above table, notes below",
+    submissionLink: "https://www.irrodl.org/index.php/irrodl/about/submissions",
+    reviewTime: "8–14 weeks",
+    acceptanceRate: "~30%",
+    tips: "IRRODL strongly favours research with clear implications for open/distance/online learning policy. Pakistan context is welcome. Ensure your paper explicitly addresses how findings relate to open education practice. Avoid over-claiming — reviewers here are experienced and will reject inflated conclusions.",
+    checklist: [
+      "Word count within 6,000–8,000 (including references)",
+      "Abstract 150–200 words, unstructured",
+      "5–7 keywords listed below abstract",
+      "APA 7th edition throughout",
+      "All figures minimum 300 DPI",
+      "Author details removed from manuscript (blind review)",
+      "Ethical approval statement included if data from human participants",
+      "Submitted as .docx file",
+      "Cover letter attached stating paper has not been submitted elsewhere"
+    ]
+  },
+  jmicro: {
+    name: "Journal of Microcredentials",
+    publisher: "Taylor & Francis",
+    fee: "Zero — currently free to publish",
+    indexing: "Scopus (emerging), Taylor & Francis",
+    wordLimit: "5,000–8,000 words excluding references",
+    abstract: "150–250 words, unstructured, keywords: 4–6",
+    structure: ["Abstract + Keywords","Introduction","Background / Context","Literature Review","Methodology","Findings / Results","Discussion","Implications","Conclusion","References"],
+    referencing: "APA 7th edition",
+    format: "Double-spaced, Times New Roman 12pt, MS Word (.docx)",
+    figures: "High resolution, embedded, with captions",
+    tables: "Titled above, source noted below if applicable",
+    submissionLink: "https://www.tandfonline.com/journals/rmcr20",
+    reviewTime: "6–12 weeks",
+    acceptanceRate: "~35% (growing)",
+    tips: "This is your most natural journal — your dissertation topic IS this journal's entire scope. The editors are actively seeking high-quality empirical research from developing countries. Pakistan HE context is novel here. Submit your strongest dissertation-derived paper here first. Explicitly position Pakistan as a case study for global microcredentials policy learning.",
+    checklist: [
+      "Word count 5,000–8,000 excluding references",
+      "Abstract 150–250 words",
+      "4–6 keywords",
+      "APA 7th edition",
+      "Author information on title page only (separate from manuscript)",
+      "Implications section included",
+      "Submitted via Taylor & Francis submission portal",
+      "Declaration of interest statement included"
+    ]
+  },
+  tojde: {
+    name: "Turkish Online Journal of Distance Education (TOJDE)",
+    publisher: "Anadolu University, Turkey",
+    fee: "Zero — completely free always",
+    indexing: "WOS ESCI, Scopus",
+    wordLimit: "4,000–8,000 words",
+    abstract: "100–200 words, unstructured, keywords: 4–8",
+    structure: ["Abstract + Keywords","Introduction","Theoretical Framework / Literature Review","Method","Findings","Discussion","Conclusion","References"],
+    referencing: "APA 6th or 7th edition (both accepted)",
+    format: "Single-spaced, Times New Roman 11pt, MS Word (.docx), specific TOJDE template required",
+    figures: "Embedded, numbered, minimum 300 DPI",
+    tables: "Title above table",
+    submissionLink: "https://tojde.anadolu.edu.tr",
+    reviewTime: "4–8 weeks",
+    acceptanceRate: "~40%",
+    tips: "TOJDE uses its own submission template — download it from the journal website before writing. Failure to use the template is an immediate desk rejection. Muslim-majority country research is actively welcomed. Your Pakistan distance education angle (AIOU, Virtual University context from your BUITEMS course) makes this paper very natural to write.",
+    checklist: [
+      "TOJDE template downloaded and used — mandatory",
+      "Word count 4,000–8,000",
+      "Abstract 100–200 words",
+      "4–8 keywords",
+      "APA 6th or 7th edition",
+      "Single-spaced, 11pt Times New Roman",
+      "All author details removed from body",
+      "Cover page with author details submitted separately",
+      "Figures 300 DPI minimum"
+    ]
+  },
+  ijet: {
+    name: "International Journal of Emerging Technologies in Learning (iJET)",
+    publisher: "Kassel University Press, Germany",
+    fee: "Zero — completely free always, no APC ever",
+    indexing: "WOS ESCI, Scopus",
+    wordLimit: "4,000–7,000 words",
+    abstract: "150–250 words, structured (Background, Aim, Methods, Results, Conclusion) OR unstructured",
+    structure: ["Abstract","Introduction","Related Work / Literature","Materials and Methods","Results","Discussion","Conclusion","Acknowledgements","References"],
+    referencing: "IEEE style OR APA (check current issue for current preference — IEEE more common)",
+    format: "iJET template required — download from website. Double-column layout in template.",
+    figures: "High resolution, embedded in template",
+    tables: "IEEE style if using IEEE referencing",
+    submissionLink: "https://online-journals.org/index.php/i-jet/about/submissions",
+    reviewTime: "6–10 weeks",
+    acceptanceRate: "~35%",
+    tips: "iJET has a specific two-column template that must be used — download before writing. The journal strongly favours papers that present a practical technology solution or empirical evaluation of a technology-mediated approach. Frame your microcredentials paper with a technology lens. 'Related Work' section is expected, not just a general literature review.",
+    checklist: [
+      "iJET double-column template downloaded and used — mandatory",
+      "Word count 4,000–7,000",
+      "Abstract 150–250 words",
+      "IEEE or APA referencing — check recent issues",
+      "'Related Work' section included (not just 'Literature Review')",
+      "Author details removed from manuscript",
+      "Submitted as .docx using iJET template"
+    ]
+  },
+  jutlp: {
+    name: "Journal of University Teaching and Learning Practice (JUTLP)",
+    publisher: "University of Wollongong, Australia",
+    fee: "Zero — completely free always",
+    indexing: "WOS ESCI, Scopus",
+    wordLimit: "5,000–8,000 words excluding references",
+    abstract: "200–300 words, unstructured, keywords: 5–8",
+    structure: ["Abstract + Keywords","Introduction","Literature Review","Theoretical Framework","Methodology","Findings","Discussion","Implications for Practice","Conclusion","References"],
+    referencing: "APA 7th edition",
+    format: "Double-spaced, 12pt font, MS Word (.docx), line numbers required",
+    figures: "Numbered, captioned, minimum 300 DPI",
+    tables: "Title above, APA format",
+    submissionLink: "https://ro.uow.edu.au/jutlp/",
+    reviewTime: "8–12 weeks",
+    acceptanceRate: "~35%",
+    tips: "JUTLP specifically values 'Implications for Practice' — this section must be substantive, not a throwaway paragraph. Reviewers look for what practitioners (lecturers, curriculum designers, HE administrators) can actually do with your findings. Your BUITEMS visiting faculty role gives you practitioner authority that most researchers lack. Use it explicitly.",
+    checklist: [
+      "Word count 5,000–8,000 excluding references",
+      "Abstract 200–300 words",
+      "5–8 keywords",
+      "APA 7th edition",
+      "Line numbers added (required for review)",
+      "Implications for Practice section is substantive (minimum 300 words)",
+      "Double-spaced throughout",
+      "Author details removed from manuscript"
+    ]
+  },
+  ejel: {
+    name: "Electronic Journal of e-Learning (EJEL)",
+    publisher: "Academic Conferences International",
+    fee: "Zero — completely free always",
+    indexing: "WOS ESCI, Scopus",
+    wordLimit: "4,000–7,000 words",
+    abstract: "150–200 words, unstructured, keywords: 5–8",
+    structure: ["Abstract + Keywords","Introduction","Background and Related Work","Research Questions / Objectives","Methodology","Results","Discussion","Conclusion","References"],
+    referencing: "APA 7th edition",
+    format: "EJEL template required — available on website. Single-spaced.",
+    figures: "Embedded, numbered, 300 DPI",
+    tables: "Title above, APA format",
+    submissionLink: "https://www.ejel.org/index.php/ejel/about/submissions",
+    reviewTime: "6–10 weeks",
+    acceptanceRate: "~38%",
+    tips: "EJEL expects 'Research Questions' stated explicitly — not just objectives. Each section should directly answer the stated research questions. The journal has a practical, applied focus — how your findings apply to e-learning design and practice should be clear throughout, not just in the conclusion.",
+    checklist: [
+      "EJEL template downloaded and used",
+      "Research questions explicitly stated",
+      "Word count 4,000–7,000",
+      "Abstract 150–200 words",
+      "APA 7th edition",
+      "Each section connects back to research questions",
+      "Single-spaced, EJEL template format"
+    ]
+  },
+  jeo: {
+    name: "Journal of Educators Online (JEO)",
+    publisher: "University of South Alabama",
+    fee: "Zero — completely free always",
+    indexing: "WOS ESCI",
+    wordLimit: "5,000–8,000 words",
+    abstract: "150–200 words, unstructured, keywords: 5–6",
+    structure: ["Abstract","Introduction","Literature Review","Methodology","Results","Discussion","Conclusion","References"],
+    referencing: "APA 7th edition",
+    format: "Double-spaced, 12pt Times New Roman, 1-inch margins",
+    figures: "Numbered, captioned, embedded",
+    tables: "APA format, title above",
+    submissionLink: "https://www.thejeo.com/submission",
+    reviewTime: "6–8 weeks",
+    acceptanceRate: "~40%",
+    tips: "JEO focuses on online education research. Frame microcredentials as an online learning modality. Papers with clear quantitative or mixed-methods designs tend to do well here. Keep the literature review focused — reviewers flag papers that cite too broadly.",
+    checklist: [
+      "5,000–8,000 words",
+      "Abstract 150–200 words, 5–6 keywords",
+      "APA 7th edition",
+      "Double-spaced, 12pt Times New Roman",
+      "Author details removed for blind review"
+    ]
+  },
+  mojet: {
+    name: "Malaysian Online Journal of Educational Technology (MOJET)",
+    publisher: "University of Malaya",
+    fee: "Zero — completely free always",
+    indexing: "WOS ESCI, Scopus",
+    wordLimit: "4,000–7,000 words",
+    abstract: "150–200 words, unstructured, keywords: 4–6",
+    structure: ["Abstract","Introduction","Literature Review","Methodology","Results and Discussion","Conclusion","References"],
+    referencing: "APA 6th or 7th edition",
+    format: "Single-spaced, Times New Roman 11pt, MS Word",
+    figures: "High resolution, captioned",
+    tables: "Title above, numbered",
+    submissionLink: "https://mojet.net/index.php/mojet/about/submissions",
+    reviewTime: "5–8 weeks",
+    acceptanceRate: "~42%",
+    tips: "MOJET combines Results and Discussion into one section — do not separate them. Muslim-majority country research (Pakistan, Malaysia, Indonesia, Gulf) is well-received here. The journal has a practical EdTech focus — your findings should include actionable recommendations for educational technology practitioners.",
+    checklist: [
+      "4,000–7,000 words",
+      "Results and Discussion combined in one section",
+      "Abstract 150–200 words, 4–6 keywords",
+      "APA 6th or 7th edition",
+      "Single-spaced, 11pt Times New Roman",
+      "Author details removed"
+    ]
+  },
+  jofdl: {
+    name: "Journal of Open, Flexible and Distance Learning (JOFDL)",
+    publisher: "Distance Learning Association of New Zealand",
+    fee: "Zero — completely free always",
+    indexing: "WOS ESCI",
+    wordLimit: "4,000–8,000 words",
+    abstract: "100–200 words, unstructured, keywords: 4–6",
+    structure: ["Abstract","Introduction","Context / Background","Literature Review","Methodology","Findings","Discussion","Conclusion and Implications","References"],
+    referencing: "APA 7th edition",
+    format: "Double-spaced, 12pt, MS Word",
+    figures: "Embedded, numbered, captioned",
+    tables: "APA style",
+    submissionLink: "https://www.jofdl.nz/index.php/JOFDL/about/submissions",
+    reviewTime: "6–10 weeks",
+    acceptanceRate: "~38%",
+    tips: "JOFDL values a clear 'Context / Background' section that situates the study geographically and institutionally. Your Balochistan/Pakistan context should be explained clearly for international readers — do not assume they know Pakistan's HE system.",
+    checklist: [
+      "4,000–8,000 words",
+      "Abstract 100–200 words",
+      "Context/Background section explaining Pakistan HE setting",
+      "APA 7th edition",
+      "Double-spaced, 12pt font",
+      "Author details removed for blind review"
+    ]
+  },
+  ijte: {
+    name: "International Journal of Technology in Education (IJTE)",
+    publisher: "ISTES Organization",
+    fee: "Zero — completely free always",
+    indexing: "WOS ESCI, Scopus",
+    wordLimit: "4,000–8,000 words",
+    abstract: "150–250 words, structured (Purpose, Methodology, Findings, Conclusions), keywords: 4–6",
+    structure: ["Abstract","Introduction","Theoretical Framework","Literature Review","Methodology","Results","Discussion","Conclusion","References"],
+    referencing: "APA 7th edition",
+    format: "IJTE template required — download from website. Double-spaced.",
+    figures: "Embedded, numbered, minimum 300 DPI",
+    tables: "APA format",
+    submissionLink: "https://www.ijte.net/index.php/ijte/about/submissions",
+    reviewTime: "4–8 weeks",
+    acceptanceRate: "~44%",
+    tips: "IJTE requires a structured abstract with four subheadings: Purpose, Methodology, Findings, Conclusions. This is non-negotiable — desk rejection if not followed. Separate Theoretical Framework section is expected. Your Technology Acceptance Model (TAM) or similar theoretical lens should be explicitly framed here.",
+    checklist: [
+      "IJTE template downloaded and used — mandatory",
+      "Structured abstract: Purpose / Methodology / Findings / Conclusions",
+      "Separate Theoretical Framework section",
+      "4,000–8,000 words",
+      "APA 7th edition",
+      "4–6 keywords",
+      "Author details removed"
+    ]
+  },
+  pjdol: {
+    name: "Pakistan Journal of Distance and Online Learning (PJDOL)",
+    publisher: "Allama Iqbal Open University (AIOU)",
+    fee: "Zero — completely free always",
+    indexing: "HEC Recognized (Pakistan), working toward Scopus",
+    wordLimit: "3,000–6,000 words",
+    abstract: "150–200 words, unstructured, keywords: 4–6",
+    structure: ["Abstract","Introduction","Literature Review","Methodology","Results and Discussion","Conclusion","Recommendations","References"],
+    referencing: "APA 6th or 7th edition",
+    format: "Double-spaced, Times New Roman 12pt, MS Word",
+    figures: "Numbered, captioned, embedded",
+    tables: "Titled above",
+    submissionLink: "https://pjdol.aiou.edu.pk",
+    reviewTime: "6–10 weeks",
+    acceptanceRate: "~45%",
+    tips: "PJDOL expects a 'Recommendations' section — explicit, numbered, practical recommendations for policy and practice in Pakistan. This is non-negotiable for this journal. Your local context is your strongest asset here — explain exactly how your findings apply to AIOU, Virtual University, and Pakistani distance education specifically.",
+    checklist: [
+      "3,000–6,000 words",
+      "Abstract 150–200 words, 4–6 keywords",
+      "Recommendations section included — numbered and specific",
+      "APA 6th or 7th edition",
+      "Double-spaced, 12pt Times New Roman",
+      "Pakistani HE context explicitly addressed"
+    ]
+  },
+  ber: {
+    name: "Bulletin of Education and Research (BER)",
+    publisher: "Institute of Education & Research, University of the Punjab",
+    fee: "Zero — completely free always",
+    indexing: "HEC W Category (Pakistan), ERIC",
+    wordLimit: "3,000–6,000 words",
+    abstract: "150–200 words, unstructured, keywords: 4–6",
+    structure: ["Abstract","Introduction","Literature Review","Methodology","Results","Discussion","Conclusion","References"],
+    referencing: "APA 7th edition",
+    format: "Double-spaced, Times New Roman 12pt, MS Word",
+    figures: "Embedded, numbered",
+    tables: "APA format, titled above",
+    submissionLink: "https://www.ber.org.pk",
+    reviewTime: "6–12 weeks",
+    acceptanceRate: "~40%",
+    tips: "BER is an important journal for HEC recognition in Pakistan — a publication here directly supports your local academic career and HEC performance indicators. Focus papers on Pakistani education context. Reviewers are Pakistani education scholars who understand your context deeply.",
+    checklist: [
+      "3,000–6,000 words",
+      "Abstract 150–200 words",
+      "4–6 keywords",
+      "APA 7th edition",
+      "Pakistani education context central to the paper",
+      "Double-spaced, 12pt Times New Roman",
+      "Author details removed from manuscript"
+    ]
+  },
+  she: {
+    name: "Studies in Higher Education",
+    publisher: "Taylor & Francis",
+    fee: "Zero to authors — subscription journal",
+    indexing: "WOS SSCI, Scopus Q1, IF: 5.1",
+    wordLimit: "6,000–9,000 words excluding references",
+    abstract: "150–200 words, unstructured, keywords: 5–7",
+    structure: ["Abstract + Keywords","Introduction","Theoretical Framework","Literature Review","Methodology","Findings","Discussion","Conclusion","Disclosure Statement","References"],
+    referencing: "APA 7th edition",
+    format: "Double-spaced, 12pt, MS Word (.docx). Line numbers required.",
+    figures: "Separate files, minimum 300 DPI, TIFF or EPS preferred",
+    tables: "Separate from text if tables are large; APA format",
+    submissionLink: "https://www.tandfonline.com/journals/cshe20",
+    reviewTime: "10–16 weeks",
+    acceptanceRate: "~15%",
+    tips: "Highly competitive. A strong theoretical framework is non-negotiable — reviewers expect you to position your work within institutional theory, social reproduction theory, human capital theory, or similar frameworks. Pakistan-context papers are publishable here but must be theoretically sophisticated, not just descriptive. A 'Disclosure Statement' (declaring no conflict of interest) is required by Taylor & Francis.",
+    checklist: [
+      "6,000–9,000 words excluding references",
+      "Strong theoretical framework — explicit and developed",
+      "Abstract 150–200 words, 5–7 keywords",
+      "APA 7th edition",
+      "Line numbers added throughout — required",
+      "Disclosure statement included",
+      "Figures submitted as separate TIFF/EPS files",
+      "Author details on title page only — double blind review",
+      "Cover letter stating contribution to field and why Studies in HE specifically"
+    ]
+  },
+  he: {
+    name: "Higher Education (Springer)",
+    publisher: "Springer",
+    fee: "Zero to authors — subscription journal",
+    indexing: "WOS SSCI, Scopus Q1, IF: 5.4",
+    wordLimit: "7,000–10,000 words",
+    abstract: "150–250 words, unstructured, keywords: 4–6",
+    structure: ["Abstract + Keywords","Introduction","Conceptual Framework","Methodology","Results","Discussion","Conclusion","References"],
+    referencing: "APA 7th edition",
+    format: "Double-spaced, 12pt Times New Roman, MS Word",
+    figures: "300 DPI minimum, EPS or TIFF preferred",
+    tables: "APA format",
+    submissionLink: "https://link.springer.com/journal/10734",
+    reviewTime: "12–18 weeks",
+    acceptanceRate: "~12%",
+    tips: "Very competitive. Higher Education prioritises comparative and internationally significant research. A paper comparing Pakistan to 2–3 other countries (Malaysia, Turkey, Bangladesh) in microcredential policy is much stronger than a Pakistan-only study. Position Pakistan as a case study for broader global learning — not as an isolated problem.",
+    checklist: [
+      "7,000–10,000 words",
+      "Comparative or internationally significant angle",
+      "Conceptual framework explicitly developed",
+      "Abstract 150–250 words",
+      "APA 7th edition",
+      "Author details removed — double blind",
+      "Cover letter justifying international significance"
+    ]
+  },
+  tte: {
+    name: "Teaching and Teacher Education",
+    publisher: "Elsevier",
+    fee: "Zero to authors — subscription journal",
+    indexing: "WOS SSCI, Scopus Q1, IF: 4.5",
+    wordLimit: "6,000–8,000 words",
+    abstract: "Structured: Highlights (3–5 bullet points, 85 characters max each) + Abstract 150–200 words, keywords: 3–6",
+    structure: ["Highlights","Abstract + Keywords","Introduction","Theoretical Background","Method","Results","Discussion","Conclusion","Declaration of Competing Interests","References"],
+    referencing: "APA 7th edition",
+    format: "Double-spaced, 12pt, MS Word. Elsevier submission portal.",
+    figures: "Separate files, EPS or TIFF, 300 DPI minimum",
+    tables: "Separate, APA format, numbered",
+    submissionLink: "https://www.journals.elsevier.com/teaching-and-teacher-education",
+    reviewTime: "8–14 weeks",
+    acceptanceRate: "~18%",
+    tips: "Elsevier journals require 'Highlights' — 3 to 5 bullet points (maximum 85 characters each) summarising your paper's key contributions. These are non-negotiable. Also requires a 'Declaration of Competing Interests' statement. Your BUITEMS teaching + research position gives you direct practitioner-researcher authority — exploit this explicitly.",
+    checklist: [
+      "3–5 Highlights (max 85 characters each) — mandatory for Elsevier",
+      "6,000–8,000 words",
+      "Structured abstract with Highlights",
+      "3–6 keywords",
+      "Declaration of Competing Interests included",
+      "APA 7th edition",
+      "Figures as separate EPS/TIFF files",
+      "Submitted via Elsevier Editorial System (EES)"
+    ]
+  },
+  compare: {
+    name: "Compare: A Journal of Comparative and International Education",
+    publisher: "Taylor & Francis",
+    fee: "Zero to authors — subscription journal",
+    indexing: "WOS SSCI, Scopus Q2",
+    wordLimit: "6,000–8,000 words excluding references",
+    abstract: "150–200 words, unstructured, keywords: 5–6",
+    structure: ["Abstract + Keywords","Introduction","Conceptual / Theoretical Framework","Methodology","Findings","Discussion","Conclusion","Disclosure Statement","References"],
+    referencing: "APA 7th edition",
+    format: "Double-spaced, Times New Roman 12pt, MS Word, line numbers required",
+    figures: "TIFF or EPS, 300 DPI, submitted separately",
+    tables: "APA format",
+    submissionLink: "https://www.tandfonline.com/journals/ccom20",
+    reviewTime: "10–14 weeks",
+    acceptanceRate: "~20%",
+    tips: "Compare requires a genuine comparative dimension — two or more countries, systems, or contexts. A Pakistan-only study will be desk rejected. Compare Pakistan's microcredential policy with Malaysia, Turkey, or Bangladesh. The paper must also have a clear conceptual or theoretical framework. Disclosure statement required.",
+    checklist: [
+      "Genuine comparison of 2+ countries or systems — mandatory",
+      "Theoretical/conceptual framework explicit",
+      "6,000–8,000 words excluding references",
+      "Abstract 150–200 words",
+      "Line numbers required",
+      "Disclosure statement included",
+      "APA 7th edition",
+      "Figures submitted separately as TIFF/EPS"
+    ]
+  },
+  jfhe: {
+    name: "Journal of Further and Higher Education",
+    publisher: "Taylor & Francis",
+    fee: "Zero to authors — subscription journal",
+    indexing: "WOS SSCI, Scopus Q2",
+    wordLimit: "5,000–8,000 words excluding references",
+    abstract: "150–200 words, unstructured, keywords: 4–6",
+    structure: ["Abstract + Keywords","Introduction","Literature Review","Methodology","Findings","Discussion","Conclusion","Disclosure Statement","References"],
+    referencing: "APA 7th edition",
+    format: "Double-spaced, 12pt, MS Word, line numbers",
+    figures: "300 DPI minimum",
+    tables: "APA format",
+    submissionLink: "https://www.tandfonline.com/journals/cjfh20",
+    reviewTime: "8–12 weeks",
+    acceptanceRate: "~25%",
+    tips: "JFHE has a more accessible acceptance rate than its Tier 1 stablemates. It welcomes empirical papers on student experience, curriculum design, and credential policy. Pakistan context is publishable here with a clear connection to how your findings relate to further and higher education curriculum practice more broadly.",
+    checklist: [
+      "5,000–8,000 words excluding references",
+      "Abstract 150–200 words, 4–6 keywords",
+      "Line numbers required",
+      "Disclosure statement included",
+      "APA 7th edition",
+      "Double-spaced, 12pt"
+    ]
+  },
+  aper: {
+    name: "Asia Pacific Education Review",
+    publisher: "Springer",
+    fee: "Zero to authors — subscription journal",
+    indexing: "WOS SSCI, Scopus Q2",
+    wordLimit: "6,000–8,000 words",
+    abstract: "150–250 words, unstructured, keywords: 4–6",
+    structure: ["Abstract + Keywords","Introduction","Literature Review","Theoretical Framework","Methodology","Results","Discussion","Conclusion","References"],
+    referencing: "APA 7th edition",
+    format: "Double-spaced, 12pt Times New Roman, MS Word",
+    figures: "300 DPI, EPS/TIFF preferred",
+    tables: "APA format, numbered",
+    submissionLink: "https://link.springer.com/journal/12564",
+    reviewTime: "8–14 weeks",
+    acceptanceRate: "~22%",
+    tips: "APER specifically covers Asia-Pacific including South Asia. Pakistan is within scope. The journal expects papers to contribute to understanding of education reform in the Asia-Pacific region. Position your findings as relevant not just to Pakistan but to the broader South/Southeast Asian context. A theoretical framework is expected.",
+    checklist: [
+      "6,000–8,000 words",
+      "Asia-Pacific relevance positioned clearly",
+      "Theoretical framework included",
+      "Abstract 150–250 words",
+      "APA 7th edition",
+      "Double-spaced, 12pt Times New Roman",
+      "Author details removed — double blind review"
+    ]
+  }
+};
+
+// ── AUTOMATED MANUSCRIPT ENGINE ──
+
+function autoLoadJournal() {
+  const sel = document.getElementById('journal-sel').value;
+  const bar = document.getElementById('journal-status-bar');
+  const qa = document.getElementById('quick-actions');
+  if (!sel) { bar.style.display='none'; return; }
+  const m = MANUSCRIPTS[sel];
+  if (!m) return;
+  bar.style.display = 'block';
+  bar.innerHTML = `<strong>${m.name}</strong> &nbsp;·&nbsp; ${m.indexing} &nbsp;·&nbsp; <strong style="color:var(--green);">${m.fee}</strong> &nbsp;·&nbsp; Review: ${m.reviewTime} &nbsp;·&nbsp; Acceptance: ${m.acceptanceRate}`;
+  if(qa) qa.style.display = 'flex';
+}
+
+function buildAutoPrompt(sel, action, draft) {
+  const m = MANUSCRIPTS[sel];
+  const rules = `
+JOURNAL: ${m.name}
+Publisher: ${m.publisher}
+Indexing: ${m.indexing}
+Word limit: ${m.wordLimit}
+Abstract requirement: ${m.abstract}
+Required section order: ${m.structure.join(' → ')}
+Referencing style: ${m.referencing}
+Formatting: ${m.format}
+Figures: ${m.figures}
+Tables: ${m.tables}
+Submission link: ${m.submissionLink}
+Special requirements and desk-rejection rules: ${m.tips}
+Full submission checklist: ${m.checklist.join(' | ')}`;
+
+  const actions = {
+    full: `You are preparing Dr. Ehsan's manuscript for submission to ${m.name}. Apply every rule automatically — do not ask him to do anything manually.
+
+${rules}
+
+WHAT YOU MUST DO AUTOMATICALLY:
+1. Restructure the draft into this exact section order: ${m.structure.join(' → ')}
+2. Rewrite the abstract to exactly match: ${m.abstract}
+3. Apply ${m.referencing} throughout — correct any citations that do not conform
+4. Add every mandatory element automatically: ${m.checklist.filter(c => c.toLowerCase().includes('required') || c.toLowerCase().includes('mandatory') || c.toLowerCase().includes('included')).join('; ')}
+5. Remove every AI-pattern phrase and rewrite in Dr. Ehsan's direct scholarly voice
+6. Flag word count: target is ${m.wordLimit} — note if sections need cutting or expanding
+7. Apply all special rules: ${m.tips}
+8. Deliver the full restructured, formatted, submission-ready manuscript
+
+Do not explain what you are doing. Do not list steps. Just produce the complete, formatted, submission-ready manuscript. Dr. Ehsan will copy it directly into the journal template.
+
+DRAFT TO PROCESS:
+${draft}`,
+
+    abstract: `Rewrite the abstract from this draft to exactly match ${m.name} requirements: ${m.abstract}. Apply ${m.referencing}. Remove all AI phrasing. Produce only the final abstract — no explanation. DRAFT: ${draft}`,
+
+    intro: `Rewrite or write the Introduction section for ${m.name}. Requirements: opening that immediately identifies the research problem (not a generic statement), establishes Pakistan HE context in 2–3 sentences, identifies the specific literature gap, states research purpose, lists objectives/questions, closes with paper overview. Word target: approximately ${Math.round(parseInt(m.wordLimit.replace(/[^0-9]/g,''))*0.12)} words. No AI phrasing. Apply ${m.referencing}. Produce only the final Introduction. DRAFT/NOTES: ${draft}`,
+
+    litreview: `Write or restructure the Literature Review section for submission to ${m.name}. Structure thematically — not chronologically. Every paragraph must advance a specific argument, name real researchers, identify a gap or contradiction, and connect to Pakistan HE/microcredentials. No summary writing. Apply ${m.referencing}. Target approximately ${Math.round(parseInt(m.wordLimit.replace(/[^0-9]/g,''))*0.28)} words. No AI phrasing. Produce only the final Literature Review. DRAFT/NOTES: ${draft}`,
+
+    method: `Write or restructure the Methodology section for submission to ${m.name}. Include: research paradigm and justification, design, sampling with rationale, data collection, analysis method, validity/trustworthiness measures, ethical considerations, limitations. Specific to Dr. Ehsan's context in Balochistan and his institutional connections. Apply ${m.referencing}. No textbook methodology language. Target approximately ${Math.round(parseInt(m.wordLimit.replace(/[^0-9]/g,''))*0.18)} words. Produce only the final Methodology. DRAFT/NOTES: ${draft}`,
+
+    discussion: `Write or restructure the Results and Discussion section for submission to ${m.name}. Structure thematically around key findings. Each paragraph: specific finding, connection to named literature (agreeing or challenging), significance, limitations where relevant. No AI phrasing. Apply ${m.referencing}. Target approximately ${Math.round(parseInt(m.wordLimit.replace(/[^0-9]/g,''))*0.22)} words. Produce only the final section. DRAFT/NOTES: ${draft}`,
+
+    conclusion: `Write or restructure the Conclusion section for submission to ${m.name}. Must include: summary of key findings (without repeating what was already said), theoretical contribution, practical implications, limitations, future research directions${m.checklist.some(c=>c.toLowerCase().includes('recommendation')) ? ', and numbered Recommendations (required for this journal)' : ''}. No AI phrasing. No hollow closings. Target approximately ${Math.round(parseInt(m.wordLimit.replace(/[^0-9]/g,''))*0.08)} words. Produce only the final Conclusion. DRAFT/NOTES: ${draft}`,
+
+    check: `Conduct a strict pre-submission compliance audit of this manuscript against ${m.name} requirements.
+
+${rules}
+
+For every single requirement, output:
+✓ PASS — [requirement] — [brief confirmation]
+✗ FAIL — [requirement] — [exactly what is wrong] — [exactly how to fix it]
+
+Then flag every instance of:
+- AI-pattern phrasing or banned vocabulary
+- Hollow academic filler sentences
+- Overclaiming or unsupported assertions
+- Anything that would concern this journal's reviewers specifically
+
+Apply the standard of an experienced reviewer for this journal. Be strict.
+
+MANUSCRIPT TO AUDIT:
+${draft}`,
+
+    cover: `Write a complete cover letter for submission of Dr. Ehsan's paper to ${m.name}. The cover letter must: address the editor by role (Dear Editor-in-Chief), state the paper title and manuscript type, explain the specific contribution to this journal's scope in 2–3 sentences, confirm the paper has not been submitted elsewhere, include a declaration of no conflicts of interest, and close professionally. Do NOT open with "I am writing to express my interest." Do NOT use AI-pattern language. Keep under 300 words. Produce only the final cover letter. PAPER TITLE AND TOPIC: ${draft}`,
+
+    response: `Write a professional, thorough response to reviewers for Dr. Ehsan's paper submitted to ${m.name}. For each reviewer comment provided, write a response that: acknowledges the comment specifically (not generically), explains what change was made and where in the manuscript, or politely justifies why a suggested change was not made with evidence. Tone: collegial, confident, not defensive or overly deferential. No AI phrasing. Produce only the formatted response letter. REVIEWER COMMENTS: ${draft}`
+  };
+
+  return CTX + (actions[action] || actions.full);
+}
+
+function autoProcessManuscript() {
+  const sel = document.getElementById('journal-sel').value;
+  const action = document.getElementById('ms-action').value;
+  const draft = document.getElementById('manuscript-inp').value.trim();
+  if (!sel) { alert('Please select a target journal first.'); return; }
+  if (!draft) { alert('Please paste your draft, notes, or text first.'); return; }
+  openClaude(buildAutoPrompt(sel, action, draft));
+}
+
+function autoAction(action) {
+  const sel = document.getElementById('journal-sel').value;
+  const draft = document.getElementById('manuscript-inp').value.trim();
+  if (!sel) { alert('Select a journal first.'); return; }
+  if (!draft && action !== 'cover') { alert('Paste your draft first.'); return; }
+  openClaude(buildAutoPrompt(sel, action, draft || 'No draft pasted yet — generate based on Dr. Ehsan's microcredentials research profile.'));
+}
+
+// Keep toggleCheck for backward compatibility
+function toggleCheck(id) {
+  const el = document.getElementById('chk-' + id);
+  if (!el) return;
+  const checked = el.style.background === 'var(--green)';
+  el.style.background = checked ? '' : 'var(--green)';
+  el.style.borderColor = checked ? 'var(--border2)' : 'var(--green)';
+  el.innerHTML = checked ? '' : '<span style="font-size:10px;color:white;font-weight:700;">✓</span>';
+}
+
+// Legacy aliases
+function formatManuscript() { autoProcessManuscript(); }
+function checkManuscript() { autoAction('check'); }
+function showManuscriptGuide() { autoLoadJournal(); }
+
+
+// ═══════════════════════════════════════
+// FULL PAPER AUTO-GENERATOR
+// ═══════════════════════════════════════
+
+function getPaperInputs() {
+  const topic = (document.getElementById('paper-topic')||{}).value?.trim() || '';
+  const notes = (document.getElementById('paper-notes')||{}).value?.trim() || '';
+  const journalKey = (document.getElementById('paper-journal-target')||{}).value || 'none';
+  const m = journalKey !== 'none' ? MANUSCRIPTS[journalKey] : null;
+  return { topic, notes, journalKey, m };
+}
+
+function generateFullPaper() {
+  const { topic, notes, m } = getPaperInputs();
+  if (!topic) { alert('Please enter a paper topic or working title.'); return; }
+
+  const journalRules = m ? `
+TARGET JOURNAL RULES — apply every one automatically:
+Journal: ${m.name} (${m.publisher})
+Word limit: ${m.wordLimit}
+Abstract: ${m.abstract}
+Required section order: ${m.structure.join(' → ')}
+Referencing style: ${m.referencing}
+Mandatory elements: ${m.checklist.join(' | ')}
+Special requirements: ${m.tips}
+` : `Write to general Q1/Q2 journal standard: 6,000–8,000 words, APA 7th edition, structured as: Abstract → Introduction → Literature Review → Methodology → Results → Discussion → Conclusion → References.`;
+
+  const prompt = CTX + `Generate a complete, publication-ready research paper for Dr. Muhammad Ehsan on the following topic.
+
+PAPER TOPIC: ${topic}
+
+RESEARCH NOTES / FINDINGS PROVIDED:
+${notes || 'No notes provided — generate based on Dr. Ehsan's dissertation research on microcredentials integration in Pakistan HE, his BUITEMS visiting faculty context, and his fieldwork in Balochistan. Draw on realistic findings consistent with his research area.'}
+
+${journalRules}
+
+GENERATION INSTRUCTIONS — follow every one without exception:
+
+1. TITLE — Write a precise, journal-ready title. Not generic. Specific to the context.
+
+2. ABSTRACT — Write to exactly: ${m ? m.abstract : '150–250 words, structured or unstructured as appropriate'}. Every sentence earns its place.
+
+3. INTRODUCTION — Open with the real research problem, not a generic education statement. Establish Pakistan HE context concisely. Identify the specific literature gap with reference to named scholars. State research purpose. List research objectives or questions. Close with paper structure overview. Approximately 700–900 words.
+
+4. LITERATURE REVIEW — Structure thematically, not chronologically. Each paragraph must: advance a specific argument, name real researchers in microcredentials/HE policy/EdTech, identify a gap or tension, and connect to Pakistan or developing country context. Name real papers and scholars (Wheelahan & Moodie, Brown et al., McGreal & Olcott, Oliver, Kato et al., and others active in this field). Minimum 1,500 words.
+
+5. METHODOLOGY — Specify: research paradigm (post-positivist/interpretivist/pragmatist — choose the most appropriate for the research design), design (survey/qualitative/mixed methods — consistent with the notes provided), sampling strategy, data collection (questionnaire/interviews/document analysis), analysis method (thematic/statistical/content), validity measures, ethical considerations, limitations. Grounded in what Dr. Ehsan can realistically conduct in Balochistan and at BUITEMS. Approximately 700–900 words.
+
+6. RESULTS AND DISCUSSION — Present findings thematically. Each discussion paragraph: specific finding, connection to the literature (agreeing or challenging named scholars), significance, limitation acknowledgement where relevant. Approximately 1,200–1,500 words.
+
+7. CONCLUSION — Summarise without repeating what was said. State theoretical contribution clearly. State practical implications for Pakistan HEC policy and HE administrators. Acknowledge limitations. Recommend future research directions. ${m && m.checklist.some(c=>c.toLowerCase().includes('recommendation')) ? 'Include a numbered Recommendations section — required for this journal.' : ''} Approximately 400–600 words.
+
+8. REFERENCES — List all cited works in ${m ? m.referencing : 'APA 7th edition'}. Include only real, verifiable papers. Mix of recent (2019–2025) and foundational works.
+
+VOICE AND QUALITY RULES:
+- Write entirely as Dr. Muhammad Ehsan — a Pakistani education researcher who earned his PhD through real fieldwork in Balochistan, trained at Virginia Tech, and teaches at BUITEMS
+- No AI sentence patterns. No hollow openers. No three-adjective stacks
+- Every claim is specific — no vague generalisations
+- Argument-driven throughout — not descriptive
+- This paper must be submittable as-is after Dr. Ehsan confirms the data sections match his actual findings
+
+Produce the complete paper now. Do not truncate. Do not summarise what you would write — write it in full.`;
+
+  openClaude(prompt);
+}
+
+function generateSection(section) {
+  const { topic, notes, m } = getPaperInputs();
+  if (!topic) { alert('Please enter a paper topic first.'); return; }
+
+  const journalCtx = m ? `Target journal: ${m.name}. ${m.referencing} referencing. Word target for this section within overall limit of ${m.wordLimit}.` : 'Target: Q1/Q2 standard. APA 7th edition.';
+
+  const sectionPrompts = {
+    outline: CTX + `Generate a complete, detailed research paper outline for a Q1/Q2 journal paper on: "${topic}".
+Notes/findings: ${notes || 'Microcredentials integration in Pakistan HE — use Dr. Ehsan's dissertation research context.'}
+${journalCtx}
+Outline must include: journal-ready title, abstract structure, Introduction arguments and suggested citations, Literature Review themes (thematic, not chronological) with 6 real papers to engage, Methodology design recommendation with justification, Results/Discussion argument threads, Conclusion structure. Every item must be specific — not placeholder headings.`,
+
+    intro: CTX + `Write a complete Introduction section for a research paper titled: "${topic}".
+Research context: ${notes || 'Microcredentials integration in Pakistan HE, Balochistan context, BUITEMS.'}
+${journalCtx}
+Rules: Open with the real research problem — not "Education is important." Establish Pakistan HE context in 2–3 sentences. Identify the specific literature gap with named scholars. State research purpose. List 3–4 research questions or objectives. Close with paper structure overview. Approximately 700–900 words. No AI phrasing. Argument-first from sentence one. Write the complete Introduction — do not truncate.`,
+
+    lit: CTX + `Write a complete Literature Review section for a research paper on: "${topic}".
+Notes: ${notes || 'Focus on microcredentials, HE policy, institutional readiness, Pakistan/developing country context.'}
+${journalCtx}
+Rules: Structure thematically. Each paragraph advances a specific argument, names real scholars (Wheelahan & Moodie, Brown et al., McGreal & Olcott, Oliver, Kato et al., and others), identifies a gap or contradiction, connects to Pakistan/developing country context. No summary writing. No AI phrasing. Minimum 1,500 words. Write the complete Literature Review — do not truncate.`,
+
+    method: CTX + `Write a complete Methodology section for a research paper on: "${topic}".
+Research notes: ${notes || 'Study conducted in Pakistani HE context, Balochistan, BUITEMS connections available.'}
+${journalCtx}
+Rules: Include research paradigm with justification, design, sampling strategy with rationale, data collection instruments, analysis procedure, validity/trustworthiness measures, ethical considerations, limitations. Grounded specifically in what Dr. Ehsan can conduct in Balochistan and at BUITEMS. Write as a practising researcher — not as a textbook. Approximately 700–900 words. No AI phrasing. Write the complete Methodology — do not truncate.`,
+
+    results: CTX + `Write a complete Results and Discussion section for a research paper on: "${topic}".
+Findings/notes: ${notes || 'Generate findings consistent with microcredentials research in Pakistani HE — awareness gaps, policy barriers, institutional readiness challenges, faculty and student perspectives.'}
+${journalCtx}
+Rules: Structure thematically. Each paragraph: specific finding or argument, connection to named literature (agreeing or challenging), significance, limitation where relevant. No AI phrasing. Approximately 1,200–1,500 words. Write the complete section — do not truncate.`,
+
+    abstract: CTX + `Write a complete abstract for a research paper titled: "${topic}".
+Key points: ${notes || 'Microcredentials integration in Pakistan HE — policy gaps, institutional readiness, faculty awareness.'}
+${m ? `Abstract requirements: ${m.abstract}` : 'Target: 200–250 words. Background, gap, method, key finding, implication. Every sentence specific.'}
+No AI phrasing. No filler. Every sentence earns its place. Write only the final abstract.`,
+
+    aicheck: CTX + `Conduct a strict AI-pattern and academic quality audit of the following text.
+For every flagged item:
+1. Quote the exact phrase or sentence
+2. Explain why it is problematic (AI pattern / hollow filler / overclaiming / weak argument)
+3. Rewrite it in Dr. Ehsan's direct, grounded scholarly voice
+
+Also check: Are all claims specific and supported? Are any sections too generic? Does the writing sound like a real Pakistani education researcher or like a machine?
+
+Be strict. Every sentence must justify its existence.
+
+TEXT TO AUDIT:
+${notes || topic}`
+  };
+
+  const p = sectionPrompts[section];
+  if (p) openClaude(p);
+}
+
+// Keep old buildSection as alias for backward compatibility
+function buildSection(key) {
+  const topic = (document.getElementById('paper-topic')||{}).value?.trim() || '';
+  const notes = (document.getElementById('paper-notes')||{}).value?.trim() || '';
+  const map = {
+    researchOutline: 'outline', researchIntro: 'intro',
+    researchLitReview: 'lit', researchMethodology: 'method',
+    researchDraft: 'results', researchAbstract: 'abstract',
+    plagiarismCheck: 'aicheck'
+  };
+  if (map[key]) generateSection(map[key]);
 }
 
 </script>
