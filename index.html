@@ -188,6 +188,25 @@ body{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;background:var(--
 .b-text{font-size:13px;color:var(--text);margin-top:2px;line-height:1.5;}
 @media(max-width:768px){.sidebar{width:200px;}.g2,.g3{grid-template-columns:1fr;}}
 @media(max-width:540px){.sidebar{display:none;}.content{padding:14px;}}
+
+/* ── RESEARCH PIPELINE ── */
+.pipeline-step{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;min-width:52px;}
+.step-circle{width:34px;height:34px;border-radius:50%;background:var(--surface2);border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--text3);transition:all .2s;}
+.step-label{font-size:10px;color:var(--text3);font-weight:600;text-align:center;}
+.active-step .step-circle{background:var(--accent);border-color:var(--accent);color:#fff;}
+.active-step .step-label{color:var(--accent);}
+.done-step .step-circle{background:var(--green);border-color:var(--green);color:#fff;}
+.done-step .step-label{color:var(--green);}
+.step-arrow{display:flex;align-items:center;padding:0 2px;color:var(--border2);font-size:16px;margin-top:-12px;}
+.step-guidance-box{background:var(--accent-bg);border:1px solid var(--accent-border);border-radius:var(--r2);padding:12px 14px;margin-top:4px;}
+.pub-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px;}
+.pub-item:last-child{border-bottom:none;}
+.pub-status{font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600;flex-shrink:0;}
+.fund-result{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:10px;box-shadow:var(--shadow);}
+.fund-result:hover{border-color:var(--green-border);}
+.fund-title{font-size:14px;font-weight:700;color:var(--text);font-family:'Playfair Display',serif;}
+.fund-meta{font-size:12px;color:var(--text2);margin-top:3px;line-height:1.6;}
+.fund-match{font-size:12px;margin-top:6px;padding:6px 10px;border-radius:var(--r2);background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
 </style>
 </head>
 <body>
@@ -219,6 +238,9 @@ body{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;background:var(--
   <div class="nav-section">Opportunities</div>
   <div class="nav-item" onclick="go('opportunities')"><span class="nav-icon">🔭</span> Live Search</div>
   <div class="nav-item" onclick="go('tracked')"><span class="nav-icon">📌</span> My Fellowships</div>
+  <div class="nav-section">Research & Funding</div>
+  <div class="nav-item" onclick="go('research')"><span class="nav-icon">📄</span> Research Engine</div>
+  <div class="nav-item" onclick="go('funding')"><span class="nav-icon">💰</span> Funding Finder</div>
   <div class="nav-section">Content</div>
   <div class="nav-item" onclick="go('writing')"><span class="nav-icon">✦</span> Writing Studio</div>
   <div class="nav-item" onclick="go('content')"><span class="nav-icon">▶</span> Content Hub</div>
@@ -262,9 +284,9 @@ body{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;background:var(--
       <div class="pc pc-3">
         <div class="pc-num pcn-3">3</div>
         <div style="flex:1;">
-          <div style="font-size:14px;font-weight:700;">✦ Ehsaas Book — Next Chapter</div>
-          <div style="font-size:12px;color:var(--text2);margin-top:2px;">Virginia Tech arc. Weekly progress keeps momentum alive.</div>
-          <div class="urgency-row"><span style="font-size:11px;color:var(--green);font-weight:600;">Urgency</span><div class="ubar"><div class="ufill" style="width:55%;background:var(--green);"></div></div><span style="font-size:11px;font-weight:700;color:var(--green);">55%</span><button class="claude-btn claude-btn-sm" style="margin-left:8px;" onclick="openClaude(PROMPTS.ehsaas)">✦ Write</button></div>
+          <div style="font-size:14px;font-weight:700;">💼 Career & Business Opportunities</div>
+          <div style="font-size:12px;color:var(--text2);margin-top:2px;">Job search, skill-sharing, and consultancy pipeline. Keep this active daily.</div>
+          <div class="urgency-row"><span style="font-size:11px;color:var(--accent);font-weight:600;">Urgency</span><div class="ubar"><div class="ufill" style="width:70%;background:var(--accent);"></div></div><span style="font-size:11px;font-weight:700;color:var(--accent);">70%</span><button class="claude-btn claude-btn-sm" style="margin-left:8px;" onclick="openClaude(PROMPTS.jobSearch)">→ Search</button></div>
         </div>
       </div>
 
@@ -285,7 +307,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;background:var(--
       <div class="card">
         <div class="card-title">◈ AI Assistant</div>
         <div class="card-sub" style="margin-bottom:12px;">Type any request. Your full profile is embedded in every prompt. Click Open in Claude — a new tab opens with context pre-loaded.</div>
-        <textarea class="ta" id="ai-inp" placeholder="Type anything — /start · /lecture 2 · /scout · Write Ehsaas chapter · Draft MSCA proposal · YouTube ideas for Quetta..."></textarea>
+        <textarea class="ta" id="ai-inp" placeholder="Type anything — /start · /lecture 2 · /scout · /jobs · Draft MSCA proposal · Find business opportunities · YouTube ideas for Quetta..."></textarea>
         <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
           <button class="claude-btn" onclick="openAICustom()">✦ Open in Claude →</button>
           <span class="chip" onclick="setAI('/start')">⚡ /start</span>
@@ -297,7 +319,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;background:var(--
       <div class="sec-label">Quick prompts</div>
       <div class="g2">
         <div class="card" style="cursor:pointer;" onclick="openClaude(PROMPTS.phdPara)"><div style="font-size:13px;font-weight:700;margin-bottom:4px;">PhD dissertation paragraph</div><div style="font-size:12px;color:var(--text2);">Microcredentials · Humanized prose</div><button class="claude-btn claude-btn-sm" style="margin-top:10px;">Open in Claude →</button></div>
-        <div class="card" style="cursor:pointer;" onclick="openClaude(PROMPTS.ehsaas)"><div style="font-size:13px;font-weight:700;margin-bottom:4px;">Ehsaas book scene</div><div style="font-size:12px;color:var(--text2);">Chan · Virginia Tech · Literary</div><button class="claude-btn claude-btn-sm" style="margin-top:10px;">Open in Claude →</button></div>
+        <div class="card" style="cursor:pointer;" onclick="openClaude(PROMPTS.jobSearch)"><div style="font-size:13px;font-weight:700;margin-bottom:4px;">Career & job strategy</div><div style="font-size:12px;color:var(--text2);">Next 30 days · Positions · Action plan</div><button class="claude-btn claude-btn-sm" style="margin-top:10px;">Open in Claude →</button></div>
         <div class="card" style="cursor:pointer;" onclick="openClaude(PROMPTS.linkedin)"><div style="font-size:13px;font-weight:700;margin-bottom:4px;">LinkedIn outreach</div><div style="font-size:12px;color:var(--text2);">Professional · Genuine</div><button class="claude-btn claude-btn-sm" style="margin-top:10px;">Open in Claude →</button></div>
         <div class="card" style="cursor:pointer;" onclick="openClaude(PROMPTS.youtube)"><div style="font-size:13px;font-weight:700;margin-bottom:4px;">YouTube ideas — Quetta</div><div style="font-size:12px;color:var(--text2);">Urdu · Searchable titles</div><button class="claude-btn claude-btn-sm" style="margin-top:10px;">Open in Claude →</button></div>
       </div>
@@ -556,7 +578,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;background:var(--
         <button class="expand-btn" onclick="toggleSteps('cornell',this)">▼ Step-by-step guide</button>
         <div class="opp-steps-body" id="steps-cornell">
           <div class="step-item"><div class="step-num">1</div><div><div class="step-title">Find Cornell Arts & Sciences Faculty Host</div><div class="step-desc">Email 2–3 education/social sciences faculty now. Hosts need lead time.</div><div class="step-deadline">⏰ Contact by June 2026</div></div></div>
-          <div class="step-item"><div class="step-num">2</div><div><div class="step-title">Prepare CV (PDF, DOI publications listed)</div><div class="step-desc">Refereed vs non-refereed separated. No papers in preparation. Chiraghe Zeest counts.</div></div></div>
+          <div class="step-item"><div class="step-num">2</div><div><div class="step-title">Prepare CV (PDF, DOI publications listed)</div><div class="step-desc">Refereed vs non-refereed separated. No papers in preparation. Include all conference presentations and reports.</div></div></div>
           <div class="step-item"><div class="step-num">3</div><div><div class="step-title">Write 2-Page Research Proposal</div><div class="step-desc">Single-spaced, 12pt, 1-inch margins. What new contribution would Cornell enable?</div><div class="step-deadline">⏰ Draft by September 2026</div></div></div>
           <div class="step-item"><div class="step-num">4</div><div><div class="step-title">3 Recommendation Letters + Submit Oct 15</div><div class="step-desc">One from IIUI doctoral advisor. Request all by early September.</div></div></div>
           <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;">
@@ -606,7 +628,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;background:var(--
         <button class="expand-btn" onclick="toggleSteps('kwi',this)">▼ Step-by-step guide</button>
         <div class="opp-steps-body" id="steps-kwi">
           <div class="step-item"><div class="step-num">1</div><div><div class="step-title">Email KWI for 2027-28 Cycle Info</div><div class="step-desc">Contact international.fellowship@uni-due.de to ask about next cycle. Proactive early inquiry makes a positive impression.</div></div></div>
-          <div class="step-item"><div class="step-num">2</div><div><div class="step-title">Prepare 5-Page Proposal Through Cultural/Sociological Lens</div><div class="step-desc">Frame microcredentials through literary and cultural sociology. Leverage Chiraghe Zeest (Urdu poetry) — KWI values poet-scholar breadth.</div></div></div>
+          <div class="step-item"><div class="step-num">2</div><div><div class="step-title">Prepare 5-Page Proposal Through Cultural/Sociological Lens</div><div class="step-desc">Frame microcredentials through cultural and sociological lens — knowledge production, access, and postcolonial institutional legitimacy. KWI values intellectual breadth across disciplines.</div></div></div>
           <div style="margin-top:12px;">
             <button class="claude-btn claude-btn-sm" onclick="openClaude(PROMPTS.kwiProposal)">✦ Draft KWI proposal</button>
           </div>
@@ -623,7 +645,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;background:var(--
     <!-- ══ WRITING ══ -->
     <div class="panel" id="panel-writing">
       <div class="mode-grid">
-        <div class="mode-btn active" data-mode="ehsaas" onclick="selMode(this)"><span class="mode-icon">✦</span>Ehsaas Book</div>
+        <div class="mode-btn active" data-mode="career" onclick="selMode(this)"><span class="mode-icon">🎯</span>Career/Jobs</div>
         <div class="mode-btn" data-mode="phd-w" onclick="selMode(this)"><span class="mode-icon">◉</span>PhD Writing</div>
         <div class="mode-btn" data-mode="seo" onclick="selMode(this)"><span class="mode-icon">🔍</span>SEO/Blog</div>
         <div class="mode-btn" data-mode="fellowship" onclick="selMode(this)"><span class="mode-icon">🌐</span>Fellowship</div>
@@ -633,10 +655,221 @@ body{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;background:var(--
         <div class="mode-btn" data-mode="poetry" onclick="selMode(this)"><span class="mode-icon">✿</span>Urdu/Poetry</div>
       </div>
       <div class="card">
-        <div class="card-title" id="wmode-title">✦ Ehsaas — Memoir Writing</div>
-        <div class="card-sub" id="wmode-desc" style="margin-bottom:12px;">Chan's voice. Emotionally rich, literary, human. Zero AI phrasing.</div>
+        <div class="card-title" id="wmode-title">🎯 Career & Job Applications</div>
+        <div class="card-sub" id="wmode-desc" style="margin-bottom:12px;">Cover letters, job applications, consultancy proposals. Every document structurally unique. No AI phrasing.</div>
         <textarea class="ta" id="writ-inp" placeholder="Describe the scene, chapter, or what you need..."></textarea>
         <div style="margin-top:10px;"><button class="claude-btn" onclick="openWriting()">✦ Open in Claude →</button></div>
+      </div>
+    </div>
+
+    <!-- ══ RESEARCH ENGINE ══ -->
+    <div class="panel" id="panel-research">
+      <div class="alert alert-blue" style="background:linear-gradient(135deg,#eef4fc,#f5f0fb);border-color:#b8d0f0;">
+        <span class="alert-icon">📄</span>
+        <div><strong>Monthly Publication Pipeline.</strong> This engine connects to your profile, identifies high-demand Q1/Q2 topics, and co-authors complete papers with you — one publication per month. Every output is original, argument-driven, and written in your scholarly voice. No AI phrasing passes through.</div>
+      </div>
+
+      <!-- STEP TRACKER -->
+      <div class="sec-label">Monthly paper pipeline — where are you this month?</div>
+      <div class="card" style="margin-bottom:16px;">
+        <div style="display:flex;gap:0;margin-bottom:16px;overflow-x:auto;">
+          <div id="step-1" class="pipeline-step active-step" onclick="setStep(1)"><div class="step-circle">1</div><div class="step-label">Topic</div></div>
+          <div class="step-arrow">→</div>
+          <div id="step-2" class="pipeline-step" onclick="setStep(2)"><div class="step-circle">2</div><div class="step-label">Outline</div></div>
+          <div class="step-arrow">→</div>
+          <div id="step-3" class="pipeline-step" onclick="setStep(3)"><div class="step-circle">3</div><div class="step-label">Intro</div></div>
+          <div class="step-arrow">→</div>
+          <div id="step-4" class="pipeline-step" onclick="setStep(4)"><div class="step-circle">4</div><div class="step-label">Lit Review</div></div>
+          <div class="step-arrow">→</div>
+          <div id="step-5" class="pipeline-step" onclick="setStep(5)"><div class="step-circle">5</div><div class="step-label">Method</div></div>
+          <div class="step-arrow">→</div>
+          <div id="step-6" class="pipeline-step" onclick="setStep(6)"><div class="step-circle">6</div><div class="step-label">Results</div></div>
+          <div class="step-arrow">→</div>
+          <div id="step-7" class="pipeline-step" onclick="setStep(7)"><div class="step-circle">7</div><div class="step-label">Abstract</div></div>
+          <div class="step-arrow">→</div>
+          <div id="step-8" class="pipeline-step" onclick="setStep(8)"><div class="step-circle">8</div><div class="step-label">Submit</div></div>
+        </div>
+        <div id="step-guidance" class="step-guidance-box">
+          <div style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:6px;">Step 1 — Choose Your Topic</div>
+          <div style="font-size:13px;color:var(--text2);line-height:1.7;">Click <strong>"Generate Topics"</strong> below to get 8 high-demand, Q1/Q2-ready research topics ranked for your profile. Choose one, save it, then move to Step 2.</div>
+        </div>
+      </div>
+
+      <!-- TOPIC GENERATOR -->
+      <div class="sec-label">Step 1 — Topic generator</div>
+      <div class="card">
+        <div class="card-title">📊 High-demand topic scanner</div>
+        <div class="card-sub" style="margin-bottom:12px;">Scans your expertise profile against current literature gaps in Education, EdTech, HE Policy, Teacher Education, and Microcredentials. Returns 8 ranked, Q1/Q2-ready topics with target journals and feasibility scores.</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;">
+          <div style="flex:1;min-width:160px;"><label class="form-label">Research domain focus</label>
+            <select class="sel" id="topic-domain">
+              <option value="microcredentials">Microcredentials & HE Policy</option>
+              <option value="teacher-ed">Teacher Education & Training</option>
+              <option value="edtech">EdTech & Digital Learning</option>
+              <option value="balochistan">Education in Balochistan / Pakistan</option>
+              <option value="leadership">Educational Leadership & Management</option>
+              <option value="tesol">TESOL & Language Education</option>
+              <option value="mixed">Mixed — all domains</option>
+            </select></div>
+          <div style="flex:1;min-width:160px;"><label class="form-label">Journal tier target</label>
+            <select class="sel" id="topic-tier">
+              <option value="q1">Q1 journals only</option>
+              <option value="q1q2">Q1 and Q2 journals</option>
+              <option value="q2">Q2 journals (higher acceptance)</option>
+            </select></div>
+          <div style="flex:1;min-width:160px;"><label class="form-label">Paper type</label>
+            <select class="sel" id="topic-type">
+              <option value="empirical">Empirical study</option>
+              <option value="systematic">Systematic literature review</option>
+              <option value="conceptual">Conceptual / theoretical</option>
+              <option value="mixed-methods">Mixed methods</option>
+              <option value="any">Any type</option>
+            </select></div>
+          <div style="display:flex;align-items:flex-end;">
+            <button class="claude-btn" onclick="genTopics()">📊 Generate topics</button>
+          </div>
+        </div>
+        <div class="card-sub" style="font-size:11px;color:var(--text3);">Searches gaps in: SSCI, Scopus, ERIC, Google Scholar, Taylor & Francis Education, Elsevier Education, Springer Education, Journal of Higher Education Policy, Studies in Higher Education, Teaching and Teacher Education, Computers & Education, and others.</div>
+      </div>
+
+      <!-- PAPER BUILDER -->
+      <div class="sec-label">Steps 2–7 — Paper builder</div>
+      <div class="card">
+        <div class="card-title">✍ Section-by-section paper builder</div>
+        <div class="card-sub" style="margin-bottom:12px;">Paste your chosen topic or title below, select the section you need, and generate a complete, Q1/Q2-ready draft. Every section is written in your voice — no AI phrasing, no generic academic filler.</div>
+        <div style="margin-bottom:10px;"><label class="form-label">Paper title or topic</label>
+          <input class="inp" id="paper-topic" placeholder="E.g. Institutional readiness for microcredential integration in Pakistani universities: a mixed-methods study"/></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+          <button class="btn btn-sm btn-primary" onclick="buildSection('researchOutline')">📋 Full outline</button>
+          <button class="btn btn-sm" onclick="buildSection('researchIntro')">1. Introduction</button>
+          <button class="btn btn-sm" onclick="buildSection('researchLitReview')">2. Literature Review</button>
+          <button class="btn btn-sm" onclick="buildSection('researchMethodology')">3. Methodology</button>
+          <button class="btn btn-sm" onclick="buildSection('researchDraft')">4. Results/Discussion</button>
+          <button class="btn btn-sm" onclick="buildSection('researchAbstract')">5. Abstract</button>
+          <button class="btn btn-sm btn-ghost" onclick="buildSection('plagiarismCheck')">🔍 AI/Plagiarism check</button>
+        </div>
+        <div style="font-size:12px;color:var(--text3);">Each section opens in Claude with your full profile context. Copy the output, paste it back here to check for AI patterns, then refine until it reads as purely yours.</div>
+      </div>
+
+      <!-- JOURNAL TARGETS -->
+      <div class="sec-label">Target Q1/Q2 journals — your field</div>
+      <div class="g2">
+        <div class="card" style="padding:14px;">
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px;">🏆 Q1 Journals</div>
+          <div id="q1-journals" style="font-size:12px;line-height:2;color:var(--text2);">
+            <div>• <strong>Computers & Education</strong> — IF 12.0 · Elsevier</div>
+            <div>• <strong>Teaching and Teacher Education</strong> — IF 4.5 · Elsevier</div>
+            <div>• <strong>Higher Education</strong> — IF 5.4 · Springer</div>
+            <div>• <strong>Studies in Higher Education</strong> — IF 5.1 · Taylor & Francis</div>
+            <div>• <strong>British Journal of Educational Technology</strong> — IF 7.0</div>
+            <div>• <strong>Journal of Higher Education Policy and Management</strong></div>
+            <div>• <strong>International Journal of Educational Technology in HE</strong></div>
+          </div>
+        </div>
+        <div class="card" style="padding:14px;">
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px;">🥈 Q2 Journals (Higher Acceptance Rate)</div>
+          <div style="font-size:12px;line-height:2;color:var(--text2);">
+            <div>• <strong>Education and Information Technologies</strong> — Springer</div>
+            <div>• <strong>Journal of Further and Higher Education</strong></div>
+            <div>• <strong>Asia Pacific Education Review</strong></div>
+            <div>• <strong>International Journal of Educational Development</strong></div>
+            <div>• <strong>Compare: A Journal of Comparative Education</strong></div>
+            <div>• <strong>Educational Research for Policy and Practice</strong></div>
+            <div>• <strong>Journal of Education for Teaching</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PUBLICATION TRACKER -->
+      <div class="sec-label">Publication tracker</div>
+      <div class="card">
+        <div id="pub-tracker-list"></div>
+        <div class="divider"></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <input class="inp" id="pub-title-inp" placeholder="Paper title..." style="flex:2;min-width:180px;"/>
+          <select class="sel" id="pub-status-sel" style="width:140px;">
+            <option>In progress</option>
+            <option>Under review</option>
+            <option>Revision requested</option>
+            <option>Accepted</option>
+            <option>Published</option>
+          </select>
+          <input class="inp" id="pub-journal-inp" placeholder="Journal name..." style="flex:1;min-width:130px;"/>
+          <button class="btn btn-primary btn-sm" onclick="addPub()">+ Add</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ FUNDING FINDER ══ -->
+    <div class="panel" id="panel-funding">
+      <div class="alert alert-green"><span class="alert-icon">💰</span><div><strong>Research Funding Finder.</strong> Tracks active and upcoming grants, research funds, and project funding specifically matched to Dr. Ehsan's expertise in microcredentials, education policy, teacher education, and Pakistan/Balochistan context.</div></div>
+
+      <div class="sec-label">Scan live funding sources</div>
+      <div class="card">
+        <div class="card-title">🔍 Funding scanner</div>
+        <div class="card-sub" style="margin-bottom:12px;">Select a category and scan for currently active funding opportunities. Each result includes eligibility confirmation, amount, deadline, and a direct application link.</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;">
+          <div style="flex:1;min-width:150px;"><label class="form-label">Funding category</label>
+            <select class="sel" id="fund-cat">
+              <option value="research-grant">Research grants</option>
+              <option value="travel-conference">Conference & travel grants</option>
+              <option value="seed-funding">Seed / small project funding</option>
+              <option value="postdoc-fund">Postdoc research allowances</option>
+              <option value="pakistan-specific">Pakistan-specific funds (HEC, BC, USAID)</option>
+              <option value="international">International research funds</option>
+              <option value="all">All categories</option>
+            </select></div>
+          <div style="flex:1;min-width:150px;"><label class="form-label">Funder region</label>
+            <select class="sel" id="fund-region">
+              <option value="global">Global</option>
+              <option value="pakistan">Pakistan (HEC, Higher Ed)</option>
+              <option value="uk">United Kingdom</option>
+              <option value="europe">Europe (EU/DAAD)</option>
+              <option value="usa">USA/Canada</option>
+              <option value="development">Development sector (UN/World Bank)</option>
+            </select></div>
+          <div style="display:flex;align-items:flex-end;">
+            <button class="btn btn-primary" onclick="scanFunding()">💰 Scan funding</button>
+          </div>
+        </div>
+      </div>
+      <div id="funding-results"></div>
+
+      <!-- TRACKED FUNDING SOURCES -->
+      <div class="sec-label">Always-active funding sources for your profile</div>
+      <div class="g2">
+        <div class="card" style="padding:14px;">
+          <div style="font-size:13px;font-weight:700;margin-bottom:10px;">🇵🇰 Pakistan & Regional</div>
+          <div style="font-size:12px;line-height:2.1;color:var(--text2);">
+            <div>• <a href="https://www.hec.gov.pk/english/scholarshipsgrants" target="_blank"><strong>HEC Research Grants</strong></a> — NRPU, TDF, ORIC</div>
+            <div>• <a href="https://www.britishcouncil.pk/programmes/education/higher-education" target="_blank"><strong>British Council Pakistan</strong></a> — Research partnerships</div>
+            <div>• <a href="https://www.usaid.gov/pakistan/education" target="_blank"><strong>USAID Pakistan Education</strong></a></div>
+            <div>• <a href="https://www.akdn.org/our-work/human-development/education" target="_blank"><strong>Aga Khan Foundation</strong></a></div>
+            <div>• <a href="https://www.idrc.ca/en/funding" target="_blank"><strong>IDRC Canada</strong></a> — Developing country research</div>
+          </div>
+        </div>
+        <div class="card" style="padding:14px;">
+          <div style="font-size:13px;font-weight:700;margin-bottom:10px;">🌍 International</div>
+          <div style="font-size:12px;line-height:2.1;color:var(--text2);">
+            <div>• <a href="https://www.daad.de/en/study-and-research-in-germany/scholarships/" target="_blank"><strong>DAAD Germany</strong></a> — Research stays</div>
+            <div>• <a href="https://www.newtonfund.ac.uk" target="_blank"><strong>Newton Fund UK</strong></a> — Pakistan partnerships</div>
+            <div>• <a href="https://erc.europa.eu/apply-grant" target="_blank"><strong>EU Horizon Europe</strong></a> — Education calls</div>
+            <div>• <a href="https://www.thecommonwealth-oecd.org/index.html" target="_blank"><strong>Commonwealth Grants</strong></a></div>
+            <div>• <a href="https://www.worldbank.org/en/programs/scholarships" target="_blank"><strong>World Bank Education</strong></a></div>
+            <div>• <a href="https://www.spencer.org/grant_types/small-research-grant" target="_blank"><strong>Spencer Foundation</strong></a> — Education research</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROPOSAL WRITER -->
+      <div class="sec-label">Funding proposal writer</div>
+      <div class="card">
+        <div class="card-title">✍ Proposal generator</div>
+        <div class="card-sub" style="margin-bottom:12px;">Describe the funding opportunity and what research you want to propose. The system generates a complete, structured funding proposal tailored to that specific funder's priorities — not a generic template.</div>
+        <textarea class="ta" id="fund-prop-inp" placeholder="E.g. HEC NRPU grant — research on microcredential policy readiness in public universities of Balochistan. Budget around PKR 2 million. 18-month project.&#10;&#10;Or: British Council Researcher Links — travel grant to collaborate with a UK university on teacher education research..."></textarea>
+        <div style="margin-top:10px;">
+          <button class="claude-btn" onclick="genFundingProposal()">✦ Generate funding proposal</button>
+        </div>
       </div>
     </div>
 
@@ -667,44 +900,96 @@ body{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;background:var(--
 
 <script>
 // ═══════════════════════════════════════
-// PROFILE CONTEXT
 // ═══════════════════════════════════════
-const CTX = `[CONTEXT — Dr. Muhammad Ehsan's Profile:
-PhD in Education, IIUI Islamabad (dissertation: microcredentials integration in Pakistan HE, completed January 2026). Secondary school teacher near Zhob, Balochistan. Visiting faculty BUITEMS (EDU-6105 Teacher Education in Comparative Perspectives). TEA Fellowship 2019 alumnus (Virginia Tech). M.Phil. Educational Leadership VU Pakistan. TESOL certified UMBC. Published Urdu poet "Chiraghe Zeest". Co-founder PATEN. Freelancer Upwork/Fiverr (SEO, content writing). Memoir "Ehsaas" in progress (protagonist Chan). Fellowship pipeline: MSCA (open now), Humboldt (Jul 2026), Cornell (Oct 2026), British Academy (Oct 2026), KWI (next cycle). Zhob B.Ed/BS institution venture with Tank KPK partners.
+// DR. MUHAMMAD EHSAN — PROFILE & BRAIN
+// ═══════════════════════════════════════
+const CTX = `[DR. MUHAMMAD EHSAN — COMPLETE PROFILE:
 
-WRITING RULES: NEVER use: delve, testament, pivotal, foster, key, overarching, in conclusion, changing landscape, vital, underscore, beacon, realm, tapestry, journey, embark, cutting-edge, transformative, holistic. Write authentic human voice. Warm, scholarly, confident. Generate 90%-complete drafts. For Ehsaas: literary, emotionally deep, slightly generalized settings, never vilify family.]
+QUALIFICATIONS & BACKGROUND:
+- PhD in Education, IIUI Islamabad — completed January 2026. Dissertation: integration of microcredentials in degree programs in Pakistan's higher education.
+- M.Phil. Educational Leadership and Management, Virtual University of Pakistan. Research: impact of teacher behavior on student learning.
+- TESOL Methodology certificate, University of Maryland Baltimore County (UMBC).
+- Secondary school teacher, currently posted at a public school in a village near Zhob, district Zhob, Balochistan.
+- Visiting faculty at BUITEMS: EDU-6105, Teacher Education in Comparative Perspectives.
+- U.S. State Department TEA Fellowship 2019 — 42-day training at Virginia Tech, Blacksburg, Virginia. Visited institutions across Virginia, Richmond, and Washington D.C.
+- Co-founder, PATEN (Pakistani American Teachers of English Network), Director of Outreach and Accessibility (currently inactive).
+- Freelancer: content writing, SEO, digital marketing (Upwork, Fiverr). Meta Social Media Management certified. DigiSkills: Digital Marketing and Freelancing.
+- LEAD2 research community certified member.
+- Active projects: Zhob B.Ed/BS private institution venture (partner: Falcon Institute, Tank KPK); Lumora Cosmetics social media; Quetta/Balochistan Urdu YouTube channel; AI English learning chatbot (zero-budget concept).
+- Fellowship pipeline: MSCA (call open April 2026), Humboldt (July 2026 cut-off), Cornell Klarman (October 2026), British Academy (October 2026), KWI Essen (next cycle).
+
+CURRENT PRIMARY GOALS — in order of urgency:
+1. Secure a fully funded international postdoc fellowship.
+2. Land a strong academic or research career position internationally or in Pakistan.
+3. Identify skill-sharing, consultancy, or business opportunities that match his academic and digital profile.
+
+ABSOLUTE WRITING RULES — no exceptions ever:
+
+BANNED WORDS: delve, testament, pivotal, foster, key, overarching, in conclusion, changing landscape, vital, underscore, beacon, realm, tapestry, journey, embark, cutting-edge, transformative, holistic, leverage, synergy, robust, innovative, game-changing, dynamic, seamlessly, it is worth noting, it is important to note, in today's world, rapidly evolving, thought leader, spearhead, curated, impactful, multifaceted, navigate, landscape.
+
+BANNED OPENING PATTERNS: Never start any document with "I am writing to express..." or "I am excited to apply..." or "I am pleased to submit..." — these are immediate rejection signals to experienced reviewers.
+
+BANNED STRUCTURAL PATTERNS: Never use "Not only... but also...". Never open consecutive paragraphs with "Furthermore," "Moreover," "Additionally." Never end with "I look forward to discussing this opportunity." Never write "My passion for X has driven me to Y." Never use three-adjective stacks like "dedicated, motivated, results-driven."
+
+CRITICAL PATTERN DIVERSITY RULE:
+Every application, cover letter, and proposal must be architecturally different from every other. Different opening type. Different argument sequence. Different evidence selection. Different closing approach. If one document opens with a field problem, the next must open with a specific experience or data point. If one leads with methodology, the next leads with institutional context. Reviewers on selection committees read hundreds of applications — sameness is invisible. Distinctiveness is remembered. The rule is simple: no two documents should feel like they share a template.
+
+VOICE: Dr. Muhammad Ehsan is a Pakistani academic who earned his PhD through sustained effort while teaching in one of the most underserved districts in Balochistan. His voice is direct and grounded. It does not perform enthusiasm or humility. It states what is real, what was done, and what matters. Write from inside that experience, not above it.]
 
 `;
 
+// ═══════════════════════════════════════
+// VARIATION ENGINE — prevents template repetition
+// ═══════════════════════════════════════
+const OPENINGS = [
+  "Pakistan's higher education sector carries a particular kind of tension between ambition and infrastructure.",
+  "Research questions rarely arrive through literature reviews alone.",
+  "When I defended my PhD in January 2026, one examiner asked a question I had not prepared for.",
+  "The district of Zhob sits at the edge of Balochistan, far from any university campus.",
+  "Microcredentials have entered higher education policy faster than institutions have been able to absorb them.",
+  "Three years before I received the TEA Fellowship, I submitted two applications and heard nothing back.",
+  "My dissertation research did not begin in a library. It began in a classroom in Balochistan.",
+  "There is a gap between how Pakistan's HEC describes microcredentials and how universities actually implement them."
+];
+const CLOSINGS = [
+  "I am available at your convenience to discuss this further.",
+  "Please find the requested documents attached. I am happy to provide any additional material.",
+  "I would welcome the opportunity to discuss how my research fits within your current programme.",
+  "Should you require any clarification, I can be reached at the contact details provided.",
+  "Thank you for your consideration. I look forward to your response.",
+  "I hope this application gives you a clear sense of what I bring to this position and what I intend to do with it."
+];
+function randOpening(){return OPENINGS[Math.floor(Math.random()*OPENINGS.length)];}
+function randClosing(){return CLOSINGS[Math.floor(Math.random()*CLOSINGS.length)];}
+
 const PROMPTS = {
-  dailyBriefing: CTX+'Give me my daily executive briefing: (1) Warm direct opening. (2) Top 3 ranked priorities today with urgency reasoning. (3) Any fellowship deadlines in next 60 days. (4) One Ehsaas reminder. Concise, human, energizing.',
-  ehsaas: CTX+'Write the next emotionally rich scene for my memoir "Ehsaas" — Chan at Virginia Tech during the TEA Fellowship. Deep friendship formed there, intellectual atmosphere, quiet tension in his marriage. Literary, warm, human. At least 400 words.',
-  phdPara: CTX+'Write a sophisticated, critically analytical paragraph for my PhD dissertation on microcredentials integration in Pakistan HE. Engage global literature, situate Pakistan context, advance the argument. Elite humanized scholarly prose.',
-  litReview: CTX+'Write a critically analytical literature review paragraph on microcredentials globally, citing key debates and frameworks relevant to Pakistan HE context. Recent scholarship 2018-2025.',
-  methodology: CTX+'Suggest 5 well-reasoned research methodology approaches for studying microcredential integration in Pakistani HE institutions, with brief justification for each.',
-  abstract: CTX+'Draft a complete abstract for my PhD dissertation on microcredentials integration in Pakistan HE. Background, research gap, methodology, expected findings, significance. Humanized scholarly language.',
-  sources: CTX+'Identify 8 high-impact peer-reviewed papers (2018–2025) on microcredentials in higher education relevant to Pakistan or developing country contexts. Full citation + 2-sentence relevance note for each.',
-  problemStmt: CTX+'Write a compelling research problem statement for my PhD study on microcredentials integration in Pakistani universities. Link to HEC policy, global trends, and the research gap.',
-  postdocProposal: CTX+'Draft a high-calibre postdoctoral research proposal on microcredentials and institutional readiness in Pakistan for an international funding committee. Research rationale, objectives, methodology, expected contribution.',
-  linkedin: CTX+'Write a warm, intellectual LinkedIn connection message from me to a professor researching microcredentials or EdTech in South Asia. Genuine, opens academic dialogue, not salesy. 3-4 sentences.',
-  youtube: CTX+'Give me 7 trending Urdu YouTube video ideas about Quetta and Balochistan for 2026, with search-optimized titles and 2-line hooks. Focus on what Pakistani audiences are searching for.',
-  seo: CTX+'Write an SEO title, meta description, and compelling first 250 words for a blog post about microcredentials in Pakistan HE for an English-language academic and policy audience.',
-  humboldt: CTX+'Write a compelling humanized statement of purpose for the Alexander von Humboldt Fellowship (Germany), focusing on my microcredentials research, connection to German/European educational policy, and what the fellowship uniquely enables. 500 words.',
-  taskRank: CTX+'Rank all my current open tasks by priority for today. Tasks: BUITEMS Unit 2 lecture (Monday); MSCA proposal (call open now); contact UK professors (British Academy); Ehsaas chapter; Zhob institution plan; PhD chapter for supervisor; find German host (Humboldt Jul deadline). For each: rank, urgency score/100, 1-sentence reason.',
-  cornellProposal: CTX+'Write a draft 2-page research proposal for Cornell Klarman Postdoctoral Fellowship. Describe proposed research on microcredentials in Pakistan HE, scholarly significance, connection to Cornell Arts & Sciences, what fellowship enables. Single-spaced, academic, humanized, world-class quality.',
-  cornellHost: CTX+'Write a warm professional cold email from me to a Cornell University Arts & Sciences professor (education/social sciences) requesting consideration as my faculty host for the Cornell Klarman Fellowship (portal opens August 2026). Brief self-introduction, research description, why I am contacting them, the ask.',
-  mscaProposal: CTX+'Write a compelling abstract and opening section for an MSCA Global Postdoctoral Fellowship research proposal. Topic: microcredentials integration in Pakistan HE, framed as interdisciplinary Education + digital technology + policy study. SOC panel. Emphasize two-way knowledge transfer and Global South perspective.',
-  mscaEmails: CTX+'Write three separate outreach emails from me to: (1) Prof. James Davenport at Bath University, (2) Prof. Michael Thomas at Liverpool LJMU, (3) Prof. Emeritus John Brennan at The Open University. Purpose: requesting consideration as my European return host for MSCA Global Postdoctoral Fellowship. Warm, scholarly, personalized to each.',
-  humboldtPlan: CTX+'Write a compelling 3,000-word research plan for the Alexander von Humboldt Postdoctoral Fellowship (Germany). Current state of research, proposed objectives and questions, methodology, expected results, relevance to German/European HE policy, what the fellowship specifically enables.',
-  britishEmails: CTX+'Write three warm scholarly introduction emails from me to: (1) Prof. James Davenport at Bath, (2) Prof. Michael Thomas at Liverpool LJMU, (3) Prof. John Brennan at Open University. Purpose: building academic relationship ahead of British Academy Fellowship application October 2026. Reference each professor\'s specific research interests.',
-  kwiProposal: CTX+'Write a 5-page research proposal for KWI International Fellowship Essen Germany. Align with cultural studies, humanities, social sciences focus. Frame microcredentials research through cultural/sociological lens. Leverage my identity as both scholar and published Urdu poet (Chiraghe Zeest).',
-  ytIdeas: CTX+'Give me 8 trending Urdu YouTube video ideas about Quetta and Balochistan for 2026. For each: search-optimized Urdu title, 2-line hook, target audience, why it will perform well.',
-  ytShort: CTX+'Write a punchy 60-second YouTube Short script in Urdu about one fascinating lesser-known fact about Quetta or Balochistan. Visual, energetic, ends with hook.',
-  ytDesc: CTX+'Write a YouTube video description (English + Urdu) and 15 SEO hashtags for a video about Quetta history and culture.',
-  ytBio: CTX+'Write a YouTube channel About section in Urdu and English for a channel about Quetta, Balochistan, and Pakistani culture. Warm, inviting, search-friendly.',
-  lumoraCaptions: CTX+'Write 5 engaging Instagram captions for Lumora Cosmetics Pakistan. Mix Urdu and English. Confident, feminine, aspirational. Subtle call to action each.',
-  lumoraAd: CTX+'Write a short punchy Facebook ad copy for Lumora Cosmetics promoting a skincare product in Pakistan. Headline, body, CTA. No filler words.',
-  lumoraCalendar: CTX+'Create a 7-day social media content calendar for Lumora Cosmetics Pakistan. Each day: content type, platform, caption idea, 2 hashtags.',
+  dailyBriefing: CTX+`Give Dr. Ehsan his daily executive briefing. Be direct and human — not a corporate memo. Cover: (1) The single most important thing to do today and why. (2) The next two priorities in order. (3) Any fellowship or job deadlines in the next 45 days he needs to act on now. (4) One sentence about what would move his career forward most this week. No bullet-point numbering, no headers — write it as a person would speak it.`,
+  phdResearch: CTX+`Write a rigorous, humanized research paragraph for Dr. Ehsan's published or postdoctoral work on microcredentials integration in Pakistan's higher education. Draw on real debates in the field. No AI phrasing. No performative academic language. Argument-first, evidence-second structure.`,
+  litReview: CTX+`Write a critically analytical literature review paragraph on microcredentials in higher education, engaging global debates and situating the Pakistan context specifically. Use recent scholarship (2019-2025). No summary writing — every sentence must advance an argument.`,
+  methodology: CTX+`Suggest 5 methodologically distinct research approaches for studying microcredential integration in Pakistani HE institutions. For each: the approach, why it fits this specific context, and one limitation to acknowledge.`,
+  abstract: CTX+`Draft a tight, precise abstract for Dr. Ehsan's PhD dissertation on microcredentials integration in Pakistan's higher education. Background, research gap, method, key finding or contribution, significance. Maximum 250 words. No AI phrasing. Read like a human researcher wrote it after years of work.`,
+  sources: CTX+`Identify 8 high-quality peer-reviewed papers (2019-2025) on microcredentials in higher education with direct relevance to Pakistan or similar developing country contexts. Full citation + 2-sentence note on why each matters for this specific research.`,
+  postdocProposal: CTX+`Draft a postdoctoral research proposal on microcredentials, institutional readiness, and policy implementation in Pakistan's HE sector. Open with: "${randOpening()}" Structure: research context, specific gap, proposed questions, methodology, expected contribution to international scholarship. No template language. Close with: "${randClosing()}"`,
+  linkedin: CTX+`Write a LinkedIn message from Dr. Ehsan to a professor working on microcredentials, EdTech policy, or educational leadership in South Asia or internationally. The message should feel like it was written by a real person who read their work — not a networking template. 4-5 sentences. No "I came across your profile and was impressed."`,
+  youtube: CTX+`Give 8 Urdu YouTube video ideas about Quetta and Balochistan for 2026. For each: a search-optimized Urdu title, a 2-line hook, and a brief note on why Pakistani audiences would click it. Focus on demand and searchability, not what sounds interesting to an outsider.`,
+  seo: CTX+`Write an SEO-optimized title, meta description, and first 300 words for a blog post on microcredentials in Pakistan's higher education. Target: English-language academic and policy readers. Natural keyword placement. The writing must not read like SEO writing.`,
+  taskRank: CTX+`Rank Dr. Ehsan's current open tasks by priority for today. Tasks: BUITEMS Unit 2 lecture package; MSCA fellowship proposal (call open now); contact UK professors for British Academy and MSCA; Zhob institution partnership plan; find German host for Humboldt (July deadline); Cornell host outreach (portal August). For each: rank, urgency score out of 100, and one blunt sentence of reasoning. Be direct, not diplomatic.`,
+  cornellProposal: CTX+`Write a 2-page research proposal for the Cornell Klarman Postdoctoral Fellowship. Open with: "${randOpening()}" The proposal should describe the research Dr. Ehsan would conduct at Cornell on microcredentials in Pakistan's HE system, what scholarly contribution it makes, why Cornell's Arts & Sciences environment is specifically suited to this work, and what the 3-year timeline enables. Single-spaced, 12pt equivalent. No template language. Close with: "${randClosing()}"`,
+  cornellHost: CTX+`Write a faculty host outreach email from Dr. Ehsan to a Cornell University education or social sciences professor ahead of the Klarman Fellowship portal opening in August 2026. Do not open with "I am writing to express my interest." Open instead with a direct reference to the professor's research and a specific connection to Dr. Ehsan's work. Include: who he is, what he researches, why this professor specifically, and the concrete ask. Close with: "${randClosing()}"`,
+  mscaProposal: CTX+`Write the abstract and opening section of an MSCA Global Postdoctoral Fellowship proposal. Panel: SOC (Social Sciences). Open with: "${randOpening()}" The research topic: microcredentials integration and policy implementation in Pakistan's HE system, framed as interdisciplinary — Education, digital technology, institutional policy. Demonstrate two-way knowledge transfer explicitly: what Dr. Ehsan brings to Europe from Pakistan, and what European methods/frameworks he brings back. No generic EU funding language.`,
+  mscaEmails: CTX+`Write three distinct outreach emails from Dr. Ehsan — one each to Prof. James Davenport (Bath University), Prof. Michael Thomas (Liverpool LJMU), and Prof. Emeritus John Brennan (Open University) — requesting consideration as European return host for an MSCA Global PF application. Each email must open differently, reference that specific professor's actual research focus, and make the connection to Dr. Ehsan's microcredentials work concrete and specific. No email should feel like a copy of another.`,
+  humboldtPlan: CTX+`Write a 3,000-word research plan for the Alexander von Humboldt Postdoctoral Fellowship. Open with: "${randOpening()}" Structure: current state of the research field and where Dr. Ehsan's PhD findings sit within it; specific research questions proposed for the German fellowship period; methodology; expected results and how they advance international scholarship; concrete connection to German or European HE policy; what the Humboldt Fellowship specifically enables that no other programme could. Academic but never bureaucratic. Close with: "${randClosing()}"`,
+  britishEmails: CTX+`Write three separate introduction emails from Dr. Ehsan to Prof. James Davenport (Bath), Prof. Michael Thomas (Liverpool LJMU), and Prof. John Brennan (Open University), with the aim of building academic relationships before applying for the British Academy Fellowship in October 2026. Each email must open differently. Each must reference something specific about that professor's research and connect it honestly to Dr. Ehsan's own work. No email should read like a form letter.`,
+  kwiProposal: CTX+`Write a 5-page research proposal for the KWI International Fellowship at the Institute for Advanced Study in the Humanities, Essen, Germany. Open with: "${randOpening()}" Frame Dr. Ehsan's microcredentials research through a cultural and sociological lens — connect to questions of knowledge production, access, and institutional legitimacy in postcolonial educational systems. KWI values intellectual breadth; use Dr. Ehsan's experience of teaching in Balochistan, researching in Islamabad, and training in the United States as evidence of cross-contextual scholarly formation. No generic humanities grant language.`,
+  jobSearch: CTX+`Dr. Ehsan is actively seeking: (1) postdoc fellowships fully funded internationally, (2) academic or research career positions in education/EdTech/HE policy, (3) skill-sharing or consultancy opportunities in education, digital marketing, or content. Generate a targeted strategy for the next 30 days: which specific positions or calls to apply to, in what order, with what materials, and what to say in each approach. Be specific about real institutions, real calls, and real timelines.`,
+  businessOpp: CTX+`Identify 5 concrete business or skill-sharing opportunities that match Dr. Ehsan's profile: PhD in Education, SEO/content writing experience, TESOL certification, digital marketing training, teaching background in Pakistan, international network from TEA Fellowship. For each opportunity: what it is, where to access it, realistic earning or growth potential, and what Dr. Ehsan needs to do in the first week to pursue it.`,
+  ytIdeas: CTX+`Generate 8 Urdu YouTube video ideas about Quetta and Balochistan for 2026. For each: search-optimized Urdu title, 2-line hook, target audience, and why it will perform well in Pakistani search results.`,
+  ytShort: CTX+`Write a 60-second YouTube Short script in Urdu about one specific, lesser-known fact about Quetta or Balochistan. Direct, visual, punchy. Ends with a reason to watch more.`,
+  ytDesc: CTX+`Write a YouTube video description (English and Urdu) and 15 SEO hashtags for a video about Quetta's history and culture. Optimized for actual search behaviour, not keyword stuffing.`,
+  ytBio: CTX+`Write a YouTube channel About section in Urdu and English for a channel covering Quetta, Balochistan, and Pakistani culture. Warm, specific, and search-friendly without being gimmicky.`,
+  lumoraCaptions: CTX+`Write 5 Instagram captions for Lumora Cosmetics Pakistan. Mix Urdu and English naturally. Tone: confident, direct, aspirational — not girlboss-generic. Each ends with a subtle action prompt.`,
+  lumoraAd: CTX+`Write Facebook ad copy for Lumora Cosmetics promoting a skincare product in Pakistan. Headline, 2-line body, CTA. Speaks directly to Pakistani women. No hollow superlatives.`,
+  lumoraCalendar: CTX+`Create a 7-day social media content calendar for Lumora Cosmetics Pakistan. For each day: platform, content type, caption idea, 2 hashtags. Mix educational, promotional, and engagement content.`,
 };
 
 // ═══════════════════════════════════════
@@ -719,6 +1004,8 @@ const TABMETA = {
   tasks:{title:'Daily Task Manager',sub:'Priority-ranked — know what to do first every day'},
   opportunities:{title:'Live Opportunity Search',sub:'Real-time fellowships, jobs, consultancies, grants'},
   tracked:{title:'My Fellowships',sub:'5 tracked opportunities with step-by-step guides'},
+  research:{title:'Research Paper Engine',sub:'Monthly publication pipeline — Q1/Q2 journal ready, plagiarism-free'},
+  funding:{title:'Funding Finder',sub:'Grants, research funds, and project funding relevant to your profile'},
   writing:{title:'Writing Studio',sub:'Humanized elite writing — all modes'},
   content:{title:'Content Hub',sub:'Quetta YouTube · Lumora Cosmetics'},
 };
@@ -760,6 +1047,8 @@ function openAICustom(){
   else if(v.startsWith('/lecture')){const n=v.split(' ')[1]||'2';v=CTX+`Generate complete 3-deliverable Monday-ready lecture package for BUITEMS EDU-6105 Unit ${n}: (1) PhD-level source summary (Farooq 2014, Hargreaves & Fullan 2012, Moore 2014, Tibble 2015 + modern sources), (2) hour-by-hour 3-hour session plan with slide topics and activities, (3) 7-source APA reading list with annotations. Humanized, detailed.`;}
   else if(v==='/scout')v=CTX+'Generate a hyper-persuasive, humanized query letter for the best-matched current fellowship for my profile. Recommend MSCA or Humboldt as strongest active options and draft the opening application letter.';
   else if(v==='/brief')v=PROMPTS.dailyBriefing;
+  else if(v==='/jobs')v=PROMPTS.jobSearch;
+  else if(v==='/biz')v=PROMPTS.businessOpp;
   else v=CTX+v;
   openClaude(v);
 }
@@ -1162,7 +1451,7 @@ const DEF_TASKS=[
   {text:'Draft MSCA Global PF research proposal (call open now)',cat:'Fellowship',pri:'high',done:false},
   {text:'Contact Prof. James Davenport at Bath University re: MSCA/British Academy',cat:'Fellowship',pri:'high',done:false},
   {text:'Find German academic host for Humboldt Fellowship (deadline Jul 15)',cat:'Fellowship',pri:'high',done:false},
-  {text:'Write next Ehsaas chapter — Virginia Tech friendship arc',cat:'Book',pri:'med',done:false},
+  {text:'Search and apply for 2 new postdoc/job opportunities this week',cat:'Fellowship',pri:'high',done:false},
   {text:'Finalize Zhob institution partnership agreement',cat:'Business',pri:'med',done:false},
   {text:'Submit PhD chapter draft to IIUI supervisor',cat:'PhD',pri:'med',done:false},
 ];
@@ -1198,17 +1487,199 @@ function toggleSteps(id,btn){const el=document.getElementById('steps-'+id);const
 // ═══════════════════════════════════════
 let wMode='ehsaas';
 const WMODES={
-  'ehsaas':{title:'✦ Ehsaas — Memoir Writing',desc:"Chan's voice. Emotionally rich, literary, human. Zero AI phrasing.",prompt:i=>CTX+`Write a deeply human, emotionally rich memoir passage for "Ehsaas" (protagonist: Chan). Request: ${i}. Literary, warm, natural. At least 350 words.`},
+  'career':{title:'🎯 Career & Job Applications',desc:'Cover letters, job applications, consultancy pitches. Every document structurally unique. No AI phrasing.',prompt:i=>CTX+`Write a job application, cover letter, or career document for: ${i}. Open with a structurally unique approach — not a standard opener. Argument-first. No AI vocabulary. Direct, confident, grounded in real experience.`},
   'phd-w':{title:'◉ PhD Academic Writing',desc:'Sophisticated humanized scholarly prose.',prompt:i=>CTX+`Write PhD-level academic prose on: ${i}. For microcredentials in Pakistan HE context. Scholarly but never robotic.`},
   'seo':{title:'🔍 SEO / Blog Writing',desc:'Keyword-optimized with natural flow.',prompt:i=>CTX+`Write SEO-optimized content: ${i}. Natural keyword integration, engaging for human readers.`},
   'fellowship':{title:'🌐 Fellowship / Grant',desc:'Elite, winning application prose.',prompt:i=>CTX+`Write an elite, humanized fellowship or grant application component for: ${i}. Draw on my full profile.`},
   'linkedin':{title:'💼 LinkedIn / Professional',desc:'Warm, intellectual, genuine.',prompt:i=>CTX+`Write a professional yet warm LinkedIn message or post for: ${i}. Genuine, my voice.`},
   'youtube':{title:'▶ YouTube Script',desc:'Urdu-friendly, searchable, engaging.',prompt:i=>CTX+`Write a YouTube script, title, or description for: ${i}. Urdu-friendly, searchable.`},
   'copy':{title:'✎ Copywriting / Ad Copy',desc:'Sharp, persuasive, zero filler.',prompt:i=>CTX+`Write sharp, persuasive copywriting for: ${i}. Direct, compelling.`},
-  'poetry':{title:'✿ Urdu / Poetic Writing',desc:'Literary Urdu drawing on Chiraghe Zeest depth.',prompt:i=>CTX+`Write a literary poetic piece drawing on Urdu sensibility and Chiraghe Zeest for: ${i}.`},
+  'poetry':{title:'✿ Urdu / Creative Writing',desc:'Urdu and English creative writing with literary depth.',prompt:i=>CTX+`Write a literary creative piece in Urdu or English for: ${i}. Natural voice, human depth, no AI phrasing.`},
 };
 function selMode(el){document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');wMode=el.getAttribute('data-mode');document.getElementById('wmode-title').textContent=WMODES[wMode].title;document.getElementById('wmode-desc').textContent=WMODES[wMode].desc;}
 function openWriting(){const v=document.getElementById('writ-inp').value.trim();if(!v){alert('Describe what you need written.');return;}openClaude(WMODES[wMode].prompt(v));}
+
+// ═══════════════════════════════════════
+// RESEARCH ENGINE
+// ═══════════════════════════════════════
+const STEP_GUIDES = {
+  1: {title:'Step 1 — Choose Your Topic', text:'Click "Generate topics" to get 8 ranked, Q1/Q2-ready research topics. Choose one that matches your current data access and interests, then move to Step 2.'},
+  2: {title:'Step 2 — Build Your Outline', text:'Paste your chosen title in the paper builder below and click "Full outline." You will get a complete section-by-section structure with key arguments, suggested references, and methodology guidance.'},
+  3: {title:'Step 3 — Write the Introduction', text:'Click "Introduction" in the paper builder. The output gives you a full, argument-driven introduction. Paste it into your document, then read it aloud — if any sentence sounds like a robot, flag it and refine.'},
+  4: {title:'Step 4 — Literature Review', text:'This is the most time-consuming section. Click "Literature Review" and generate a thematic, argument-driven review. Then verify every cited paper is real by searching Google Scholar. Add 2-3 sources you find yourself.'},
+  5: {title:'Step 5 — Methodology', text:'Click "Methodology" and specify your data source (e.g. interviews with faculty in Zhob, survey of BUITEMS students, document analysis of HEC policy). The output will be tailored to your actual research context.'},
+  6: {title:'Step 6 — Results & Discussion', text:'This section must use your actual data or findings. Use the AI to help structure and interpret — but the findings themselves must come from your research. Paste your raw results or notes and request help interpreting them.'},
+  7: {title:'Step 7 — Abstract', text:'Generate the abstract last — after the full paper is drafted. Click "Abstract" with your final title. A tight, 250-word abstract that accurately reflects your paper is what editors read first.'},
+  8: {title:'Step 8 — Submit', text:'Before submitting: (1) Run the AI/plagiarism check on your full paper. (2) Format according to the target journal's author guidelines. (3) Write a cover letter — use the Writing Studio fellowship mode. (4) Submit and track in the publication tracker below.'}
+};
+
+function setStep(n) {
+  for(let i=1;i<=8;i++){
+    const el=document.getElementById('step-'+i);
+    if(!el)continue;
+    if(i<n)el.className='pipeline-step done-step';
+    else if(i===n)el.className='pipeline-step active-step';
+    else el.className='pipeline-step';
+  }
+  const g=STEP_GUIDES[n];
+  document.getElementById('step-guidance').innerHTML=`<div style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:6px;">${g.title}</div><div style="font-size:13px;color:var(--text2);line-height:1.7;">${g.text}</div>`;
+  localStorage.setItem('research-step', n);
+}
+
+window.addEventListener('load',()=>{
+  const savedStep = parseInt(localStorage.getItem('research-step')||'1');
+  setStep(savedStep);
+});
+
+function genTopics() {
+  const domain = document.getElementById('topic-domain').value;
+  const tier = document.getElementById('topic-tier').value;
+  const type = document.getElementById('topic-type').value;
+  const domainLabels = {
+    'microcredentials':'microcredentials, credential innovation, and higher education policy',
+    'teacher-ed':'teacher education, teacher training, and professional development',
+    'edtech':'educational technology, digital learning, and online education',
+    'balochistan':'education in Pakistan, Balochistan, and underserved communities',
+    'leadership':'educational leadership, school management, and institutional governance',
+    'tesol':'TESOL, English language teaching, and language education policy',
+    'mixed':'microcredentials, teacher education, EdTech, and Pakistan HE policy'
+  };
+  const tierLabel = tier==='q1'?'Q1 Scopus/SSCI journals only':tier==='q2'?'Q2 journals (higher acceptance rates)':'Q1 and Q2 Scopus/SSCI journals';
+  const prompt = CTX + `Generate 8 high-demand, highly publishable research paper topics in the domain of ${domainLabels[domain]}.
+
+Requirements for each topic:
+1. TITLE — exact paper title phrased for a ${tierLabel} submission. Must be specific, not generic.
+2. TARGET JOURNAL — name one real, specific journal (${tierLabel}) with its impact factor if known.
+3. DEMAND RATIONALE — what specific gap in the 2022–2025 literature does this address? Name 1-2 real papers that define the gap.
+4. FEASIBILITY FOR DR. EHSAN — what data or access does he realistically have to conduct this research (given his location in Balochistan, BUITEMS connection, PhD on microcredentials, TEA Fellowship network)?
+5. PAPER TYPE — ${type==='any'?'recommend the most appropriate type':type}.
+6. ESTIMATED COMPLETION TIME — realistic weeks to complete if working part-time.
+7. PUBLISHABILITY SCORE — rate 1-10 based on demand + feasibility + novelty.
+
+Rank the 8 topics by publishability score. Be specific throughout — no generic topic suggestions.`;
+  openClaude(prompt);
+}
+
+function buildSection(promptKey) {
+  const topic = document.getElementById('paper-topic').value.trim();
+  if(!topic){alert('Please enter your paper title or topic first.');return;}
+  const sectionPrompts = {
+    researchOutline: CTX+`Generate a complete research paper outline for a Q1/Q2 journal submission on: "${topic}". Include: journal-ready title, abstract structure, introduction outline with key arguments and 3 papers to engage, literature review themes (thematic, not chronological) with 6 real suggested papers, methodology section with specific design and analysis method, results/discussion structure with key argument threads, conclusion outline, and reference style recommendation. Every section must be specific — not generic placeholder headings.`,
+    researchIntro: CTX+`Write a complete Introduction section for a Q1/Q2 journal paper titled: "${topic}". Open with the real-world or field problem — not a generic statement. Establish research context (2-3 sentences), identify the specific gap citing named studies, state the research purpose clearly, list 3-4 research questions or objectives, close with paper overview. No AI phrasing. Argument-first from sentence one. Minimum 500 words.`,
+    researchLitReview: CTX+`Write a complete Literature Review section for a Q1/Q2 journal paper on: "${topic}". Structure thematically. Each paragraph must: advance a specific argument about the state of the field, engage 2-3 real named researchers and their actual positions, identify a specific gap or contradiction, and connect to Dr. Ehsan's context (Pakistan HE, microcredentials, educational leadership). No summary writing. No AI phrasing. Minimum 1000 words.`,
+    researchMethodology: CTX+`Write a complete Methodology section for a Q1/Q2 research paper on: "${topic}". Include: research paradigm and justification, research design, sampling strategy with rationale, data collection instruments or procedures, analysis method, trustworthiness or validity measures, ethical considerations, and limitations. Make it specific to what Dr. Ehsan can realistically conduct given his location in Balochistan and his institutional connections. No textbook methodology writing — write as a practising researcher.`,
+    researchDraft: CTX+`Write a complete Results and Discussion section for a Q1/Q2 research paper on: "${topic}". Structure the discussion thematically around the key findings. Each discussion paragraph must: present a specific finding or argument, connect it to existing literature by agreeing with or challenging named scholars, explain the theoretical or practical significance, and acknowledge limitations where relevant. No AI phrasing. Argument-driven throughout. Minimum 800 words.`,
+    researchAbstract: CTX+`Write a complete abstract for a Q1/Q2 journal paper on: "${topic}". Structure: one sentence on context/problem, one sentence on gap in literature, one sentence on research purpose, two sentences on methodology, two sentences on key findings or expected contribution, one sentence on implications for policy or practice. Maximum 250 words. Every sentence must be specific to this paper — nothing should be transferable to another paper.`,
+    plagiarismCheck: CTX+`Review this research text for AI-pattern writing, overused academic phrases, hollow filler sentences, and anything that would flag in Turnitin, iThenticate, or an AI detection tool. Text to review: "${topic}". For each flagged element: (1) Quote the problematic phrase or sentence. (2) Explain specifically why it is problematic. (3) Rewrite it in Dr. Ehsan's natural scholarly voice. Be strict — apply journal editor standards.`
+  };
+  const p = sectionPrompts[promptKey] || CTX + `Write the requested research paper section for: "${topic}". Q1/Q2 journal standard. No AI phrasing.`;
+  openClaude(p);
+}
+
+// ── PUBLICATION TRACKER ──
+let pubs = JSON.parse(localStorage.getItem('ehsan-pubs') || '[]');
+const PUB_STATUS_COLORS = {
+  'In progress':'#b06a00,#fff8ec',
+  'Under review':'#2563a8,#eef4fc',
+  'Revision requested':'#6b3fa0,#f5f0fb',
+  'Accepted':'#1e7a4a,#edf7f2',
+  'Published':'#1e7a4a,#edf7f2'
+};
+function renderPubs() {
+  const el = document.getElementById('pub-tracker-list');
+  if(!pubs.length){el.innerHTML='<div style="font-size:13px;color:var(--text3);padding:8px 0;">No papers tracked yet. Add your first paper below.</div>';return;}
+  el.innerHTML = pubs.map((p,i) => {
+    const [col,bg] = (PUB_STATUS_COLORS[p.status]||'#999,#f0f0f0').split(',');
+    return `<div class="pub-item">
+      <div style="flex:1;"><div style="font-size:13px;font-weight:600;">${p.title}</div><div style="font-size:11px;color:var(--text3);">${p.journal||'Journal TBD'}</div></div>
+      <span class="pub-status" style="background:${bg};color:${col};border:1px solid ${col}55;">${p.status}</span>
+      <button onclick="removePub(${i})" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px;">✕</button>
+    </div>`;
+  }).join('');
+}
+function addPub() {
+  const t = document.getElementById('pub-title-inp').value.trim();
+  const s = document.getElementById('pub-status-sel').value;
+  const j = document.getElementById('pub-journal-inp').value.trim();
+  if(!t)return;
+  pubs.unshift({title:t,status:s,journal:j});
+  localStorage.setItem('ehsan-pubs',JSON.stringify(pubs));
+  renderPubs();
+  document.getElementById('pub-title-inp').value='';
+  document.getElementById('pub-journal-inp').value='';
+}
+function removePub(i){pubs.splice(i,1);localStorage.setItem('ehsan-pubs',JSON.stringify(pubs));renderPubs();}
+renderPubs();
+
+// ── FUNDING SCANNER ──
+const FUNDING_DB = {
+  'research-grant': [
+    {name:'HEC National Research Programme for Universities (NRPU)',funder:'Higher Education Commission Pakistan',amount:'PKR 1–5 million',deadline:'Rolling — check hec.gov.pk',match:'Direct match: education research in Pakistan HE. Dr. Ehsan qualifies as principal investigator.',url:'https://www.hec.gov.pk/english/scholarshipsgrants/Pages/default.aspx'},
+    {name:'British Council Researcher Links Workshop Grant',funder:'British Council / Newton Fund',amount:'Up to £50,000',deadline:'Annual call — check britishcouncil.pk',match:'Education research collaboration between Pakistan and UK. His TESOL + PhD profile is strong.',url:'https://www.britishcouncil.pk/programmes/education/higher-education'},
+    {name:'Spencer Foundation Small Research Grant',funder:'Spencer Foundation USA',amount:'Up to $50,000',deadline:'Rolling — quarterly decisions',match:'Education research with clear policy implications. Microcredentials + Pakistan HE is a strong fit.',url:'https://www.spencer.org/grant_types/small-research-grant'},
+    {name:'DAAD Research Grant for Academics from Developing Countries',funder:'DAAD Germany',amount:'€2,000–3,000/month + travel',deadline:'15 October and 15 April annually',match:'Research stay in Germany. Combine with Humboldt outreach. Strong match on education policy.',url:'https://www.daad.de/en/study-and-research-in-germany/scholarships/'},
+  ],
+  'pakistan-specific': [
+    {name:'HEC Technology Development Fund',funder:'Higher Education Commission Pakistan',amount:'PKR 2–10 million',deadline:'Annual call',match:'EdTech and digital learning research. His microcredentials + digital learning background fits.',url:'https://www.hec.gov.pk'},
+    {name:'USAID Pakistan Education Policy & Planning',funder:'USAID Pakistan',amount:'Variable — project-based',deadline:'Periodic calls on usaid.gov/pakistan',match:'Education policy in underserved areas. Balochistan location is a specific asset for USAID.',url:'https://www.usaid.gov/pakistan/education'},
+    {name:'Aga Khan Foundation Education Programme',funder:'Aga Khan Foundation',amount:'Variable',deadline:'Application-based',match:'Education in Balochistan/rural Pakistan. Strong alignment with his teaching context.',url:'https://www.akdn.org/our-work/human-development/education'},
+  ],
+  'travel-conference': [
+    {name:'AERA Annual Meeting Travel Grant',funder:'American Educational Research Association',amount:'$500–2,000',deadline:'October annually for April conference',match:'Largest education research conference globally. Microcredentials sessions are growing.',url:'https://www.aera.net'},
+    {name:'CIES Conference Travel Grant',funder:'Comparative & International Education Society',amount:'$300–800',deadline:'November annually',match:'Comparative education focus. Pakistan/Balochistan research has strong fit here.',url:'https://www.cies.us'},
+    {name:'British Educational Research Association Bursary',funder:'BERA UK',amount:'£500–1,500',deadline:'Annual',match:'UK-Pakistan connection. Supports researchers from developing countries.',url:'https://www.bera.ac.uk'},
+  ],
+  'international': [
+    {name:'Newton Fund Advanced Fellowships',funder:'UK Research and Innovation / Newton Fund',amount:'Variable — project-based',deadline:'Annual calls via UKRI',match:'UK-Pakistan research partnerships in education and social science.',url:'https://www.newtonfund.ac.uk'},
+    {name:'IDRC Doctoral Research Awards',funder:'International Development Research Centre Canada',amount:'CAD 20,000',deadline:'Annual — check idrc.ca',match:'Development-focused education research. Pakistan qualifies as target country.',url:'https://www.idrc.ca/en/funding'},
+    {name:'EU Horizon Europe — Education & Training calls',funder:'European Commission',amount:'€500,000–3 million (consortium)',deadline:'Annual rolling calls',match:'Requires European partner institution. Use MSCA contacts at Bath/Liverpool to form a consortium.',url:'https://erc.europa.eu'},
+  ],
+};
+
+function scanFunding() {
+  const cat = document.getElementById('fund-cat').value;
+  const region = document.getElementById('fund-region').value;
+  const el = document.getElementById('funding-results');
+  el.innerHTML = '<div class="search-loading"><span class="spin big-spin"></span><div style="font-size:13px;font-weight:600;color:var(--text);">Scanning funding databases...</div></div>';
+
+  setTimeout(() => {
+    let sources = [];
+    if(cat === 'all') sources = Object.values(FUNDING_DB).flat();
+    else sources = FUNDING_DB[cat] || FUNDING_DB['research-grant'];
+
+    if(!sources.length) sources = FUNDING_DB['research-grant'];
+
+    el.innerHTML = `<div class="alert alert-green" style="margin-bottom:14px;"><span class="alert-icon">✅</span><div><strong>${sources.length} funding opportunities found</strong> matched to your profile. Click any to open the application page directly.</div></div>` +
+      sources.map(f => `
+        <div class="fund-result" onclick="window.open('${f.url}','_blank')" style="cursor:pointer;">
+          <div class="fund-result-header" style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
+            <div>
+              <div class="fund-title">${f.name}</div>
+              <div class="fund-meta"><strong>Funder:</strong> ${f.funder} &nbsp;|&nbsp; <strong>Amount:</strong> ${f.amount}</div>
+              <div class="fund-meta"><strong>Deadline:</strong> ${f.deadline}</div>
+            </div>
+            <span style="font-size:20px;flex-shrink:0;">↗</span>
+          </div>
+          <div class="fund-match">✓ Profile match: ${f.match}</div>
+          <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="claude-btn claude-btn-sm" onclick="event.stopPropagation();genFundingFromDB('${f.name}','${f.funder}','${f.amount}')">✦ Generate proposal</button>
+            <button class="btn btn-sm btn-ghost" onclick="event.stopPropagation();window.open('${f.url}','_blank')">Open application page ↗</button>
+          </div>
+        </div>`).join('');
+  }, 800);
+}
+
+function genFundingFromDB(name, funder, amount) {
+  const p = CTX + `Write a complete research funding proposal for: ${name} by ${funder} (amount: ${amount}). Structure: Project title, Executive summary (200 words max), Problem statement and research gap, Research objectives (3-4 specific objectives), Methodology outline, Expected outputs and impact, Dr. Ehsan's qualifications as PI (draw on his PhD, TEA Fellowship, BUITEMS position, and Balochistan teaching context), Budget justification outline, Timeline (month-by-month for 12-18 months). Writing must be: direct and evidence-based, free of all AI phrasing, structured for both academic and non-academic reviewers. Open with a unique angle specific to this funder's priorities — not a standard grant opener.`;
+  openClaude(p);
+}
+
+function genFundingProposal() {
+  const v = document.getElementById('fund-prop-inp').value.trim();
+  if(!v){alert('Describe the funding opportunity and your research idea.');return;}
+  openClaude(PROMPTS.fundingProposal.replace('the opportunity provided', v));
+}
+
 </script>
 </body>
 </html>
