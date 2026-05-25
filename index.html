@@ -1347,7 +1347,60 @@ body{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;background:var(--
 </div>
 </div>
 
-<script>
+<script>var gCalConnected = false;
+
+const TABMETA = {
+  dashboard:{title:'Dashboard',sub:'Your personal executive assistant — always ready'},
+  assistant:{title:'AI Assistant',sub:'Free-form prompts and quick-launch tools'},
+  lecture:{title:'Lecture Prep',sub:'BUITEMS EDU-6105 · Teacher Education in Comparative Perspectives'},
+  phd:{title:'My Research Hub',sub:'Post-PhD academic research, publications, and microcredentials scholarship'},
+  calendar:{title:'Google Calendar',sub:'Live schedule sync — never miss a deadline'},
+  tasks:{title:'Daily Task Manager',sub:'Priority-ranked — know what to do first every day'},
+  opportunities:{title:'Live Opportunity Search',sub:'Real-time fellowships, jobs, consultancies, grants'},
+  tracked:{title:'My Fellowships',sub:'5 tracked opportunities with step-by-step guides'},
+  research:{title:'Research Paper Engine',sub:'Monthly publication pipeline — Q1/Q2 journal ready, plagiarism-free'},
+  funding:{title:'Funding Finder',sub:'Grants, research funds, and project funding relevant to your profile'},
+  writing:{title:'Writing Studio',sub:'Humanized elite writing — all modes'},
+  content:{title:'Content Hub',sub:'Quetta YouTube · Lumora Cosmetics'},
+};
+
+function go(name){
+  try {
+    // Hide all panels
+    var panels = document.querySelectorAll('.panel');
+    for(var j=0;j<panels.length;j++){
+      panels[j].style.display='none';
+      panels[j].classList.remove('active');
+    }
+    // Show target panel
+    var target = document.getElementById('panel-'+name);
+    if(target){
+      target.style.display='block';
+      target.classList.add('active');
+    }
+    // Update nav highlight
+    var navItems = document.querySelectorAll('.nav-item');
+    for(var i=0;i<navItems.length;i++) navItems[i].classList.remove('active');
+    var navEl = document.getElementById('nav-'+name);
+    if(navEl) navEl.classList.add('active');
+    // Update topbar
+    if(TABMETA && TABMETA[name]){
+      var t1 = document.getElementById('tb-title');
+      var t2 = document.getElementById('tb-sub');
+      if(t1) t1.textContent = TABMETA[name].title;
+      if(t2) t2.textContent = TABMETA[name].sub;
+    }
+    if(name==='calendar' && typeof gCalConnected !== 'undefined' && gCalConnected){
+      if(typeof renderCalendar === 'function') renderCalendar();
+    }
+    // Save last visited tab
+    try{ localStorage.setItem('ehsan-last-tab', name); }catch(e){}
+  } catch(err){
+    console.error('go() error:', err);
+  }
+}
+
+
 // ── IMMEDIATE INIT — runs before anything else ──
 document.addEventListener('DOMContentLoaded', function() {
   console.log('Dr. Ehsan Assistant v7 loaded');
@@ -1534,55 +1587,9 @@ const PROMPTS = {
 // ═══════════════════════════════════════
 // ROUTING
 // ═══════════════════════════════════════
-const TABMETA = {
-  dashboard:{title:'Dashboard',sub:'Your personal executive assistant — always ready'},
-  assistant:{title:'AI Assistant',sub:'Free-form prompts and quick-launch tools'},
-  lecture:{title:'Lecture Prep',sub:'BUITEMS EDU-6105 · Teacher Education in Comparative Perspectives'},
-  phd:{title:'My Research Hub',sub:'Post-PhD academic research, publications, and microcredentials scholarship'},
-  calendar:{title:'Google Calendar',sub:'Live schedule sync — never miss a deadline'},
-  tasks:{title:'Daily Task Manager',sub:'Priority-ranked — know what to do first every day'},
-  opportunities:{title:'Live Opportunity Search',sub:'Real-time fellowships, jobs, consultancies, grants'},
-  tracked:{title:'My Fellowships',sub:'5 tracked opportunities with step-by-step guides'},
-  research:{title:'Research Paper Engine',sub:'Monthly publication pipeline — Q1/Q2 journal ready, plagiarism-free'},
-  funding:{title:'Funding Finder',sub:'Grants, research funds, and project funding relevant to your profile'},
-  writing:{title:'Writing Studio',sub:'Humanized elite writing — all modes'},
-  content:{title:'Content Hub',sub:'Quetta YouTube · Lumora Cosmetics'},
-};
-function go(name){
-  try {
-    // Hide all panels
-    var panels = document.querySelectorAll('.panel');
-    for(var j=0;j<panels.length;j++){
-      panels[j].style.display='none';
-      panels[j].classList.remove('active');
-    }
-    // Show target panel
-    var target = document.getElementById('panel-'+name);
-    if(target){
-      target.style.display='block';
-      target.classList.add('active');
-    }
-    // Update nav highlight
-    var navItems = document.querySelectorAll('.nav-item');
-    for(var i=0;i<navItems.length;i++) navItems[i].classList.remove('active');
-    var navEl = document.getElementById('nav-'+name);
-    if(navEl) navEl.classList.add('active');
-    // Update topbar
-    if(TABMETA && TABMETA[name]){
-      var t1 = document.getElementById('tb-title');
-      var t2 = document.getElementById('tb-sub');
-      if(t1) t1.textContent = TABMETA[name].title;
-      if(t2) t2.textContent = TABMETA[name].sub;
-    }
-    if(name==='calendar' && typeof gCalConnected !== 'undefined' && gCalConnected){
-      if(typeof renderCalendar === 'function') renderCalendar();
-    }
-    // Save last visited tab
-    try{ localStorage.setItem('ehsan-last-tab', name); }catch(e){}
-  } catch(err){
-    console.error('go() error:', err);
-  }
-}
+// TABMETA moved to top
+const TABMETA = {};
+
 
 // ═══════════════════════════════════════
 // CLOCK
