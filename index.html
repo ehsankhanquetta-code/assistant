@@ -1683,7 +1683,7 @@ function loadGoogleLibraries(clientId){
     gapiReady=true;
   }
   // Load GIS
-  if(!window.google?.accounts){
+  if(!window.google && window.google.accounts){
     const s2=document.createElement('script');
     s2.src='https://accounts.google.com/gsi/client';
     s2.onload=()=>{
@@ -1763,7 +1763,7 @@ async function loadCalendarEvents(){
 function getEventsForDate(date){
   const d=date.toDateString();
   return allEvents.filter(ev=>{
-    const s=ev.start?.dateTime||ev.start?.date;
+    const s=(ev.start && ev.start.dateTime) || (ev.start && ev.start.date);
     if(!s)return false;
     return new Date(s).toDateString()===d;
   });
@@ -1796,7 +1796,7 @@ function renderCalendar(){
     d.onclick=()=>showDayEvents(date,evs);
     let html=`<div class="cal-day-num">${day}</div>`;
     evs.slice(0,2).forEach(ev=>{
-      const t=ev.start?.dateTime?new Date(ev.start.dateTime).toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit',hour12:false}):'All day';
+      const t=ev.start && ev.start.dateTime ?new Date(ev.start.dateTime).toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit',hour12:false}):'All day';
       html+=`<div class="cal-event-dot">· ${ev.summary||'Event'}</div>`;
     });
     d.innerHTML=html;
@@ -1813,7 +1813,7 @@ function renderCalendar(){
 function showDayEvents(date,evs){
   if(!evs.length){showNotif('No events on '+date.toDateString());return;}
   const list=evs.map(ev=>{
-    const t=ev.start?.dateTime?new Date(ev.start.dateTime).toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit',hour12:true}):'All day';
+    const t=ev.start && ev.start.dateTime ?new Date(ev.start.dateTime).toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit',hour12:true}):'All day';
     return`• ${t}: ${ev.summary||'Untitled'}`;
   }).join('\n');
   showNotif('📅 '+date.toLocaleDateString('en',{weekday:'long',month:'long',day:'numeric'})+'\n'+list,6000);
@@ -1824,24 +1824,24 @@ function renderTodayEvents(){
   const el=document.getElementById('today-list');
   if(!evs.length){el.innerHTML='<div style="font-size:13px;color:var(--text3);padding:6px 0;">No events today.</div>';return;}
   el.innerHTML=evs.map(ev=>{
-    const t=ev.start?.dateTime?new Date(ev.start.dateTime).toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit',hour12:true}):'All day';
-    return`<div class="event-item"><div class="event-time">${t}</div><div><div class="event-title">${ev.summary||'Untitled'}</div>${ev.description?`<div class="event-desc">${ev.description.substring(0,60)}...</div>`:''}</div></div>`;
+    const t=ev.start && ev.start.dateTime ?new Date(ev.start.dateTime).toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit',hour12:true}):'All day';
+    return'<div class="event-item"><div class="event-time">'+t+'</div><div><div class="event-title">'+(ev.summary||'Untitled')+'</div>'+(ev.description?'<div class="event-desc">'+ev.description.substring(0,60)+'...</div>':'')+'</div></div>';
   }).join('');
 }
 
 function renderUpcomingEvents(){
   const today=new Date();const end=new Date(today);end.setDate(end.getDate()+7);
   const evs=allEvents.filter(ev=>{
-    const s=new Date(ev.start?.dateTime||ev.start?.date);
+    const s=new Date((ev.start && ev.start.dateTime) || (ev.start && ev.start.date));
     return s>today&&s<=end;
   }).slice(0,8);
   const el=document.getElementById('upcoming-list');
   if(!evs.length){el.innerHTML='<div style="font-size:13px;color:var(--text3);padding:6px 0;">No events in next 7 days.</div>';return;}
   el.innerHTML=evs.map(ev=>{
-    const s=new Date(ev.start?.dateTime||ev.start?.date);
+    const s=new Date((ev.start && ev.start.dateTime) || (ev.start && ev.start.date));
     const day=s.toLocaleDateString('en',{weekday:'short',month:'short',day:'numeric'});
-    const t=ev.start?.dateTime?s.toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit',hour12:true}):'';
-    return`<div class="event-item"><div class="event-time" style="min-width:80px;font-size:11px;">${day}${t?'<br>'+t:''}</div><div><div class="event-title">${ev.summary||'Untitled'}</div></div></div>`;
+    const t=ev.start && ev.start.dateTime ?s.toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit',hour12:true}):'';
+    return'<div class="event-item"><div class="event-time" style="min-width:80px;font-size:11px;">'+day+(t?'<br>'+t:'')+'</div><div><div class="event-title">'+(ev.summary||'Untitled')+'</div></div></div>';
   }).join('');
 }
 
@@ -1849,339 +1849,24 @@ function renderDashboardEvents(){
   const today=new Date();const evs=getEventsForDate(today);
   const el=document.getElementById('today-events');
   if(!evs.length){el.innerHTML='<div class="card-sub" style="padding:6px 0;">No events scheduled today. <button class="btn btn-sm btn-primary" style="margin-left:8px;" onclick="go(\'calendar\')">Open Calendar →</button></div>';return;}
-  el.innerHTML=evs.map(ev=>{
-    const t=ev.start?.dateTime?new Date(ev.start.dateTime).toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit',hour12:true}):'All day';
-    return`<div class="event-item"><div class="event-time">${t}</div><div class="event-title">${ev.summary||'Untitled'}</div></div>`;
-  }).join('');
-  document.getElementById('cal-sync-status').textContent=` — ${evs.length} event${evs.length!==1?'s':''} today ✓`;
-}
-
-function changeMonth(dir){calViewDate=new Date(calViewDate.getFullYear(),calViewDate.getMonth()+dir,1);renderCalendar();}
-
-function openAddEvent(){
-  const f=document.getElementById('add-event-form');
-  f.style.display=f.style.display==='none'?'block':'none';
-  const today=new Date().toISOString().split('T')[0];
-  document.getElementById('ev-date').value=today;
-}
-
-async function addCalendarEvent(){
-  const title=document.getElementById('ev-title').value.trim();
-  const date=document.getElementById('ev-date').value;
-  const time=document.getElementById('ev-time').value;
-  const notes=document.getElementById('ev-notes').value.trim();
-  if(!title||!date){alert('Title and date are required.');return;}
-  const start=new Date(date+'T'+time+':00');
-  const end=new Date(start);end.setHours(end.getHours()+1);
-  try{
-    await gapi.client.calendar.events.insert({
-      calendarId:'primary',
-      resource:{
-        summary:title,
-        description:notes,
-        start:{dateTime:start.toISOString()},
-        end:{dateTime:end.toISOString()}
-      }
-    });
-    showNotif('✅ Event "'+title+'" added to Google Calendar!');
-    document.getElementById('add-event-form').style.display='none';
-    document.getElementById('ev-title').value='';
-    document.getElementById('ev-notes').value='';
-    await loadCalendarEvents();
-  }catch(e){showNotif('❌ Error adding event: '+e.message);}
-}
-
-function signOutGCal(){
-  if(gCalToken&&window.google?.accounts?.oauth2){
-    google.accounts.oauth2.revoke(gCalToken,()=>{});
-  }
-  gapi.client.setToken(null);
-  gCalConnected=false;gCalToken=null;allEvents=[];
-  document.getElementById('cal-connect-prompt').style.display='block';
-  document.getElementById('cal-main').style.display='none';
-  document.getElementById('gcal-btn').textContent='📅 Connect Calendar';
-  document.getElementById('cal-sync-status').textContent=' — Connect calendar to see events';
-  showNotif('Calendar disconnected.');
-}
-
-// Auto-load libraries if client ID already saved
-window.addEventListener('load',()=>{
-  const id=localStorage.getItem('gcal-client-id');
-  if(id){
-    document.getElementById('gclient-id').value=id;
-    setTimeout(()=>loadGoogleLibraries(id),1500);
-  }
-});
-
-// ═══════════════════════════════════════
-// LIVE OPPORTUNITY SEARCH
-// ═══════════════════════════════════════
-const OPP_SOURCES = {
-  fellowship: [
-    {name:'Scholars4Dev',url:'https://www.scholars4dev.com/?s=education+pakistan+postdoc',label:'Scholars4Dev'},
-    {name:'FindAPostDoc',url:'https://www.findapostdoc.com/search/?keywords=education+microcredentials',label:'FindAPostDoc'},
-    {name:'AcademicPositions',url:'https://academicpositions.com/jobs/education',label:'AcademicPositions.com'},
-    {name:'EURAXESS',url:'https://euraxess.ec.europa.eu/jobs/search?keywords=education',label:'EURAXESS (EU)'},
-    {name:'HEC Pakistan',url:'https://www.hec.gov.pk/english/scholarshipsgrants/Pages/default.aspx',label:'HEC Pakistan'},
-    {name:'Fulbright',url:'https://foreign.fulbrightonline.org/',label:'Fulbright Programs'},
-  ],
-  academic: [
-    {name:'Jobs.ac.uk',url:'https://www.jobs.ac.uk/search/?keywords=education+pakistan',label:'Jobs.ac.uk (UK)'},
-    {name:'HigherEdJobs',url:'https://www.higheredjobs.com/search/advanced.cfm?Keyword=education',label:'HigherEdJobs'},
-    {name:'Times Higher Education',url:'https://www.timeshighereducation.com/unijobs/listings/education/',label:'THE Jobs'},
-    {name:'Chronicle',url:'https://jobs.chronicle.com/jobs/education/',label:'Chronicle of Higher Ed'},
-    {name:'BUITEMS Jobs',url:'https://www.buitms.edu.pk',label:'BUITEMS Vacancies'},
-  ],
-  consultancy: [
-    {name:'Devex',url:'https://www.devex.com/jobs/search?q=education+consultant',label:'Devex (Int\'l Dev)'},
-    {name:'ReliefWeb',url:'https://reliefweb.int/jobs?search=education+consultant+pakistan',label:'ReliefWeb'},
-    {name:'UNDP Careers',url:'https://jobs.undp.org/cj_view_jobs.cfm',label:'UNDP Careers'},
-    {name:'UNESCO Jobs',url:'https://careers.unesco.org/go/Education/5062301/',label:'UNESCO Jobs'},
-    {name:'World Bank',url:'https://jobs.worldbank.org/en/jobs/all-jobs?field_wbf_department_tid=All&field_wbf_job_family_value=All&search_api_views_fulltext=education',label:'World Bank Consultancies'},
-  ],
-  business: [
-    {name:'Innovate UK',url:'https://apply-for-innovation-funding.service.gov.uk/competition/search',label:'Innovate UK Grants'},
-    {name:'British Council',url:'https://www.britishcouncil.pk/programmes',label:'British Council Pakistan'},
-    {name:'USAID Pakistan',url:'https://www.usaid.gov/pakistan',label:'USAID Pakistan'},
-    {name:'Aga Khan Foundation',url:'https://www.akdn.org/our-work/human-development/education',label:'Aga Khan Foundation'},
-  ],
-  remote: [
-    {name:'Upwork Education',url:'https://www.upwork.com/nx/jobs/search/?q=education+research+writing',label:'Upwork (Research/Writing)'},
-    {name:'Toptal Education',url:'https://www.toptal.com/education',label:'Toptal Education'},
-    {name:'Remote.co',url:'https://remote.co/remote-jobs/education/',label:'Remote.co Education'},
-    {name:'Coursera Instructor',url:'https://www.coursera.org/teach',label:'Coursera — Create Course'},
-  ],
-};
-
-function updateSearchHint(){
-  const cat=document.getElementById('opp-cat').value;
-  const sources=cat==='all'?Object.values(OPP_SOURCES).flat():OPP_SOURCES[cat]||[];
-  document.getElementById('search-hint').textContent='Will search: '+sources.map(s=>s.label).join(' · ');
-}
-
-function runOpportunitySearch(){
-  const cat=document.getElementById('opp-cat').value;
-  const loc=document.getElementById('opp-loc').value;
-  const kw=document.getElementById('opp-keywords').value.trim();
-  const sources=cat==='all'?Object.values(OPP_SOURCES).flat():OPP_SOURCES[cat]||[];
-
-  const res=document.getElementById('opp-results');
-  res.innerHTML=`<div class="search-loading"><span class="spin big-spin"></span><div style="font-size:14px;font-weight:600;color:var(--text);">Searching live sources...</div><div style="font-size:12px;color:var(--text2);margin-top:4px;">Opening ${sources.length} opportunity databases for your profile</div></div>`;
-
-  // Show results with scored cards + direct links
-  setTimeout(()=>{
-    const locLabel={global:'Global',uk:'United Kingdom',europe:'Europe',usa:'USA/Canada',pakistan:'Pakistan',remote:'Remote'}[loc];
-    res.innerHTML=`
-      <div class="alert alert-green"><span class="alert-icon">✅</span><div><strong>${sources.length} live sources ready.</strong> Each button opens the source directly filtered for Education / Pakistan / Microcredentials matches. Use the AI scorer below to rank any opportunity you find.</div></div>
-      <div class="sec-label">Live sources — click to search each</div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-bottom:20px;">
-        ${sources.map(s=>`
-          <div class="opp-result" onclick="window.open('${s.url}','_blank')" style="cursor:pointer;">
-            <div class="opp-result-header">
-              <div>
-                <div class="opp-result-title" style="font-size:13px;">${s.label}</div>
-                <div class="opp-result-meta">${cat==='all'?getCatLabel(s.name):''} ${locLabel}</div>
-              </div>
-              <span style="font-size:20px;">↗</span>
-            </div>
-            <div style="margin-top:8px;"><span class="chip" style="font-size:11px;">Open →</span></div>
-          </div>`).join('')}
-      </div>
-      <div class="sec-label">AI opportunity scorer</div>
-      <div class="card">
-        <div class="card-title" style="font-size:13px;">Paste any opportunity and get your match score + winning strategy</div>
-        <div class="card-sub" style="margin-bottom:10px;">Found something interesting? Paste the title, description, or URL below. Claude will score it against your profile and give you a step-by-step winning strategy.</div>
-        <textarea class="ta" id="score-inp" placeholder="Paste opportunity title, description, requirements, or URL here...&#10;&#10;E.g. 'Postdoc in Educational Technology at University of Manchester — 2 years, £38,000/yr, research in digital learning. Requires PhD in Education and 2 publications.'"></textarea>
-        <div style="margin-top:10px;">
-          <button class="claude-btn" onclick="scoreOpportunity()">🎯 Score this opportunity + generate strategy</button>
-        </div>
-      </div>`;
-  },800);
-}
-
-function getCatLabel(name){
-  if(OPP_SOURCES.fellowship?.find(s=>s.name===name))return'Fellowship ·';
-  if(OPP_SOURCES.academic?.find(s=>s.name===name))return'Academic ·';
-  if(OPP_SOURCES.consultancy?.find(s=>s.name===name))return'Consultancy ·';
-  if(OPP_SOURCES.business?.find(s=>s.name===name))return'Grant ·';
-  return'Remote ·';
-}
-
-function scoreOpportunity(){
-  const v=document.getElementById('score-inp').value.trim();
-  if(!v){alert('Paste an opportunity description first.');return;}
-  const p=CTX+`Analyze this opportunity for Dr. Ehsan:\n\n"${v}"\n\nProvide:\n1. RELATABILITY SCORE (0-100%) — how well does his profile match the requirements?\n2. SUCCESS PROBABILITY (0-100%) — realistic chance of winning based on competition level and his fit\n3. KEY STRENGTHS — 3 specific aspects of his profile that make him competitive\n4. GAPS TO ADDRESS — 2-3 things he should strengthen or address in the application\n5. WINNING STRATEGY — step-by-step application approach, what to emphasize, what to downplay\n6. DRAFT OPENING — write the first compelling paragraph of his cover letter/application for this specific opportunity\n\nBe direct, honest, and practical.`;
-  openClaude(p);
-}
-
-// ═══════════════════════════════════════
-// TASKS
-// ═══════════════════════════════════════
-const DEF_TASKS=[
-  {text:'Prepare Unit 2 lecture package for BUITEMS Monday class',cat:'BUITEMS',pri:'high',done:false},
-  {text:'Draft MSCA Global PF research proposal (call open now)',cat:'Fellowship',pri:'high',done:false},
-  {text:'Contact Prof. James Davenport at Bath University re: MSCA/British Academy',cat:'Fellowship',pri:'high',done:false},
-  {text:'Find German academic host for Humboldt Fellowship (deadline Jul 15)',cat:'Fellowship',pri:'high',done:false},
-  {text:'Search and apply for 2 new postdoc/job opportunities this week',cat:'Fellowship',pri:'high',done:false},
-  {text:'Finalize Zhob institution partnership agreement',cat:'Business',pri:'med',done:false},
-  {text:'Submit PhD chapter draft to IIUI supervisor',cat:'PhD',pri:'med',done:false},
-];
-const PRI={high:{score:3,color:'#c0392b',bg:'#fdf0ee',label:'🔴 High'},med:{score:2,color:'#b06a00',bg:'#fff8ec',label:'🟡 Med'},low:{score:1,color:'#1e7a4a',bg:'#edf7f2',label:'🟢 Low'}};
-let tasks=JSON.parse(localStorage.getItem('ehsan_tasks_v4')||'null')||DEF_TASKS;
-function saveTasks(){try{localStorage.setItem('ehsan_tasks_v4',JSON.stringify(tasks));}catch(e){}}
-function renderTasks(){
-  const el=document.getElementById('task-list');
-  const sorted=[...tasks].sort((a,b)=>(a.done?1:0)-(b.done?1:0)||(PRI[b.pri||'med'].score)-(PRI[a.pri||'med'].score));
-  document.getElementById('pending-count').textContent=tasks.filter(t=>!t.done).length;
-  el.innerHTML=sorted.length?sorted.map(t=>{
-    const i=tasks.indexOf(t);const p=PRI[t.pri||'med'];
-    return`<div class="task-item">
-      <div class="tchk${t.done?' done':''}" onclick="toggleTask(${i})"></div>
-      <div style="flex:1;"><div class="t-text${t.done?' done':''}">${t.text}</div><span class="t-pill">${t.cat}</span></div>
-      <span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;background:${t.done?'var(--surface2)':p.bg};color:${t.done?'var(--text3)':p.color};border:1px solid ${t.done?'var(--border)':p.color+'55'};">${t.done?'Done':p.label}</span>
-      <button onclick="removeTask(${i})" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px;padding:3px 6px;">✕</button>
-    </div>`;
-  }).join(''):'<div style="color:var(--text3);font-size:13px;padding:10px 0;">No tasks. Add one below.</div>';
-}
-function toggleTask(i){tasks[i].done=!tasks[i].done;saveTasks();renderTasks();}
-function removeTask(i){tasks.splice(i,1);saveTasks();renderTasks();}
-function addTask(){const t=document.getElementById('new-task-inp').value.trim(),c=document.getElementById('new-cat').value,p=document.getElementById('new-pri').value;if(!t)return;tasks.unshift({text:t,cat:c,pri:p,done:false});saveTasks();renderTasks();document.getElementById('new-task-inp').value='';}
-renderTasks();
-
-// ═══════════════════════════════════════
-// EXPAND STEPS
-// ═══════════════════════════════════════
-function toggleSteps(id,btn){
-  var el = document.getElementById('steps-'+id);
-  if(!el) return;
-  var open = el.classList.contains('show');
-  if(open){ el.classList.remove('show'); btn.innerHTML='▼ Step-by-step guide'; }
-  else { el.classList.add('show'); btn.innerHTML='▲ Step-by-step guide'; }
-}
-
-// ═══════════════════════════════════════
-// WRITING STUDIO
-// ═══════════════════════════════════════
-let wMode='ehsaas';
-const WMODES={
-  'career':{title:'🎯 Career & Job Applications',desc:'Cover letters, job applications, consultancy pitches. Every document structurally unique. No AI phrasing.',prompt:i=>CTX+`Write a job application, cover letter, or career document for: ${i}. Open with a structurally unique approach — not a standard opener. Argument-first. No AI vocabulary. Direct, confident, grounded in real experience.`},
-  'phd-w':{title:'◉ Research Writing',desc:'Post-PhD academic writing — papers, proposals, conference abstracts. No AI phrasing.',prompt:i=>CTX+`Write rigorous, humanized research prose for Dr. Ehsan's post-PhD academic work on microcredentials and education. Request: ${i}. Argument-driven, no AI sentence patterns, no hollow academic filler.`},
-  'seo':{title:'🔍 SEO / Blog Writing',desc:'Keyword-optimized with natural flow.',prompt:i=>CTX+`Write SEO-optimized content: ${i}. Natural keyword integration, engaging for human readers.`},
-  'fellowship':{title:'🌐 Fellowship / Grant',desc:'Elite, winning application prose.',prompt:i=>CTX+`Write an elite, humanized fellowship or grant application component for: ${i}. Draw on my full profile.`},
-  'linkedin':{title:'💼 LinkedIn / Professional',desc:'Warm, intellectual, genuine.',prompt:i=>CTX+`Write a professional yet warm LinkedIn message or post for: ${i}. Genuine, my voice.`},
-  'youtube':{title:'▶ YouTube Script',desc:'Urdu-friendly, searchable, engaging.',prompt:i=>CTX+`Write a YouTube script, title, or description for: ${i}. Urdu-friendly, searchable.`},
-  'copy':{title:'✎ Copywriting / Ad Copy',desc:'Sharp, persuasive, zero filler.',prompt:i=>CTX+`Write sharp, persuasive copywriting for: ${i}. Direct, compelling.`},
-  'poetry':{title:'✿ Urdu / Creative Writing',desc:'Urdu and English creative writing with literary depth.',prompt:i=>CTX+`Write a literary creative piece in Urdu or English for: ${i}. Natural voice, human depth, no AI phrasing.`},
-};
-function selMode(el){
-  var btns = document.querySelectorAll('.mode-btn');
-  for(var i=0;i<btns.length;i++) btns[i].classList.remove('active');
-  el.classList.add('active');
-  wMode = el.getAttribute('data-mode');
-  if(WMODES[wMode]){
-    document.getElementById('wmode-title').textContent = WMODES[wMode].title;
-    document.getElementById('wmode-desc').textContent = WMODES[wMode].desc;
-  }
-}
-function openWriting(){const v=document.getElementById('writ-inp').value.trim();if(!v){alert('Describe what you need written.');return;}openClaude(WMODES[wMode].prompt(v));}
-
-// ═══════════════════════════════════════
-// RESEARCH ENGINE
-// ═══════════════════════════════════════
-const STEP_GUIDES = {
-  1: {title:'Step 1 — Choose Your Topic', text:'Click "Generate topics" to get 8 ranked, Q1/Q2-ready research topics. Choose one that matches your current data access and interests, then move to Step 2.'},
-  2: {title:'Step 2 — Build Your Outline', text:'Paste your chosen title in the paper builder below and click "Full outline." You will get a complete section-by-section structure with key arguments, suggested references, and methodology guidance.'},
-  3: {title:'Step 3 — Write the Introduction', text:'Click "Introduction" in the paper builder. The output gives you a full, argument-driven introduction. Paste it into your document, then read it aloud — if any sentence sounds like a robot, flag it and refine.'},
-  4: {title:'Step 4 — Literature Review', text:'This is the most time-consuming section. Click "Literature Review" and generate a thematic, argument-driven review. Then verify every cited paper is real by searching Google Scholar. Add 2-3 sources you find yourself.'},
-  5: {title:'Step 5 — Methodology', text:'Click "Methodology" and specify your data source (e.g. interviews with faculty in Zhob, survey of BUITEMS students, document analysis of HEC policy). The output will be tailored to your actual research context.'},
-  6: {title:'Step 6 — Results & Discussion', text:'This section must use your actual data or findings. Use the AI to help structure and interpret — but the findings themselves must come from your research. Paste your raw results or notes and request help interpreting them.'},
-  7: {title:'Step 7 — Abstract', text:'Generate the abstract last — after the full paper is drafted. Click "Abstract" with your final title. A tight, 250-word abstract that accurately reflects your paper is what editors read first.'},
-  8: {title:'Step 8 — Submit', text:'Before submitting: (1) Run the AI/plagiarism check on your full paper. (2) Format according to the target journal's author guidelines. (3) Write a cover letter — use the Writing Studio fellowship mode. (4) Submit and track in the publication tracker below.'}
-};
-
-function setStep(n) {
-  for(let i=1;i<=8;i++){
-    const el=document.getElementById('step-'+i);
-    if(!el)continue;
-    if(i<n)el.className='pipeline-step done-step';
-    else if(i===n)el.className='pipeline-step active-step';
-    else el.className='pipeline-step';
-  }
-  const g=STEP_GUIDES[n];
-  document.getElementById('step-guidance').innerHTML=`<div style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:6px;">${g.title}</div><div style="font-size:13px;color:var(--text2);line-height:1.7;">${g.text}</div>`;
-  localStorage.setItem('research-step', n);
-}
-
-window.addEventListener('load',()=>{
-  const savedStep = parseInt(localStorage.getItem('research-step')||'1');
-  setStep(savedStep);
-});
-
-function genTopics() {
-  const domain = document.getElementById('topic-domain').value;
-  const tier = document.getElementById('topic-tier').value;
-  const type = document.getElementById('topic-type').value;
-  const domainLabels = {
-    'microcredentials':'microcredentials, credential innovation, and higher education policy',
-    'teacher-ed':'teacher education, teacher training, and professional development',
-    'edtech':'educational technology, digital learning, and online education',
-    'balochistan':'education in Pakistan, Balochistan, and underserved communities',
-    'leadership':'educational leadership, school management, and institutional governance',
-    'tesol':'TESOL, English language teaching, and language education policy',
-    'mixed':'microcredentials, teacher education, EdTech, and Pakistan HE policy'
-  };
-  const tierLabel = tier==='q1'?'Q1 Scopus/SSCI journals only':tier==='q2'?'Q2 journals (higher acceptance rates)':'Q1 and Q2 Scopus/SSCI journals';
-  const prompt = CTX + `Generate 8 high-demand, highly publishable research paper topics in the domain of ${domainLabels[domain]}.
-
-Requirements for each topic:
-1. TITLE — exact paper title phrased for a ${tierLabel} submission. Must be specific, not generic.
-2. TARGET JOURNAL — name one real, specific journal (${tierLabel}) with its impact factor if known.
-3. DEMAND RATIONALE — what specific gap in the 2022–2025 literature does this address? Name 1-2 real papers that define the gap.
-4. FEASIBILITY FOR DR. EHSAN — what data or access does he realistically have to conduct this research (given his location in Balochistan, BUITEMS connection, PhD on microcredentials, TEA Fellowship network)?
-5. PAPER TYPE — ${type==='any'?'recommend the most appropriate type':type}.
-6. ESTIMATED COMPLETION TIME — realistic weeks to complete if working part-time.
-7. PUBLISHABILITY SCORE — rate 1-10 based on demand + feasibility + novelty.
-
-Rank the 8 topics by publishability score. Be specific throughout — no generic topic suggestions.`;
-  openClaude(prompt);
-}
-
-function buildSection(promptKey) {
-  const topic = document.getElementById('paper-topic').value.trim();
-  if(!topic){alert('Please enter your paper title or topic first.');return;}
-  const sectionPrompts = {
-    researchOutline: CTX+`Generate a complete research paper outline for a Q1/Q2 journal submission on: "${topic}". Include: journal-ready title, abstract structure, introduction outline with key arguments and 3 papers to engage, literature review themes (thematic, not chronological) with 6 real suggested papers, methodology section with specific design and analysis method, results/discussion structure with key argument threads, conclusion outline, and reference style recommendation. Every section must be specific — not generic placeholder headings.`,
-    researchIntro: CTX+`Write a complete Introduction section for a Q1/Q2 journal paper titled: "${topic}". Open with the real-world or field problem — not a generic statement. Establish research context (2-3 sentences), identify the specific gap citing named studies, state the research purpose clearly, list 3-4 research questions or objectives, close with paper overview. No AI phrasing. Argument-first from sentence one. Minimum 500 words.`,
-    researchLitReview: CTX+`Write a complete Literature Review section for a Q1/Q2 journal paper on: "${topic}". Structure thematically. Each paragraph must: advance a specific argument about the state of the field, engage 2-3 real named researchers and their actual positions, identify a specific gap or contradiction, and connect to Dr. Ehsan's context (Pakistan HE, microcredentials, educational leadership). No summary writing. No AI phrasing. Minimum 1000 words.`,
-    researchMethodology: CTX+`Write a complete Methodology section for a Q1/Q2 research paper on: "${topic}". Include: research paradigm and justification, research design, sampling strategy with rationale, data collection instruments or procedures, analysis method, trustworthiness or validity measures, ethical considerations, and limitations. Make it specific to what Dr. Ehsan can realistically conduct given his location in Balochistan and his institutional connections. No textbook methodology writing — write as a practising researcher.`,
-    researchDraft: CTX+`Write a complete Results and Discussion section for a Q1/Q2 research paper on: "${topic}". Structure the discussion thematically around the key findings. Each discussion paragraph must: present a specific finding or argument, connect it to existing literature by agreeing with or challenging named scholars, explain the theoretical or practical significance, and acknowledge limitations where relevant. No AI phrasing. Argument-driven throughout. Minimum 800 words.`,
-    researchAbstract: CTX+`Write a complete abstract for a Q1/Q2 journal paper on: "${topic}". Structure: one sentence on context/problem, one sentence on gap in literature, one sentence on research purpose, two sentences on methodology, two sentences on key findings or expected contribution, one sentence on implications for policy or practice. Maximum 250 words. Every sentence must be specific to this paper — nothing should be transferable to another paper.`,
-    plagiarismCheck: CTX+`Review this research text for AI-pattern writing, overused academic phrases, hollow filler sentences, and anything that would flag in Turnitin, iThenticate, or an AI detection tool. Text to review: "${topic}". For each flagged element: (1) Quote the problematic phrase or sentence. (2) Explain specifically why it is problematic. (3) Rewrite it in Dr. Ehsan's natural scholarly voice. Be strict — apply journal editor standards.`
-  };
-  const p = sectionPrompts[promptKey] || CTX + `Write the requested research paper section for: "${topic}". Q1/Q2 journal standard. No AI phrasing.`;
-  openClaude(p);
-}
-
-// ── PUBLICATION TRACKER ──
-let pubs = JSON.parse(localStorage.getItem('ehsan-pubs') || '[]');
-const PUB_STATUS_COLORS = {
-  'In progress':'#b06a00,#fff8ec',
-  'Under review':'#2563a8,#eef4fc',
-  'Revision requested':'#6b3fa0,#f5f0fb',
-  'Accepted':'#1e7a4a,#edf7f2',
-  'Published':'#1e7a4a,#edf7f2'
-};
-function renderPubs() {
-  const el = document.getElementById('pub-tracker-list');
-  if(!pubs.length){el.innerHTML='<div style="font-size:13px;color:var(--text3);padding:8px 0;">No papers tracked yet. Add your first paper below.</div>';return;}
-  el.innerHTML = pubs.map((p,i) => {
-    const [col,bg] = (PUB_STATUS_COLORS[p.status]||'#999,#f0f0f0').split(',');
-    return `<div class="pub-item">
-      <div style="flex:1;"><div style="font-size:13px;font-weight:600;">${p.title}</div><div style="font-size:11px;color:var(--text3);">${p.journal||'Journal TBD'}</div></div>
-      <span class="pub-status" style="background:${bg};color:${col};border:1px solid ${col}55;">${p.status}</span>
-      <button onclick="removePub(${i})" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px;">✕</button>
-    </div>`;
-  }).join('');
+  var oppHtml = '<div class="alert alert-green" style="margin-bottom:14px;"><span class="alert-icon">✅</span><div><strong>'+sources.length+' live sources ready.</strong> Click any to open the source directly filtered for Education/Pakistan/Microcredentials matches.</div></div>';
+        oppHtml += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-bottom:20px;">';
+        sources.forEach(function(s) {
+          oppHtml += '<div class="opp-result" onclick="window.open(''+s.url+'','_blank')" style="cursor:pointer;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px;box-shadow:var(--shadow);">';
+          oppHtml += '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">';
+          oppHtml += '<div><div class="opp-result-title" style="font-size:13px;">'+s.label+'</div>';
+          oppHtml += '<div class="opp-result-meta">'+getCatLabel(s.name)+' '+locLabel+'</div></div>';
+          oppHtml += '<span style="font-size:20px;">↗</span></div>';
+          oppHtml += '<div style="margin-top:8px;"><span class="chip" style="font-size:11px;">Open →</span></div>';
+          oppHtml += '</div>';
+        });
+        oppHtml += '</div>';
+        oppHtml += '<div class="sec-label">AI opportunity scorer</div>';
+        oppHtml += '<div class="card"><div class="card-title" style="font-size:13px;">Paste any opportunity and get your match score + winning strategy</div>';
+        oppHtml += '<div class="card-sub" style="margin-bottom:10px;">Found something interesting? Paste the title, description, or URL below.</div>';
+        oppHtml += '<textarea class="ta" id="score-inp" placeholder="Paste opportunity title, description, requirements, or URL here..."></textarea>';
+        oppHtml += '<div style="margin-top:10px;"><button class="claude-btn" onclick="scoreOpportunity()">🎯 Score this opportunity</button></div></div>';
+        el.innerHTML = oppHtml;
 }
 function addPub() {
   const t = document.getElementById('pub-title-inp').value.trim();
@@ -2235,23 +1920,21 @@ function scanFunding() {
 
     if(!sources.length) sources = FUNDING_DB['research-grant'];
 
-    el.innerHTML = `<div class="alert alert-green" style="margin-bottom:14px;"><span class="alert-icon">✅</span><div><strong>${sources.length} funding opportunities found</strong> matched to your profile. Click any to open the application page directly.</div></div>` +
-      sources.map(f => `
-        <div class="fund-result" onclick="window.open('${f.url}','_blank')" style="cursor:pointer;">
-          <div class="fund-result-header" style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
-            <div>
-              <div class="fund-title">${f.name}</div>
-              <div class="fund-meta"><strong>Funder:</strong> ${f.funder} &nbsp;|&nbsp; <strong>Amount:</strong> ${f.amount}</div>
-              <div class="fund-meta"><strong>Deadline:</strong> ${f.deadline}</div>
-            </div>
-            <span style="font-size:20px;flex-shrink:0;">↗</span>
-          </div>
-          <div class="fund-match">✓ Profile match: ${f.match}</div>
-          <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
-            <button class="claude-btn claude-btn-sm" onclick="event.stopPropagation();genFundingFromDB('${f.name}','${f.funder}','${f.amount}')">✦ Generate proposal</button>
-            <button class="btn btn-sm btn-ghost" onclick="event.stopPropagation();window.open('${f.url}','_blank')">Open application page ↗</button>
-          </div>
-        </div>`).join('');
+    var html = '<div class="alert alert-green" style="margin-bottom:14px;"><span class="alert-icon">✅</span><div><strong>'+sources.length+' funding opportunities found</strong> matched to your profile.</div></div>';
+      sources.forEach(function(f) {
+        html += '<div class="fund-result" style="cursor:pointer;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:10px;box-shadow:var(--shadow);">';
+        html += '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">';
+        html += '<div><div class="fund-title">'+f.name+'</div>';
+        html += '<div class="fund-meta"><strong>Funder:</strong> '+f.funder+' &nbsp;|&nbsp; <strong>Amount:</strong> '+f.amount+'</div>';
+        html += '<div class="fund-meta"><strong>Deadline:</strong> '+f.deadline+'</div></div>';
+        html += '<span style="font-size:20px;flex-shrink:0;">↗</span></div>';
+        html += '<div class="fund-match">✓ Profile match: '+f.match+'</div>';
+        html += '<div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">';
+        html += '<button class="claude-btn claude-btn-sm" onclick="genFundingFromDB(''+f.name.replace(/'/g,"\'")+"','"+'"+f.funder.replace(/'/g,"\'")+"','"+'"+f.amount+'')" >✦ Generate proposal</button>';
+        html += '<button class="btn btn-sm btn-ghost" onclick="window.open(''+f.url+'','_blank')">Open ↗</button>';
+        html += '</div></div>';
+      });
+      el.innerHTML = html;
   }, 800);
 }
 
@@ -2971,7 +2654,7 @@ Rules: Structure thematically. Each paragraph: specific finding or argument, con
 
     abstract: CTX + `Write a complete abstract for a research paper titled: "${topic}".
 Key points: ${notes || 'Microcredentials integration in Pakistan HE — policy gaps, institutional readiness, faculty awareness.'}
-${m ? `Abstract requirements: ${m.abstract}` : 'Target: 200–250 words. Background, gap, method, key finding, implication. Every sentence specific.'}
+'+(m ? 'Abstract requirements: '+m.abstract : 'Target: 200-250 words. Background, gap, method, key finding, implication. Every sentence specific.')+'
 No AI phrasing. No filler. Every sentence earns its place. Write only the final abstract.`,
 
     aicheck: CTX + `Conduct a strict AI-pattern and academic quality audit of the following text.
@@ -2994,8 +2677,8 @@ ${notes || topic}`
 
 // Keep old buildSection as alias for backward compatibility
 function buildSection(key) {
-  const topic = (document.getElementById('paper-topic')||{}).value?.trim() || '';
-  const notes = (document.getElementById('paper-notes')||{}).value?.trim() || '';
+  const topic = (document.getElementById('paper-topic') ? document.getElementById('paper-topic').value : '') || '';
+  const notes = (document.getElementById('paper-notes') ? document.getElementById('paper-notes').value : '') || '';
   const map = {
     researchOutline: 'outline', researchIntro: 'intro',
     researchLitReview: 'lit', researchMethodology: 'method',
