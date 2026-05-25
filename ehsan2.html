@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dr. Ehsan Assistant</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:sans-serif;background:#f5f3ee;display:flex;height:100vh;}
+.sidebar{width:220px;background:#fff;border-right:1px solid #ddd;padding:16px;flex-shrink:0;}
+.logo{font-size:15px;font-weight:700;margin-bottom:4px;}
+.role{font-size:12px;color:#888;margin-bottom:16px;}
+.nav{display:flex;flex-direction:column;gap:4px;}
+.nav a{padding:9px 12px;border-radius:6px;cursor:pointer;color:#555;font-size:13px;font-weight:500;text-decoration:none;display:block;}
+.nav a:hover{background:#eef4fc;color:#2563a8;}
+.nav a.active{background:#eef4fc;color:#2563a8;font-weight:700;}
+.main{flex:1;padding:24px;overflow-y:auto;}
+.panel{display:none;}
+.panel.active{display:block;}
+.card{background:#fff;border:1px solid #ddd;border-radius:10px;padding:20px;margin-bottom:16px;}
+h2{font-size:20px;margin-bottom:8px;}
+p{color:#555;font-size:14px;line-height:1.6;}
+.claude-btn{background:linear-gradient(135deg,#7B2FBE,#4F46E5);color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:700;margin-top:10px;display:inline-block;}
+.claude-btn:hover{opacity:0.9;}
+input,textarea,select{width:100%;padding:9px;border:1px solid #ddd;border-radius:6px;font-size:13px;font-family:sans-serif;margin-bottom:8px;}
+textarea{min-height:80px;resize:vertical;}
+.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;}
+.badge-green{background:#edf7f2;color:#1e7a4a;border:1px solid #7dd4a8;}
+.badge-gold{background:#fdf6e8;color:#b07d2e;border:1px solid #e8c97a;}
+.badge-red{background:#fdf0ee;color:#c0392b;border:1px solid #f0a89e;}
+.badge-blue{background:#eef4fc;color:#2563a8;border:1px solid #b8d0f0;}
+.priority{padding:14px;border-radius:8px;margin-bottom:10px;border:1px solid;}
+.p1{background:#fff8f0;border-color:#f0c070;}
+.p2{background:#f0f7ff;border-color:#b0d0f0;}
+.p3{background:#edf7f2;border-color:#7dd4a8;}
+.p-title{font-size:14px;font-weight:700;}
+.p-desc{font-size:12px;color:#666;margin-top:3px;}
+.opp-card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:14px;margin-bottom:10px;}
+.opp-title{font-size:14px;font-weight:700;}
+.opp-meta{font-size:12px;color:#888;margin-top:3px;}
+.score-row{display:flex;gap:8px;margin-top:8px;}
+.score{text-align:center;padding:5px 12px;border-radius:6px;min-width:65px;}
+.task-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #eee;}
+.task-item:last-child{border-bottom:none;}
+.task-check{width:18px;height:18px;border:2px solid #ccc;border-radius:4px;cursor:pointer;flex-shrink:0;}
+.task-check.done{background:#1e7a4a;border-color:#1e7a4a;}
+.task-text{font-size:13px;flex:1;}
+.task-text.done{text-decoration:line-through;color:#aaa;}
+.tag{font-size:10px;padding:1px 6px;background:#f0ede8;border-radius:10px;color:#888;}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="logo">Dr. Muhammad Ehsan</div>
+  <div class="role">PhD in Education . IIUI</div>
+  <div class="nav">
+    <a href="#" class="active" onclick="go('dashboard');return false;">Dashboard</a>
+    <a href="#" onclick="go('assistant');return false;">AI Assistant</a>
+    <a href="#" onclick="go('lecture');return false;">Lecture Prep</a>
+    <a href="#" onclick="go('research');return false;">My Research Hub</a>
+    <a href="#" onclick="go('tasks');return false;">Daily Tasks</a>
+    <a href="#" onclick="go('opportunities');return false;">Opportunities</a>
+    <a href="#" onclick="go('writing');return false;">Writing Studio</a>
+    <a href="#" onclick="go('content');return false;">Content Hub</a>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- DASHBOARD -->
+  <div class="panel active" id="panel-dashboard">
+    <div class="card">
+      <h2>Good day, Dr. Ehsan</h2>
+      <p>Your priorities are ranked below. This is your personal executive assistant.</p>
+    </div>
+    <div class="priority p1">
+      <div class="p-title">1. BUITEMS Unit 2 -- Lecture Package</div>
+      <div class="p-desc">Monday deadline. No slides or summary prepared. Urgency: 95%</div>
+      <button class="claude-btn" onclick="go('lecture')">Open Lecture Prep</button>
+    </div>
+    <div class="priority p2">
+      <div class="p-title">2. MSCA Fellowship -- Call Open Now</div>
+      <div class="p-desc">April 2026 call is open. 88% profile match. Draft proposal now.</div>
+      <button class="claude-btn" onclick="go('opportunities')">Open Opportunities</button>
+    </div>
+    <div class="priority p3">
+      <div class="p-title">3. Career and Business Opportunities</div>
+      <div class="p-desc">Job search, skill-sharing, consultancy pipeline. Keep this active daily.</div>
+      <button class="claude-btn" onclick="openClaude(PROMPTS.jobSearch)">Search Opportunities</button>
+    </div>
+  </div>
+
+  <!-- AI ASSISTANT -->
+  <div class="panel" id="panel-assistant">
+    <div class="card">
+      <h2>AI Assistant</h2>
+      <p>Type any request. Your full profile is embedded. Click Open in Claude -- a new tab opens with your context pre-loaded.</p>
+      <textarea id="ai-inp" placeholder="Type anything -- draft MSCA proposal, find job opportunities, write a research paragraph, YouTube ideas for Quetta..."></textarea>
+      <button class="claude-btn" onclick="openAI()">Open in Claude</button>
+    </div>
+    <div class="card">
+      <h2>Quick Prompts</h2>
+      <button class="claude-btn" onclick="openClaude(PROMPTS.dailyBriefing)" style="margin:4px;">Daily Briefing</button>
+      <button class="claude-btn" onclick="openClaude(PROMPTS.jobSearch)" style="margin:4px;">Career Strategy</button>
+      <button class="claude-btn" onclick="openClaude(PROMPTS.mscaProposal)" style="margin:4px;">MSCA Proposal</button>
+      <button class="claude-btn" onclick="openClaude(PROMPTS.humboldtPlan)" style="margin:4px;">Humboldt Plan</button>
+      <button class="claude-btn" onclick="openClaude(PROMPTS.litReview)" style="margin:4px;">Lit Review Para</button>
+      <button class="claude-btn" onclick="openClaude(PROMPTS.youtube)" style="margin:4px;">YouTube Ideas</button>
+    </div>
+  </div>
+
+  <!-- LECTURE PREP -->
+  <div class="panel" id="panel-lecture">
+    <div class="card">
+      <h2>Lecture Prep -- EDU-6105 BUITEMS</h2>
+      <p>Select a unit and deliverable. Opens in Claude with full lecture package generation.</p>
+      <select id="unit-sel">
+        <option value="2">Unit 2 - Teacher Education Curriculum</option>
+        <option value="3">Unit 3 - Objectives of Teacher Education</option>
+        <option value="4">Unit 4 - Teacher Training Institutions</option>
+        <option value="5">Unit 5 - Non-Formal/Distance Education</option>
+        <option value="6">Unit 6 - Quality Assurance</option>
+        <option value="7">Unit 7 - Models of Teacher Education</option>
+        <option value="8">Unit 8 - Private Sector Role</option>
+      </select>
+      <select id="deliv-sel">
+        <option value="all">All 3 deliverables</option>
+        <option value="summary">Source summary only</option>
+        <option value="ppt">PPT breakdown only</option>
+        <option value="reading">Reading list only</option>
+      </select>
+      <button class="claude-btn" onclick="genLecture()">Generate Lecture Package</button>
+    </div>
+  </div>
+
+  <!-- RESEARCH HUB -->
+  <div class="panel" id="panel-research">
+    <div class="card">
+      <h2>My Research Hub</h2>
+      <p><strong>Dr. Muhammad Ehsan</strong> -- PhD in Education, IIUI Islamabad (January 2026). Research: microcredentials integration in Pakistan HE.</p>
+      <button class="claude-btn" onclick="openClaude(PROMPTS.litReview)" style="margin:4px;">Write Lit Review</button>
+      <button class="claude-btn" onclick="openClaude(PROMPTS.abstract)" style="margin:4px;">Draft Abstract</button>
+      <button class="claude-btn" onclick="openClaude(PROMPTS.postdocProposal)" style="margin:4px;">Postdoc Proposal</button>
+      <button class="claude-btn" onclick="openClaude(PROMPTS.sources)" style="margin:4px;">Find Key Sources</button>
+    </div>
+    <div class="card">
+      <h2>Generate Full Paper</h2>
+      <input id="paper-topic" placeholder="Paper topic or title..."/>
+      <textarea id="paper-notes" placeholder="Your research notes or findings (rough is fine)..."></textarea>
+      <select id="paper-journal">
+        <option value="">No specific journal</option>
+        <option value="irrodl">IRRODL (Free, Q1)</option>
+        <option value="jmicro">Journal of Microcredentials (Free)</option>
+        <option value="tojde">TOJDE (Free, WOS)</option>
+        <option value="ijet">iJET (Free, WOS)</option>
+        <option value="she">Studies in Higher Education (Q1, free to authors)</option>
+        <option value="he">Higher Education Springer (Q1, free to authors)</option>
+        <option value="tte">Teaching and Teacher Education (Q1, free)</option>
+      </select>
+      <button class="claude-btn" onclick="genPaper()">Generate Complete Paper</button>
+    </div>
+  </div>
+
+  <!-- TASKS -->
+  <div class="panel" id="panel-tasks">
+    <div class="card">
+      <h2>Daily Tasks</h2>
+      <div id="task-list"></div>
+      <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+        <input id="new-task" placeholder="Add a task..." style="flex:1;min-width:160px;margin:0;"/>
+        <select id="new-cat" style="width:110px;margin:0;"><option>BUITEMS</option><option>Fellowship</option><option>PhD</option><option>Business</option><option>Content</option><option>Other</option></select>
+        <button onclick="addTask()" style="padding:9px 14px;background:#2563a8;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:13px;">+ Add</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPPORTUNITIES -->
+  <div class="panel" id="panel-opportunities">
+    <div class="card">
+      <h2>Fellowship Pipeline</h2>
+      <div class="opp-card">
+        <div class="opp-title">Marie Sklodowska-Curie Actions (MSCA)</div>
+        <div class="opp-meta">Europe - Call Open: April 9, 2026</div>
+        <div class="score-row">
+          <div class="score" style="background:#edf7f2;color:#1e7a4a;border:1px solid #7dd4a8;"><div style="font-size:9px;font-weight:700;">MATCH</div><div style="font-size:18px;font-weight:800;">88%</div></div>
+          <div class="score" style="background:#eef4fc;color:#2563a8;border:1px solid #b8d0f0;"><div style="font-size:9px;font-weight:700;">SUCCESS</div><div style="font-size:18px;font-weight:800;">62%</div></div>
+        </div>
+        <button class="claude-btn" onclick="openClaude(PROMPTS.mscaProposal)" style="margin-top:8px;">Draft MSCA Proposal</button>
+        <button class="claude-btn" onclick="openClaude(PROMPTS.mscaEmails)" style="margin-top:8px;margin-left:8px;">Professor Outreach</button>
+      </div>
+      <div class="opp-card">
+        <div class="opp-title">Alexander von Humboldt Fellowship</div>
+        <div class="opp-meta">Germany - Next cut-off: July 15, 2026 - 3,000 EUR/month</div>
+        <div class="score-row">
+          <div class="score" style="background:#edf7f2;color:#1e7a4a;border:1px solid #7dd4a8;"><div style="font-size:9px;font-weight:700;">MATCH</div><div style="font-size:18px;font-weight:800;">85%</div></div>
+          <div class="score" style="background:#fdf6e8;color:#b07d2e;border:1px solid #e8c97a;"><div style="font-size:9px;font-weight:700;">SUCCESS</div><div style="font-size:18px;font-weight:800;">58%</div></div>
+        </div>
+        <button class="claude-btn" onclick="openClaude(PROMPTS.humboldtPlan)" style="margin-top:8px;">Draft Humboldt Plan</button>
+      </div>
+      <div class="opp-card">
+        <div class="opp-title">Cornell Klarman Postdoc Fellowship</div>
+        <div class="opp-meta">USA - Portal: August 15, 2026 - $80,000/yr</div>
+        <div class="score-row">
+          <div class="score" style="background:#fdf6e8;color:#b07d2e;border:1px solid #e8c97a;"><div style="font-size:9px;font-weight:700;">MATCH</div><div style="font-size:18px;font-weight:800;">72%</div></div>
+          <div class="score" style="background:#eef4fc;color:#2563a8;border:1px solid #b8d0f0;"><div style="font-size:9px;font-weight:700;">SUCCESS</div><div style="font-size:18px;font-weight:800;">48%</div></div>
+        </div>
+        <button class="claude-btn" onclick="openClaude(PROMPTS.cornellProposal)" style="margin-top:8px;">Draft Cornell Proposal</button>
+        <button class="claude-btn" onclick="openClaude(PROMPTS.cornellHost)" style="margin-top:8px;margin-left:8px;">Host Outreach Email</button>
+      </div>
+      <div class="opp-card">
+        <div class="opp-title">British Academy Fellowship</div>
+        <div class="opp-meta">UK - Contact professors NOW - Apply October 2026</div>
+        <div class="score-row">
+          <div class="score" style="background:#edf7f2;color:#1e7a4a;border:1px solid #7dd4a8;"><div style="font-size:9px;font-weight:700;">MATCH</div><div style="font-size:18px;font-weight:800;">82%</div></div>
+          <div class="score" style="background:#fdf6e8;color:#b07d2e;border:1px solid #e8c97a;"><div style="font-size:9px;font-weight:700;">SUCCESS</div><div style="font-size:18px;font-weight:800;">55%</div></div>
+        </div>
+        <button class="claude-btn" onclick="openClaude(PROMPTS.britishEmails)" style="margin-top:8px;">Draft Professor Intro Emails</button>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Job and Career Opportunities</h2>
+      <button class="claude-btn" onclick="openClaude(PROMPTS.jobSearch)" style="margin:4px;">30-day career strategy</button>
+      <button class="claude-btn" onclick="openClaude(PROMPTS.businessOpp)" style="margin:4px;">Business opportunities</button>
+      <button class="claude-btn" onclick="openClaude(PROMPTS.postdocProposal)" style="margin:4px;">Postdoc proposal</button>
+    </div>
+    <div class="card">
+      <h2>Custom Application</h2>
+      <textarea id="opp-inp" placeholder="Describe any opportunity -- paste job description, fellowship details, or URL..."></textarea>
+      <button class="claude-btn" onclick="openOpp()">Generate Application</button>
+    </div>
+  </div>
+
+  <!-- WRITING STUDIO -->
+  <div class="panel" id="panel-writing">
+    <div class="card">
+      <h2>Writing Studio</h2>
+      <select id="write-mode" style="margin-bottom:10px;">
+        <option value="career">Career/Job Application</option>
+        <option value="research">Research Writing</option>
+        <option value="fellowship">Fellowship Letter</option>
+        <option value="seo">SEO/Blog Writing</option>
+        <option value="linkedin">LinkedIn Message</option>
+        <option value="youtube">YouTube Script</option>
+        <option value="copy">Copywriting</option>
+      </select>
+      <textarea id="write-inp" placeholder="Describe what you need written..."></textarea>
+      <button class="claude-btn" onclick="openWriting()">Open in Claude</button>
+    </div>
+  </div>
+
+  <!-- CONTENT HUB -->
+  <div class="panel" id="panel-content">
+    <div class="card">
+      <h2>Quetta YouTube Channel</h2>
+      <button class="claude-btn" onclick="openClaude(PROMPTS.ytIdeas)" style="margin:4px;">Video Ideas</button>
+      <button class="claude-btn" onclick="openClaude(PROMPTS.ytShort)" style="margin:4px;">Short Script</button>
+      <button class="claude-btn" onclick="openClaude(PROMPTS.ytDesc)" style="margin:4px;">Description + Tags</button>
+    </div>
+    <div class="card">
+      <h2>Lumora Cosmetics</h2>
+      <button class="claude-btn" onclick="openClaude(PROMPTS.lumoraCaptions)" style="margin:4px;">Instagram Captions</button>
+      <button class="claude-btn" onclick="openClaude(PROMPTS.lumoraAd)" style="margin:4px;">Facebook Ad</button>
+      <button class="claude-btn" onclick="openClaude(PROMPTS.lumoraCalendar)" style="margin:4px;">7-Day Calendar</button>
+    </div>
+    <div class="card">
+      <h2>Custom Content</h2>
+      <textarea id="content-inp" placeholder="Describe the content you need..."></textarea>
+      <button class="claude-btn" onclick="openContent()">Open in Claude</button>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<script>
+
+// ── PROFILE CONTEXT ──
+var CTX = "DR. MUHAMMAD EHSAN PROFILE: PhD in Education IIUI Islamabad completed January 2026. Dissertation: integration of microcredentials in degree programs in Pakistan higher education. M.Phil. Educational Leadership VU Pakistan. TESOL certified UMBC. Secondary school teacher Zhob Balochistan. Visiting faculty BUITEMS EDU-6105 Teacher Education in Comparative Perspectives. TEA Fellowship 2019 Virginia Tech. Co-founder PATEN. Freelancer Upwork Fiverr SEO content writing. Fellowship pipeline: MSCA (open now), Humboldt (July 2026), Cornell (Oct 2026), British Academy (Oct 2026). Goals: (1) fully funded postdoc fellowship (2) strong academic career (3) skill-sharing business opportunities. WRITING RULES: Never use AI vocabulary - no delve, testament, pivotal, foster, overarching, vital, realm, tapestry, journey, embark, transformative, holistic. Write as a direct confident human Pakistani education researcher. No AI sentence patterns. Every application must use different structure and opening - no repeated templates. ";
+
+// ── PROMPTS ──
+var PROMPTS = {
+  dailyBriefing: CTX + "Give Dr. Ehsan his daily executive briefing. Top 3 priorities today with urgency reasoning. Any fellowship deadlines in next 45 days. One action that would most move his career forward this week. Direct, human, energizing. No bullet-point headers.",
+  jobSearch: CTX + "Generate a targeted 30-day career strategy for Dr. Ehsan. Which specific positions or fellowship calls to apply to, in what order, with what materials. Focus on: postdoc fellowships, academic positions in education, EdTech consultancy, HEC-related opportunities. Be specific about real institutions and real timelines.",
+  businessOpp: CTX + "Identify 5 concrete business or skill-sharing opportunities matching Dr. Ehsan profile. For each: what it is, where to access it, realistic earning potential, first steps in the next week. Focus on: online teaching, EdTech consultancy, SEO content writing, research consultancy, online courses on microcredentials.",
+  litReview: CTX + "Write a critically analytical literature review paragraph on microcredentials in higher education. Engage real scholars (Wheelahan and Moodie, Brown et al, McGreal and Olcott, Oliver, Kato et al). Identify a specific gap. Connect to Pakistan and developing country context. No summary writing. No AI phrasing. Argument-first.",
+  abstract: CTX + "Draft a tight precise abstract for a research paper on microcredentials integration in Pakistan higher education. Background, research gap, method, key finding or contribution, significance. Maximum 250 words. Every sentence must be specific. No filler.",
+  sources: CTX + "Identify 8 high-quality peer-reviewed papers (2019-2025) on microcredentials in higher education with direct relevance to Pakistan or developing country contexts. Full APA citation plus 2-sentence relevance note for each.",
+  postdocProposal: CTX + "Draft a high-calibre postdoctoral research proposal on microcredentials institutional readiness and policy implementation in Pakistan higher education for an international funding committee. Research rationale, objectives, methodology, expected contribution. No AI phrasing.",
+  methodology: CTX + "Suggest 5 research methodology approaches for studying microcredential integration in Pakistani universities. For each: the approach, why it fits this context, one limitation to acknowledge.",
+  mscaProposal: CTX + "Write the abstract and opening section of an MSCA Global Postdoctoral Fellowship proposal. Social Sciences panel. Topic: microcredentials integration and policy implementation in Pakistan higher education framed as interdisciplinary Education plus digital technology plus institutional policy. Demonstrate two-way knowledge transfer: what Dr. Ehsan brings to Europe from Pakistan and what European methods he takes back. No generic EU funding language. Open with a specific research problem not a general statement.",
+  mscaEmails: CTX + "Write three distinct outreach emails from Dr. Ehsan to: (1) Prof. James Davenport Bath University, (2) Prof. Michael Thomas Liverpool LJMU, (3) Prof. John Brennan Open University. Requesting consideration as European return host for MSCA Global Postdoctoral Fellowship. Each email must open differently, reference that professor actual research focus, connect to Dr. Ehsan microcredentials work specifically. No email should feel like a copy of another.",
+  humboldtPlan: CTX + "Write a 3000-word research plan for the Alexander von Humboldt Postdoctoral Fellowship Germany. Current state of research field and where Dr. Ehsan PhD findings sit within it. Specific research questions for the German fellowship period. Methodology. Expected results and how they advance international scholarship. Connection to German or European higher education policy. What Humboldt enables that no other programme could. Academic but not bureaucratic.",
+  cornellProposal: CTX + "Write a 2-page research proposal for Cornell Klarman Postdoctoral Fellowship. Describe proposed research on microcredentials in Pakistan higher education. Scholarly significance. Connection to Cornell Arts and Sciences. What the 3-year fellowship enables. Single-spaced academic humanized world-class quality. No AI phrasing.",
+  cornellHost: CTX + "Write a faculty host outreach email from Dr. Ehsan to a Cornell University education or social sciences professor ahead of the Klarman Fellowship portal opening August 2026. Do not open with I am writing to express my interest. Open with a direct reference to the professor research and a specific connection to Dr. Ehsan work. Include who he is, what he researches, why this professor specifically, and the concrete ask.",
+  britishEmails: CTX + "Write three introduction emails from Dr. Ehsan to Prof. James Davenport Bath, Prof. Michael Thomas Liverpool LJMU, Prof. John Brennan Open University. Building academic relationships before British Academy Fellowship application October 2026. Each email must open differently. Each must reference that professor specific research interests. No email should read like a form letter.",
+  kwiProposal: CTX + "Write a 5-page research proposal for KWI International Fellowship Essen Germany. Align with cultural studies humanities social sciences focus. Frame microcredentials research through cultural and sociological lens - knowledge production access and postcolonial institutional legitimacy. Use Dr. Ehsan experience teaching in Balochistan researching in Islamabad and training in USA as evidence of cross-contextual scholarly formation.",
+  linkedin: CTX + "Write a LinkedIn message from Dr. Ehsan to a professor researching microcredentials or EdTech in South Asia. Genuine, opens academic dialogue, not salesy. 4 sentences. No I came across your profile and was impressed.",
+  youtube: CTX + "Give 8 trending Urdu YouTube video ideas about Quetta and Balochistan for 2026. For each: search-optimized Urdu title, 2-line hook, why Pakistani audiences would click it.",
+  seo: CTX + "Write an SEO title meta description and first 300 words for a blog post on microcredentials in Pakistan higher education. English-language academic and policy audience. Natural keyword placement. Must not read like SEO writing.",
+  ytIdeas: CTX + "Give 8 trending Urdu YouTube video ideas about Quetta and Balochistan for 2026. Search-optimized Urdu titles, 2-line hooks, and why each will perform well.",
+  ytShort: CTX + "Write a 60-second YouTube Short script in Urdu about one fascinating lesser-known fact about Quetta or Balochistan. Direct, visual, punchy. Ends with a reason to watch more.",
+  ytDesc: CTX + "Write a YouTube video description in English and Urdu plus 15 SEO hashtags for a video about Quetta history and culture.",
+  ytBio: CTX + "Write a YouTube channel About section in Urdu and English for a channel about Quetta Balochistan and Pakistani culture.",
+  lumoraCaptions: CTX + "Write 5 Instagram captions for Lumora Cosmetics Pakistan. Mix Urdu and English. Confident, direct, aspirational. Subtle action prompt each.",
+  lumoraAd: CTX + "Write Facebook ad copy for Lumora Cosmetics promoting a skincare product in Pakistan. Headline, 2-line body, CTA. No hollow superlatives.",
+  lumoraCalendar: CTX + "Create a 7-day social media content calendar for Lumora Cosmetics Pakistan. Platform, content type, caption idea, 2 hashtags per day. Mix educational, promotional, engagement.",
+  taskRank: CTX + "Rank Dr. Ehsan current open tasks by priority for today. For each: rank, urgency score out of 100, one direct sentence of reasoning. Be blunt not diplomatic.",
+};
+
+// ── NAVIGATION ──
+function go(name) {
+  var panels = document.querySelectorAll('.panel');
+  for (var i = 0; i < panels.length; i++) {
+    panels[i].classList.remove('active');
+  }
+  var target = document.getElementById('panel-' + name);
+  if (target) target.classList.add('active');
+
+  var links = document.querySelectorAll('.nav a');
+  for (var j = 0; j < links.length; j++) {
+    links[j].classList.remove('active');
+  }
+  var activeLink = document.querySelector('.nav a[onclick*="go(\'' + name + '\')"]');
+  if (activeLink) activeLink.classList.add('active');
+}
+
+// ── CLAUDE OPENER ──
+function openClaude(prompt) {
+  var url = 'https://claude.ai/new?q=' + encodeURIComponent(prompt);
+  window.open(url, '_blank');
+}
+
+// ── AI ASSISTANT ──
+function openAI() {
+  var inp = document.getElementById('ai-inp');
+  if (!inp || !inp.value.trim()) { alert('Please type your request first.'); return; }
+  openClaude(CTX + inp.value.trim());
+}
+
+// ── LECTURE ──
+function genLecture() {
+  var unit = document.getElementById('unit-sel').value;
+  var type = document.getElementById('deliv-sel').value;
+  var names = {
+    '2':'Teacher Education Curriculum - Factors Affecting and Development',
+    '3':'Objectives of Teacher Education Programme',
+    '4':'Study of Education in Teacher Training Institutions PITE RITE',
+    '5':'Teacher Education Through Non-Formal Distance Education AIOU VU UoPesh Sarhad',
+    '6':'Quality Assurance in Teacher Education NACTE Accreditation',
+    '7':'Models of Teacher Education Conventional Distance FBT',
+    '8':'Role of Private Sector in Teacher Education'
+  };
+  var n = names[unit];
+  var prompt;
+  if (type === 'all') {
+    prompt = CTX + "Generate complete 3-deliverable Monday-ready lecture package for BUITEMS EDU-6105 Unit " + unit + ": " + n + ". (1) PhD-level source summary drawing on Farooq 2014, Hargreaves and Fullan 2012, Moore 2014, Tibble 2015 plus modern sources. (2) Hour-by-hour 3-hour session plan with slide topics and activities. (3) 7-source APA reading list with annotations. Humanized detailed professional.";
+  } else if (type === 'summary') {
+    prompt = CTX + "Write deep PhD-level source summary for BUITEMS Unit " + unit + ": " + n + ". Reference Farooq 2014, Hargreaves and Fullan 2012, Moore 2014, Tibble 2015 plus modern sources. Humanized scholarly tone.";
+  } else if (type === 'ppt') {
+    prompt = CTX + "Create hour-by-hour PPT session plan for 3-hour BUITEMS class Unit " + unit + ": " + n + ". For each of 3 hours: 4-5 slide titles with talking points, 1 discussion question, 1 student activity.";
+  } else {
+    prompt = CTX + "Create 7-source reading list for BUITEMS Unit " + unit + ": " + n + ". Mix of Farooq, Hargreaves and Fullan, Moore, Tibble plus recent scholarship 2018-2024. Full APA plus 1-sentence annotation each.";
+  }
+  openClaude(prompt);
+}
+
+// ── PAPER GENERATOR ──
+function genPaper() {
+  var topic = document.getElementById('paper-topic').value.trim();
+  var notes = document.getElementById('paper-notes').value.trim();
+  var journal = document.getElementById('paper-journal').value;
+  if (!topic) { alert('Please enter a paper topic.'); return; }
+  var journalNote = journal ? 'Target journal: ' + journal + '.' : '';
+  var prompt = CTX + "Generate a complete publication-ready research paper. Topic: " + topic + ". Research notes: " + (notes || 'Use Dr. Ehsan dissertation research on microcredentials in Pakistan HE') + ". " + journalNote + " Write full paper: Introduction, Literature Review, Methodology, Results, Discussion, Conclusion, Abstract, References. Write as Dr. Ehsan - direct, grounded, human voice. No AI phrasing. 6000-8000 words. Argument-driven throughout.";
+  openClaude(prompt);
+}
+
+// ── TASKS ──
+var TASKS = [
+  {text:'Prepare Unit 2 lecture package for BUITEMS Monday', cat:'BUITEMS', done:false},
+  {text:'Draft MSCA Global PF research proposal - call open now', cat:'Fellowship', done:false},
+  {text:'Contact Prof. James Davenport Bath University re MSCA', cat:'Fellowship', done:false},
+  {text:'Find German academic host for Humboldt Fellowship July deadline', cat:'Fellowship', done:false},
+  {text:'Finalize Zhob institution partnership agreement', cat:'Business', done:false},
+  {text:'Submit PhD chapter draft to IIUI supervisor', cat:'Research', done:false},
+  {text:'Search and apply for 2 new postdoc opportunities this week', cat:'Fellowship', done:false}
+];
+
+function saveTasks() {
+  try { localStorage.setItem('tasks_v1', JSON.stringify(TASKS)); } catch(e) {}
+}
+
+function renderTasks() {
+  var el = document.getElementById('task-list');
+  if (!el) return;
+  if (!TASKS.length) { el.innerHTML = '<p style="color:#aaa;padding:10px 0;">No tasks. Add one below.</p>'; return; }
+  var html = '';
+  for (var i = 0; i < TASKS.length; i++) {
+    var t = TASKS[i];
+    html += '<div class="task-item">';
+    html += '<div class="task-check' + (t.done ? ' done' : '') + '" onclick="toggleTask(' + i + ')"></div>';
+    html += '<div class="task-text' + (t.done ? ' done' : '') + '">' + t.text + '</div>';
+    html += '<span class="tag">' + t.cat + '</span>';
+    html += '<button onclick="removeTask(' + i + ')" style="background:none;border:none;color:#ccc;cursor:pointer;font-size:14px;padding:0 4px;">x</button>';
+    html += '</div>';
+  }
+  el.innerHTML = html;
+  document.getElementById('pending-count') && (document.getElementById('pending-count').textContent = TASKS.filter(function(t){return !t.done;}).length);
+}
+
+function toggleTask(i) {
+  TASKS[i].done = !TASKS[i].done;
+  saveTasks();
+  renderTasks();
+}
+
+function removeTask(i) {
+  TASKS.splice(i, 1);
+  saveTasks();
+  renderTasks();
+}
+
+function addTask() {
+  var inp = document.getElementById('new-task');
+  var cat = document.getElementById('new-cat');
+  if (!inp || !inp.value.trim()) return;
+  TASKS.unshift({text: inp.value.trim(), cat: cat ? cat.value : 'Other', done: false});
+  saveTasks();
+  renderTasks();
+  inp.value = '';
+}
+
+// ── OPPORTUNITIES ──
+function openOpp() {
+  var inp = document.getElementById('opp-inp');
+  if (!inp || !inp.value.trim()) { alert('Describe the opportunity first.'); return; }
+  openClaude(CTX + "Write a complete humanized elite fellowship application for: " + inp.value.trim() + ". Draw fully on Dr. Ehsan profile. Must win an international selection committee. No AI phrasing. Different structure from any previous application.");
+}
+
+// ── WRITING ──
+function openWriting() {
+  var mode = document.getElementById('write-mode').value;
+  var inp = document.getElementById('write-inp');
+  if (!inp || !inp.value.trim()) { alert('Describe what you need written.'); return; }
+  var modeCtx = {
+    career: "Write a job application, cover letter, or career document for: ",
+    research: "Write rigorous humanized research prose for: ",
+    fellowship: "Write an elite humanized fellowship application component for: ",
+    seo: "Write SEO-optimized content: ",
+    linkedin: "Write a warm intellectual LinkedIn message for: ",
+    youtube: "Write a YouTube script or description for: ",
+    copy: "Write sharp persuasive copywriting for: "
+  };
+  openClaude(CTX + (modeCtx[mode] || "Write: ") + inp.value.trim() + ". No AI phrasing. Direct human voice.");
+}
+
+// ── CONTENT ──
+function openContent() {
+  var inp = document.getElementById('content-inp');
+  if (!inp || !inp.value.trim()) { alert('Describe the content you need.'); return; }
+  openClaude(CTX + "Create content for: " + inp.value.trim() + ". Context: Quetta Balochistan Urdu YouTube or Lumora Cosmetics Pakistan social media.");
+}
+
+// ── INIT ──
+window.onload = function() {
+  try {
+    var saved = localStorage.getItem('tasks_v1');
+    if (saved) TASKS = JSON.parse(saved);
+  } catch(e) {}
+  renderTasks();
+};
+
+</script>
+</body>
+</html>
