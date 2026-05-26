@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>Diagnosis</title>
+</head>
+<body style="font-family:sans-serif;padding:20px;background:#f5f5f5;">
+<h2>JavaScript Diagnosis Page</h2>
+<div id="out" style="background:#fff;padding:15px;border-radius:8px;border:1px solid #ddd;font-size:13px;line-height:1.8;"></div>
+
+<script>
+var out = document.getElementById('out');
+var log = [];
+
+function add(msg, color) {
+  log.push('<div style="color:' + (color||'#333') + ';">' + msg + '</div>');
+  out.innerHTML = log.join('');
+}
+
+add('Step 1: Script block started', 'green');
+
+try {
+  var x = 1 + 1;
+  add('Step 2: Basic math works = ' + x, 'green');
+} catch(e) { add('Step 2 FAILED: ' + e, 'red'); }
+
+try {
+  var arr = [1,2,3];
+  add('Step 3: Arrays work = ' + arr.length, 'green');
+} catch(e) { add('Step 3 FAILED: ' + e, 'red'); }
+
+try {
+  var obj = {a:1, b:2};
+  add('Step 4: Objects work = ' + obj.a, 'green');
+} catch(e) { add('Step 4 FAILED: ' + e, 'red'); }
+
+try {
+  function testFn(n) { return n * 2; }
+  add('Step 5: Functions work = ' + testFn(5), 'green');
+} catch(e) { add('Step 5 FAILED: ' + e, 'red'); }
+
+try {
+  var el = document.getElementById('out');
+  add('Step 6: DOM access works', 'green');
+} catch(e) { add('Step 6 FAILED: ' + e, 'red'); }
+
+try {
+  document.querySelector('h2').style.color = 'blue';
+  add('Step 7: querySelector works', 'green');
+} catch(e) { add('Step 7 FAILED: ' + e, 'red'); }
+
+try {
+  localStorage.setItem('test', '123');
+  var val = localStorage.getItem('test');
+  add('Step 8: localStorage works = ' + val, 'green');
+} catch(e) { add('Step 8 FAILED: ' + e, 'red'); }
+
+try {
+  fetch('https://api.openalex.org/works?search=education&per-page=1')
+    .then(function(r){ return r.json(); })
+    .then(function(d){ add('Step 9: Fetch/network works - got ' + d.results.length + ' results', 'green'); })
+    .catch(function(e){ add('Step 9: Fetch failed - ' + e, 'orange'); });
+} catch(e) { add('Step 9 FAILED: ' + e, 'red'); }
+
+add('Step 10: All synchronous checks complete', 'blue');
+add('---', '#ccc');
+add('Browser: ' + navigator.userAgent, '#666');
+add('URL: ' + window.location.href, '#666');
+
+document.querySelector('h2').addEventListener('click', function() {
+  add('CLICK TEST: Click event works!', 'green');
+});
+add('Click on the heading above to test click events', 'purple');
+</script>
+</body>
+</html>
