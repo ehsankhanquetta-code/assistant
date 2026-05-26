@@ -843,7 +843,7 @@ function searchOpenAlex(q, yr, el) {
       html += '<div class="db-meta">' + (authors?authors+' . ':'') + (r.publication_year||'') + (journal?' . '+journal:'') + (r.cited_by_count?' . Cited: '+r.cited_by_count:'') + '</div>';
       html += '<div class="db-actions">';
       if (doi) html += '<a href="https://doi.org/' + doi + '" target="_blank" class="btn btn-sm btn-primary">View Paper</a>';
-      html += '<button class="btn btn-sm" onclick="citeThis('' + (r.title||'').replace(/['"]/g,'').substring(0,50) + '','' + authors.replace(/['"]/g,'') + '',' + (r.publication_year||0) + ')">Cite this</button></div></div>';
+      html += '<button class="btn btn-sm" onclick="citeThis('' + (r.title||'').substring(0,50) + '','' + authors + '',' + (r.publication_year||0) + ')">Cite this</button></div></div>';
     }
     el.innerHTML = html;
   }).catch(function(e){ el.innerHTML = '<p style="color:#c0392b;font-size:13px;padding:10px;">Search failed: ' + e.message + '</p>'; });
@@ -865,7 +865,7 @@ function searchSemantic(q, yr, el) {
       html += '<div class="db-actions">';
       if (doi) html += '<a href="https://doi.org/' + doi + '" target="_blank" class="btn btn-sm btn-primary">View Paper</a>';
       if (r.openAccessPdf&&r.openAccessPdf.url) html += '<a href="' + r.openAccessPdf.url + '" target="_blank" class="btn btn-sm">Download PDF</a>';
-      html += '<button class="btn btn-sm" onclick="citeThis('' + (r.title||'').replace(/['"]/g,'').substring(0,50) + '','' + authors.replace(/['"]/g,'') + '',' + (r.year||0) + ')">Cite</button></div></div>';
+      html += '<button class="btn btn-sm" onclick="citeThis('' + (r.title||'').substring(0,50) + '','' + authors + '',' + (r.year||0) + ')">Cite</button></div></div>';
     }
     el.innerHTML = html;
   }).catch(function(e){ el.innerHTML = '<p style="color:#c0392b;font-size:13px;padding:10px;">Search failed: ' + e.message + '</p>'; });
