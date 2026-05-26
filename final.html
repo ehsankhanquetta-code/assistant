@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dr. Ehsan Assistant</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:Segoe UI,Arial,sans-serif;background:#f5f3ee;display:flex;height:100vh;font-size:14px;}
+.sidebar{width:230px;background:#fff;border-right:1px solid #ddd;overflow-y:auto;flex-shrink:0;display:flex;flex-direction:column;}
+.sb-head{padding:16px;border-bottom:1px solid #eee;}
+.sb-name{font-size:14px;font-weight:700;}
+.sb-role{font-size:11px;color:#888;margin-top:2px;}
+.sb-status{display:inline-flex;align-items:center;gap:5px;background:#edf7f2;border:1px solid #7dd4a8;border-radius:20px;padding:3px 10px;font-size:11px;color:#1e7a4a;font-weight:600;margin-top:8px;}
+.sb-dot{width:6px;height:6px;border-radius:50%;background:#1e7a4a;}
+.nav-section{font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.08em;padding:12px 16px 4px;}
+.nav a{display:flex;align-items:center;gap:8px;padding:9px 16px;color:#555;font-size:13px;font-weight:500;text-decoration:none;border-left:3px solid transparent;}
+.nav a:hover{background:#f5f3ee;color:#2563a8;}
+.nav a.active{background:#eef4fc;color:#2563a8;border-left-color:#2563a8;font-weight:700;}
+.sb-footer{margin-top:auto;padding:12px 16px;border-top:1px solid #eee;font-size:11px;color:#aaa;}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.topbar{height:54px;background:#fff;border-bottom:1px solid #ddd;display:flex;align-items:center;justify-content:space-between;padding:0 22px;flex-shrink:0;}
+.tb-title{font-size:16px;font-weight:700;}
+.content{flex:1;overflow-y:auto;padding:22px;}
+.panel{display:none;}
+.panel.active{display:block;}
+.card{background:#fff;border:1px solid #e2ddd6;border-radius:10px;padding:20px;margin-bottom:14px;}
+.card h3{font-size:14px;font-weight:700;margin-bottom:10px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px;}
+.metric{background:#faf9f6;border:1px solid #e2ddd6;border-radius:10px;padding:14px;}
+.metric-label{font-size:10px;color:#aaa;font-weight:700;text-transform:uppercase;margin-bottom:5px;}
+.metric-val{font-size:24px;font-weight:800;}
+.metric-sub{font-size:11px;color:#888;margin-top:3px;}
+.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;}
+.bg{background:#edf7f2;color:#1e7a4a;border:1px solid #7dd4a8;}
+.bb{background:#eef4fc;color:#2563a8;border:1px solid #b8d0f0;}
+.bw{background:#fff8ec;color:#b06a00;border:1px solid #f0c570;}
+.br{background:#fdf0ee;color:#c0392b;border:1px solid #f0a89e;}
+.bp{background:#f5f0fb;color:#6b3fa0;border:1px solid #c4a8e8;}
+.bd{background:#f0ede8;color:#888;border:1px solid #ddd;}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;border:1px solid #c9c3b9;background:#fff;color:#1a1713;font-family:inherit;}
+.btn:hover{background:#f5f3ee;}
+.btn-primary{background:#2563a8;color:#fff;border-color:#2563a8;}
+.btn-sm{padding:5px 12px;font-size:12px;}
+.cbtn{background:linear-gradient(135deg,#7B2FBE,#4F46E5);color:#fff;border:none;padding:9px 18px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:700;font-family:inherit;display:inline-flex;align-items:center;gap:6px;}
+.cbtn:hover{opacity:.9;}
+.cbtn-sm{padding:6px 12px;font-size:12px;}
+input,textarea,select{width:100%;padding:9px 12px;border:1px solid #ddd;border-radius:6px;font-size:13px;font-family:inherit;background:#faf9f6;outline:none;}
+input:focus,textarea:focus,select:focus{border-color:#2563a8;}
+textarea{resize:vertical;min-height:88px;line-height:1.6;}
+.form-label{font-size:12px;font-weight:600;color:#666;margin-bottom:5px;display:block;}
+.form-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;align-items:flex-start;}
+.alert{border-radius:8px;padding:12px 14px;display:flex;align-items:flex-start;gap:10px;margin-bottom:14px;font-size:13px;}
+.alert-blue{background:#eef4fc;border:1px solid #b8d0f0;color:#2563a8;}
+.alert-green{background:#edf7f2;border:1px solid #7dd4a8;color:#1e7a4a;}
+.alert-warn{background:#fff8ec;border:1px solid #f0c570;color:#b06a00;}
+.sec-label{font-size:11px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;}
+.priority{padding:14px 16px;border-radius:9px;margin-bottom:10px;border:1px solid;display:flex;align-items:flex-start;gap:12px;}
+.p1{background:#fff8f0;border-color:#f0c070;}
+.p2{background:#f0f7ff;border-color:#b0d0f0;}
+.p3{background:#edf7f2;border-color:#7dd4a8;}
+.p-num{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0;}
+.pn1{background:#f0c070;color:#7a4800;}
+.pn2{background:#b0d0f0;color:#1a3a6a;}
+.pn3{background:#7dd4a8;color:#0a4a28;}
+.opp-card{background:#fff;border:1px solid #e2ddd6;border-radius:9px;padding:16px;margin-bottom:12px;}
+.opp-title{font-size:14px;font-weight:700;}
+.opp-meta{font-size:12px;color:#888;margin-top:3px;line-height:1.5;}
+.score-row{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;}
+.score{text-align:center;padding:5px 12px;border-radius:6px;min-width:65px;}
+.task-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #f0ede8;}
+.task-item:last-child{border-bottom:none;}
+.tchk{width:18px;height:18px;border:2px solid #ccc;border-radius:4px;cursor:pointer;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;}
+.tchk.done{background:#1e7a4a;border-color:#1e7a4a;}
+.t-text{font-size:13px;flex:1;line-height:1.5;}
+.t-text.done{text-decoration:line-through;color:#aaa;}
+.tag{font-size:10px;padding:1px 7px;background:#f0ede8;border-radius:10px;color:#888;}
+.divider{height:1px;background:#f0ede8;margin:12px 0;}
+.db-result{background:#fff;border:1px solid #e2ddd6;border-radius:8px;padding:14px;margin-bottom:10px;}
+.db-title{font-size:13px;font-weight:700;color:#2563a8;line-height:1.4;}
+.db-meta{font-size:11px;color:#888;margin-top:3px;}
+.db-abstract{font-size:12px;color:#555;margin-top:6px;line-height:1.6;}
+.db-actions{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;}
+.loading{text-align:center;padding:30px;color:#888;}
+.spinner{display:inline-block;width:24px;height:24px;border:3px solid #eee;border-top-color:#2563a8;border-radius:50%;animation:spin .7s linear infinite;margin-bottom:10px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.opp-steps{display:none;margin-top:12px;border-top:1px solid #eee;padding-top:12px;}
+.opp-steps.show{display:block;}
+.step-item{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid #f0ede8;}
+.step-item:last-child{border-bottom:none;}
+.step-num{width:24px;height:24px;border-radius:50%;background:#2563a8;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px;}
+.step-title{font-size:13px;font-weight:700;}
+.step-desc{font-size:12px;color:#666;margin-top:2px;line-height:1.5;}
+.step-deadline{font-size:11px;color:#c0392b;font-weight:600;margin-top:2px;}
+.mode-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;margin-bottom:14px;}
+.mode-btn{padding:10px 6px;border-radius:6px;border:1.5px solid #ddd;background:#fff;cursor:pointer;text-align:center;font-size:12px;font-weight:500;color:#666;font-family:inherit;}
+.mode-btn.active{border-color:#2563a8;background:#eef4fc;color:#2563a8;font-weight:700;}
+.mode-icon{font-size:20px;display:block;margin-bottom:4px;}
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #e2ddd6;padding:6px 0;z-index:100;}
+.mob-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;cursor:pointer;color:#888;font-size:10px;font-weight:600;border:none;background:none;font-family:inherit;}
+.mob-btn.active{color:#2563a8;}
+.mob-btn-icon{font-size:20px;}
+@media(max-width:600px){.sidebar{display:none;}.content{padding:14px;padding-bottom:75px;}.mobile-nav{display:flex;}.g2,.g3{grid-template-columns:1fr;}.form-row{flex-direction:column;}.form-row>*{width:100%!important;min-width:unset!important;}}
+</style>
+</head>
+<body>
+
+<div class="mobile-nav">
+  <button class="mob-btn active" id="mob-dashboard" onclick="go('dashboard')"><span class="mob-btn-icon">&#9700;</span>Home</button>
+  <button class="mob-btn" id="mob-opportunities" onclick="go('opportunities')"><span class="mob-btn-icon">&#127760;</span>Fellows</button>
+  <button class="mob-btn" id="mob-tasks" onclick="go('tasks')"><span class="mob-btn-icon">&#9745;</span>Tasks</button>
+  <button class="mob-btn" id="mob-databases" onclick="go('databases')"><span class="mob-btn-icon">&#128202;</span>Search</button>
+  <button class="mob-btn" id="mob-assistant" onclick="go('assistant')"><span class="mob-btn-icon">&#9672;</span>AI</button>
+</div>
+
+<div class="sidebar">
+  <div class="sb-head">
+    <div class="sb-name">Dr. Muhammad Ehsan</div>
+    <div class="sb-role">PhD in Education . IIUI</div>
+    <div class="sb-status"><span class="sb-dot"></span> Assistant Active</div>
+  </div>
+  <div class="nav">
+    <div class="nav-section">Command</div>
+    <a href="#" class="active" id="nav-dashboard" onclick="go('dashboard');return false;">&#9700; Dashboard</a>
+    <a href="#" id="nav-assistant" onclick="go('assistant');return false;">&#9672; AI Assistant</a>
+    <div class="nav-section">Academic</div>
+    <a href="#" id="nav-lecture" onclick="go('lecture');return false;">&#128218; Lecture Prep</a>
+    <a href="#" id="nav-research" onclick="go('research');return false;">&#9675; Research Hub</a>
+    <a href="#" id="nav-databases" onclick="go('databases');return false;">&#128202; Live Databases</a>
+    <div class="nav-section">Career</div>
+    <a href="#" id="nav-tasks" onclick="go('tasks');return false;">&#9745; Daily Tasks</a>
+    <a href="#" id="nav-opportunities" onclick="go('opportunities');return false;">&#127760; Fellowships</a>
+    <a href="#" id="nav-jobs" onclick="go('jobs');return false;">&#128188; Jobs and Career</a>
+    <div class="nav-section">Writing</div>
+    <a href="#" id="nav-humanizer" onclick="go('humanizer');return false;">&#128736; AI Humanizer</a>
+    <a href="#" id="nav-writing" onclick="go('writing');return false;">&#10022; Writing Studio</a>
+    <a href="#" id="nav-linkedin" onclick="go('linkedin');return false;">&#128101; LinkedIn Posts</a>
+  </div>
+  <div class="sb-footer">Zhob, Balochistan . Pakistan<br><span id="clock-side"></span></div>
+</div>
+
+<div class="main">
+  <div class="topbar">
+    <div>
+      <div class="tb-title" id="tb-title">Dashboard</div>
+      <div style="font-size:11px;color:#888;" id="tb-sub">Your personal executive assistant</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span id="clock" style="font-size:12px;color:#888;"></span>
+      <button class="cbtn cbtn-sm" onclick="openClaude(PROMPTS.brief)">&#9889; Briefing</button>
+    </div>
+  </div>
+  <div class="content">
+
+    <div class="panel active" id="panel-dashboard">
+      <div class="alert alert-blue"><span style="font-size:18px;">&#129504;</span><div><strong>Good day, Dr. Ehsan.</strong> Your priorities are ranked below. Click Briefing for a full daily plan.</div></div>
+      <div class="g3">
+        <div class="metric"><div class="metric-label">Active Projects</div><div class="metric-val">5</div><div class="metric-sub">Running in parallel</div></div>
+        <div class="metric"><div class="metric-label">Fellowships Tracked</div><div class="metric-val">6</div><div class="metric-sub">CWT deadline Jun 5!</div></div>
+        <div class="metric"><div class="metric-label">Open Tasks</div><div class="metric-val" id="task-count">6</div><div class="metric-sub">Ranked by priority</div></div>
+      </div>
+      <div class="priority p1" style="background:#fdf0ee;border-color:#f0a89e;">
+        <div class="p-num" style="background:#f0a89e;color:#7a0000;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0;">!</div>
+        <div style="flex:1;">
+          <div style="font-size:14px;font-weight:700;">Charles Wallace Fellowship -- Deadline June 5, 2026</div>
+          <div style="font-size:12px;color:#666;margin-top:3px;">91% match. Pakistani nationals only. 1,600 GBP/month. Must secure UK host NOW.</div>
+          <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn btn-primary btn-sm" onclick="go('opportunities')">View Steps</button>
+            <button class="cbtn cbtn-sm" onclick="openClaude(PROMPTS.cwthost)">Draft Host Email</button>
+          </div>
+        </div>
+      </div>
+      <div class="priority p1">
+        <div class="p-num pn1">1</div>
+        <div style="flex:1;">
+          <div style="font-size:14px;font-weight:700;">BUITEMS Unit 2 -- Lecture Package</div>
+          <div style="font-size:12px;color:#666;margin-top:3px;">Monday deadline. No slides or summary prepared. Urgency: 95%</div>
+          <div style="margin-top:8px;"><button class="btn btn-primary btn-sm" onclick="go('lecture')">Open Lecture Prep</button></div>
+        </div>
+      </div>
+      <div class="priority p2">
+        <div class="p-num pn2">2</div>
+        <div style="flex:1;">
+          <div style="font-size:14px;font-weight:700;">MSCA Fellowship -- Call Open April 2026</div>
+          <div style="font-size:12px;color:#666;margin-top:3px;">88% profile match. Draft proposal now. Window is open.</div>
+          <div style="margin-top:8px;"><button class="btn btn-primary btn-sm" onclick="go('opportunities')">Go to Fellowships</button></div>
+        </div>
+      </div>
+      <div class="priority p3">
+        <div class="p-num pn3">3</div>
+        <div style="flex:1;">
+          <div style="font-size:14px;font-weight:700;">Career and Job Search</div>
+          <div style="font-size:12px;color:#666;margin-top:3px;">Postdoc positions, academic jobs, consultancy. Keep pipeline active daily.</div>
+          <div style="margin-top:8px;"><button class="cbtn cbtn-sm" onclick="openClaude(PROMPTS.jobs)">Get Career Strategy</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-assistant">
+      <div class="card">
+        <h3>AI Assistant</h3>
+        <p style="margin-bottom:12px;font-size:13px;color:#666;">Type any request. Full profile pre-loaded. Opens in Claude.</p>
+        <textarea id="ai-inp" placeholder="Type anything -- MSCA proposal, lecture package, research paragraph, LinkedIn post, fellowship letter..."></textarea>
+        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="cbtn" onclick="openAI()">Open in Claude</button>
+          <button class="btn btn-sm" onclick="setAI('/start')">Daily Briefing</button>
+          <button class="btn btn-sm" onclick="setAI('/lecture 2')">Lecture 2</button>
+          <button class="btn btn-sm" onclick="setAI('/scout')">Fellowship Scout</button>
+          <button class="btn btn-sm" onclick="setAI('/jobs')">Career Strategy</button>
+        </div>
+      </div>
+      <div class="g2">
+        <div class="opp-card" style="cursor:pointer;" onclick="openClaude(PROMPTS.msca)"><div class="opp-title">MSCA Proposal</div><div class="opp-meta">Social Sciences . Global PF . Open now</div><button class="cbtn cbtn-sm" style="margin-top:10px;">Open in Claude</button></div>
+        <div class="opp-card" style="cursor:pointer;" onclick="openClaude(PROMPTS.humboldt)"><div class="opp-title">Humboldt Research Plan</div><div class="opp-meta">Germany . 3000 words . July 2026</div><button class="cbtn cbtn-sm" style="margin-top:10px;">Open in Claude</button></div>
+        <div class="opp-card" style="cursor:pointer;" onclick="openClaude(PROMPTS.jobs)"><div class="opp-title">Career Strategy</div><div class="opp-meta">30-day plan . Positions . Timelines</div><button class="cbtn cbtn-sm" style="margin-top:10px;">Open in Claude</button></div>
+        <div class="opp-card" style="cursor:pointer;" onclick="openClaude(PROMPTS.lit)"><div class="opp-title">Literature Review Para</div><div class="opp-meta">Microcredentials . Q1/Q2 standard</div><button class="cbtn cbtn-sm" style="margin-top:10px;">Open in Claude</button></div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-lecture">
+      <div class="alert alert-warn"><span style="font-size:18px;">&#9888;</span><div><strong>Unit 2 not prepared.</strong> Monday session needs all 3 deliverables. Generate below.</div></div>
+      <div class="card">
+        <h3>Generate Lecture Package -- EDU-6105 BUITEMS</h3>
+        <div class="form-row">
+          <div style="flex:2;min-width:200px;"><label class="form-label">Unit</label>
+            <select id="unit-sel">
+              <option value="2">Unit 2 - Teacher Education Curriculum</option>
+              <option value="3">Unit 3 - Objectives of Teacher Education</option>
+              <option value="4">Unit 4 - Teacher Training Institutions</option>
+              <option value="5">Unit 5 - Non-Formal Distance Education</option>
+              <option value="6">Unit 6 - Quality Assurance</option>
+              <option value="7">Unit 7 - Models of Teacher Education</option>
+              <option value="8">Unit 8 - Private Sector Role</option>
+            </select></div>
+          <div style="flex:1;min-width:160px;"><label class="form-label">Deliverable</label>
+            <select id="deliv-sel">
+              <option value="all">All 3 deliverables</option>
+              <option value="summary">Source summary only</option>
+              <option value="ppt">PPT breakdown only</option>
+              <option value="reading">Reading list only</option>
+            </select></div>
+          <div style="display:flex;align-items:flex-end;"><button class="cbtn" onclick="genLecture()">Generate</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-research">
+      <div class="card">
+        <h3>Academic Profile</h3>
+        <div style="font-size:13px;line-height:2;color:#666;">
+          <strong style="color:#1a1713;">PhD:</strong> Education, IIUI Islamabad -- completed January 2026<br>
+          <strong style="color:#1a1713;">Dissertation:</strong> Integration of microcredentials in degree programs in Pakistan HE<br>
+          <strong style="color:#1a1713;">Current post:</strong> Teacher Zhob Balochistan + Visiting Faculty BUITEMS
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
+        <button class="cbtn cbtn-sm" onclick="openClaude(PROMPTS.lit)">Write Lit Review</button>
+        <button class="cbtn cbtn-sm" onclick="openClaude(PROMPTS.abstract)">Draft Abstract</button>
+        <button class="cbtn cbtn-sm" onclick="openClaude(PROMPTS.postdoc)">Postdoc Proposal</button>
+        <button class="cbtn cbtn-sm" onclick="openClaude(PROMPTS.sources)">Find Key Sources</button>
+      </div>
+      <div class="card">
+        <h3>Generate Full Paper</h3>
+        <label class="form-label">Paper topic</label>
+        <input id="paper-topic" placeholder="E.g. Institutional readiness for microcredential integration in Pakistani universities" style="margin-bottom:10px;">
+        <label class="form-label">Your research notes (rough is fine)</label>
+        <textarea id="paper-notes" placeholder="Write anything you know -- even rough bullet points..."></textarea>
+        <label class="form-label" style="margin-top:10px;">Target journal</label>
+        <select id="paper-journal" style="margin-bottom:12px;">
+          <option value="">General Q1/Q2 standard</option>
+          <option value="Journal of Microcredentials (Taylor and Francis, free)">Journal of Microcredentials (Free)</option>
+          <option value="IRRODL (Q1, free, Athabasca University)">IRRODL (Q1, Free)</option>
+          <option value="TOJDE (WOS, free, Anadolu University)">TOJDE (WOS, Free)</option>
+          <option value="Studies in Higher Education (Q1, free to authors)">Studies in Higher Education (Q1)</option>
+          <option value="Higher Education Springer (Q1, free to authors)">Higher Education Springer (Q1)</option>
+          <option value="Teaching and Teacher Education (Q1, free to authors)">Teaching and Teacher Education (Q1)</option>
+        </select>
+        <button class="cbtn" onclick="genPaper()">Generate Complete Paper</button>
+      </div>
+      <div class="card">
+        <h3>Publication Tracker</h3>
+        <div id="pub-list"></div>
+        <div class="divider"></div>
+        <div class="form-row">
+          <input id="pub-title" placeholder="Paper title..." style="flex:2;min-width:160px;">
+          <select id="pub-status" style="width:140px;"><option>In progress</option><option>Under review</option><option>Revision requested</option><option>Accepted</option><option>Published</option></select>
+          <input id="pub-journal" placeholder="Journal..." style="flex:1;min-width:120px;">
+          <button onclick="addPub()" class="btn btn-primary btn-sm">+ Add</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-databases">
+      <div class="alert alert-blue"><span style="font-size:18px;">&#128202;</span><div><strong>Live Academic Databases.</strong> Real-time search across OpenAlex, Semantic Scholar, and more. Direct links to Euraxess, LinkedIn Jobs, Scholars4Dev, and all major fellowship sites.</div></div>
+      <div class="card">
+        <h3>Live Academic Paper Search</h3>
+        <div class="form-row">
+          <div style="flex:2;min-width:200px;"><label class="form-label">Search query</label><input id="db-query" placeholder="E.g. microcredentials higher education Pakistan" value="microcredentials higher education"></div>
+          <div style="flex:1;min-width:130px;"><label class="form-label">Database</label>
+            <select id="db-source">
+              <option value="openalex">OpenAlex (200M+ papers)</option>
+              <option value="semantic">Semantic Scholar</option>
+            </select></div>
+          <div style="flex:1;min-width:110px;"><label class="form-label">Year from</label>
+            <select id="db-year"><option value="2020">2020+</option><option value="2019">2019+</option><option value="2018">2018+</option></select></div>
+          <div style="display:flex;align-items:flex-end;"><button class="btn btn-primary" onclick="searchDB()">Search</button></div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;">
+          <button class="btn btn-sm" onclick="quickSearch('microcredentials higher education')">Microcredentials + HE</button>
+          <button class="btn btn-sm" onclick="quickSearch('microcredentials Pakistan')">Microcredentials Pakistan</button>
+          <button class="btn btn-sm" onclick="quickSearch('teacher education developing countries')">Teacher Ed Developing Countries</button>
+          <button class="btn btn-sm" onclick="quickSearch('digital credentials institutional readiness')">Digital Credentials</button>
+        </div>
+        <div id="db-results"><div style="font-size:13px;color:#aaa;padding:10px 0;">Search results appear here.</div></div>
+      </div>
+      <div class="card">
+        <h3>Direct Live Links -- All Sources</h3>
+        <div class="g2">
+          <div>
+            <div style="font-size:12px;font-weight:700;color:#666;margin-bottom:8px;">FELLOWSHIPS AND POSTDOCS</div>
+            <div style="display:flex;flex-direction:column;gap:6px;font-size:13px;">
+              <a href="https://euraxess.ec.europa.eu/jobs/search?query=education+postdoc" target="_blank" style="color:#2563a8;">Euraxess -- Education Postdoc</a>
+              <a href="https://www.scholars4dev.com/?s=education+fellowship" target="_blank" style="color:#2563a8;">Scholars4Dev -- Fellowships</a>
+              <a href="https://www.findapostdoc.com/search/?keywords=education" target="_blank" style="color:#2563a8;">FindAPostDoc -- Education</a>
+              <a href="https://academicpositions.com/jobs/social-sciences" target="_blank" style="color:#2563a8;">AcademicPositions -- Social Sciences</a>
+              <a href="https://www.hec.gov.pk/english/scholarshipsgrants/Pages/default.aspx" target="_blank" style="color:#2563a8;">HEC Pakistan Grants</a>
+              <a href="https://foreign.fulbrightonline.org/" target="_blank" style="color:#2563a8;">Fulbright Programs</a>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:12px;font-weight:700;color:#666;margin-bottom:8px;">ACADEMIC JOBS</div>
+            <div style="display:flex;flex-direction:column;gap:6px;font-size:13px;">
+              <a href="https://www.jobs.ac.uk/search/?keywords=education+postdoc" target="_blank" style="color:#2563a8;">Jobs.ac.uk -- Education UK</a>
+              <a href="https://www.timeshighereducation.com/unijobs/listings/education/" target="_blank" style="color:#2563a8;">Times Higher Ed Jobs</a>
+              <a href="https://www.linkedin.com/jobs/search/?keywords=postdoc%20education" target="_blank" style="color:#2563a8;">LinkedIn -- Postdoc Education</a>
+              <a href="https://reliefweb.int/jobs?search=education+pakistan" target="_blank" style="color:#2563a8;">ReliefWeb -- Pakistan Education</a>
+              <a href="https://www.devex.com/jobs/search?q=education+consultant+pakistan" target="_blank" style="color:#2563a8;">Devex -- Education Consultancy</a>
+              <a href="https://jobs.undp.org" target="_blank" style="color:#2563a8;">UNDP Careers</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-tasks">
+      <div style="margin-bottom:12px;"><button class="cbtn cbtn-sm" onclick="openClaude(PROMPTS.taskrank)">Get AI Priority Ranking</button></div>
+      <div class="card">
+        <div id="task-list"></div>
+        <div class="divider"></div>
+        <div class="form-row">
+          <input id="new-task" placeholder="Add a task..." style="flex:1;min-width:160px;">
+          <select id="new-cat" style="width:110px;"><option>BUITEMS</option><option>Fellowship</option><option>Research</option><option>Business</option><option>Career</option><option>Other</option></select>
+          <select id="new-pri" style="width:100px;"><option value="high">High</option><option value="med" selected>Medium</option><option value="low">Low</option></select>
+          <button onclick="addTask()" class="btn btn-primary">+ Add</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-opportunities">
+      <div class="alert alert-blue"><span style="font-size:18px;">&#127919;</span><div><strong>6 fellowships tracked.</strong> Match and success scores based on your full profile.</div></div>
+
+      <div class="opp-card" style="border-left:4px solid #1e7a4a;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;">
+          <div><div class="opp-title">Charles Wallace Visiting Fellowship -- British Council Pakistan</div><div class="opp-meta">UK . 2 weeks to 2 months . 1,600 GBP/month + 1,250 GBP travel</div><div style="margin-top:6px;"><span class="badge br">Deadline: June 5, 2026</span> <span class="badge bg">Pakistani nationals only</span></div></div>
+          <div class="score-row"><div class="score" style="background:#edf7f2;color:#1e7a4a;border:1px solid #7dd4a8;"><div style="font-size:9px;font-weight:700;">MATCH</div><div style="font-size:18px;font-weight:800;">91%</div></div><div class="score" style="background:#eef4fc;color:#2563a8;border:1px solid #b8d0f0;"><div style="font-size:9px;font-weight:700;">SUCCESS</div><div style="font-size:18px;font-weight:800;">68%</div></div></div>
+        </div>
+        <button class="btn btn-sm" onclick="toggleSteps('cwt',this)" style="margin-top:10px;">Show step-by-step guide</button>
+        <div class="opp-steps" id="steps-cwt">
+          <div class="step-item"><div class="step-num">1</div><div><div class="step-title">Secure UK Host -- This Week</div><div class="step-desc">Prof. Brennan is connecting you with contacts at Open University, Coventry, Birmingham, Glasgow. Also email Prof. Thomas (Liverpool LJMU) and Prof. Davenport (Bath). You need one formal invitation letter before June 5.</div><div class="step-deadline">URGENT -- deadline June 5, 2026</div></div></div>
+          <div class="step-item"><div class="step-num">2</div><div><div class="step-title">Check Eligibility</div><div class="step-desc">Must not have studied abroad in last 5 years. Your TEA Fellowship was 2019 -- 7 years ago -- so you are eligible. PhD required -- you qualify.</div></div></div>
+          <div class="step-item"><div class="step-num">3</div><div><div class="step-title">Fill Application Form Manually</div><div class="step-desc">The programme explicitly disqualifies AI-generated content. Write your support statement in your own words. This system can help you prepare your ideas but the form must be filled by hand.</div></div></div>
+          <div class="step-item"><div class="step-num">4</div><div><div class="step-title">Submit by June 5, 2026</div><div class="step-desc">Email to cwpt@britishcouncil.org.pk with completed form, CV with photo, and formal invitation letter from UK host.</div><div class="step-deadline">Hard deadline: June 5, 2026</div></div></div>
+        </div>
+        <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:8px;">
+          <button class="cbtn cbtn-sm" onclick="openClaude(PROMPTS.cwt)">Draft Support Statement Ideas</button>
+          <button class="cbtn cbtn-sm" onclick="openClaude(PROMPTS.cwthost)">Draft Host Invitation Emails</button>
+          <a href="https://www.britishcouncil.pk/study-uk/scholarships-funding/charles-wallace-visiting-fellowship-programme" target="_blank" class="btn btn-sm btn-primary">Official Page</a>
+        </div>
+      </div>
+
+      <div class="opp-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;">
+          <div><div class="opp-title">Marie Sklodowska-Curie Actions (MSCA)</div><div class="opp-meta">Europe . Global PF 24-36 months . Call open: April 9, 2026</div><div style="margin-top:6px;"><span class="badge bg">Call Open Now</span></div></div>
+          <div class="score-row"><div class="score" style="background:#edf7f2;color:#1e7a4a;border:1px solid #7dd4a8;"><div style="font-size:9px;font-weight:700;">MATCH</div><div style="font-size:18px;font-weight:800;">88%</div></div><div class="score" style="background:#eef4fc;color:#2563a8;border:1px solid #b8d0f0;"><div style="font-size:9px;font-weight:700;">SUCCESS</div><div style="font-size:18px;font-weight:800;">62%</div></div></div>
+        </div>
+        <button class="btn btn-sm" onclick="toggleSteps('msca',this)" style="margin-top:10px;">Show step-by-step guide</button>
+        <div class="opp-steps" id="steps-msca">
+          <div class="step-item"><div class="step-num">1</div><div><div class="step-title">Contact UK Professors as Return Host</div><div class="step-desc">Prof. Davenport (Bath), Prof. Thomas (Liverpool LJMU), Prof. Brennan (Open University). Call is open -- act now.</div></div></div>
+          <div class="step-item"><div class="step-num">2</div><div><div class="step-title">Choose Global PF Track</div><div class="step-desc">Work outside Europe then return to European host for 12 months. Needs both outgoing and return host.</div></div></div>
+          <div class="step-item"><div class="step-num">3</div><div><div class="step-title">Write Interdisciplinary Proposal</div><div class="step-desc">Education + digital technology + policy. SOC panel. Emphasize two-way knowledge transfer between Pakistan and Europe.</div></div></div>
+        </div>
+        <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:8px;">
+          <button class="cbtn cbtn-sm" onclick="openClaude(PROMPTS.msca)">Draft MSCA Proposal</button>
+          <button class="cbtn cbtn-sm" onclick="openClaude(PROMPTS.mscaemails)">Professor Outreach Emails</button>
+        </div>
+      </div>
+
+      <div class="opp-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;">
+          <div><div class="opp-title">Alexander von Humboldt Fellowship</div><div class="opp-meta">Germany . 6-24 months . 3,000 EUR/month . Year-round</div><div style="margin-top:6px;"><span class="badge bw">Next cut-off: Jul 15, 2026</span></div></div>
+          <div class="score-row"><div class="score" style="background:#edf7f2;color:#1e7a4a;border:1px solid #7dd4a8;"><div style="font-size:9px;font-weight:700;">MATCH</div><div style="font-size:18px;font-weight:800;">85%</div></div><div class="score" style="background:#fdf6e8;color:#b07d2e;border:1px solid #e8c97a;"><div style="font-size:9px;font-weight:700;">SUCCESS</div><div style="font-size:18px;font-weight:800;">58%</div></div></div>
+        </div>
+        <div style="margin-top:10px;"><button class="cbtn cbtn-sm" onclick="openClaude(PROMPTS.humboldt)">Draft Humboldt Research Plan</button></div>
+      </div>
+
+      <div class="opp-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;">
+          <div><div class="opp-title">Cornell Klarman Postdoc Fellowship</div><div class="opp-meta">USA . 3 years . $80,000/yr . Portal: Aug 15, 2026</div><div style="margin-top:6px;"><span class="badge bb">Prepare now</span></div></div>
+          <div class="score-row"><div class="score" style="background:#fdf6e8;color:#b07d2e;border:1px solid #e8c97a;"><div style="font-size:9px;font-weight:700;">MATCH</div><div style="font-size:18px;font-weight:800;">72%</div></div><div class="score" style="background:#eef4fc;color:#2563a8;border:1px solid #b8d0f0;"><div style="font-size:9px;font-weight:700;">SUCCESS</div><div style="font-size:18px;font-weight:800;">48%</div></div></div>
+        </div>
+        <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:8px;">
+          <button class="cbtn cbtn-sm" onclick="openClaude(PROMPTS.cornell)">Draft Research Proposal</button>
+          <button class="cbtn cbtn-sm" onclick="openClaude(PROMPTS.cornellhost)">Host Outreach Email</button>
+        </div>
+      </div>
+
+      <div class="opp-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;">
+          <div><div class="opp-title">British Academy Fellowship</div><div class="opp-meta">UK . Prestigious . Apply October 2026</div><div style="margin-top:6px;"><span class="badge br">Contact professors now</span></div></div>
+          <div class="score-row"><div class="score" style="background:#edf7f2;color:#1e7a4a;border:1px solid #7dd4a8;"><div style="font-size:9px;font-weight:700;">MATCH</div><div style="font-size:18px;font-weight:800;">82%</div></div><div class="score" style="background:#fdf6e8;color:#b07d2e;border:1px solid #e8c97a;"><div style="font-size:9px;font-weight:700;">SUCCESS</div><div style="font-size:18px;font-weight:800;">55%</div></div></div>
+        </div>
+        <div style="margin-top:10px;"><button class="cbtn cbtn-sm" onclick="openClaude(PROMPTS.british)">Draft Professor Intro Emails</button></div>
+      </div>
+
+      <div class="card" style="margin-top:6px;">
+        <h3>Custom Application Writer</h3>
+        <textarea id="opp-inp" placeholder="Describe any opportunity -- paste job description, fellowship details, or requirements..."></textarea>
+        <div style="margin-top:10px;"><button class="cbtn" onclick="openOpp()">Generate Application</button></div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-jobs">
+      <div class="card">
+        <h3>Career Strategy</h3>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <button class="cbtn cbtn-sm" onclick="openClaude(PROMPTS.jobs)">30-Day Career Strategy</button>
+          <button class="cbtn cbtn-sm" onclick="openClaude(PROMPTS.business)">Business Opportunities</button>
+          <button class="cbtn cbtn-sm" onclick="openClaude(PROMPTS.postdoc)">Postdoc Research Proposal</button>
+          <button class="cbtn cbtn-sm" onclick="openClaude(PROMPTS.linkedin)">LinkedIn Outreach Message</button>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Custom Job Application</h3>
+        <textarea id="job-inp" placeholder="Paste a job posting, position description, or opportunity details here..."></textarea>
+        <div style="margin-top:10px;"><button class="cbtn" onclick="openJob()">Generate Application</button></div>
+      </div>
+      <div class="card">
+        <h3>Funding Sources</h3>
+        <div class="g2">
+          <div>
+            <div style="font-size:12px;font-weight:700;color:#666;margin-bottom:8px;">PAKISTAN AND REGIONAL</div>
+            <div style="display:flex;flex-direction:column;gap:6px;font-size:13px;">
+              <a href="https://www.hec.gov.pk/english/scholarshipsgrants/Pages/default.aspx" target="_blank" style="color:#2563a8;">HEC Research Grants (NRPU, TDF)</a>
+              <a href="https://www.britishcouncil.pk/programmes/education/higher-education" target="_blank" style="color:#2563a8;">British Council Pakistan</a>
+              <a href="https://www.akdn.org/our-work/human-development/education" target="_blank" style="color:#2563a8;">Aga Khan Foundation</a>
+              <a href="https://www.idrc.ca/en/funding" target="_blank" style="color:#2563a8;">IDRC Canada</a>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:12px;font-weight:700;color:#666;margin-bottom:8px;">INTERNATIONAL</div>
+            <div style="display:flex;flex-direction:column;gap:6px;font-size:13px;">
+              <a href="https://www.daad.de/en/study-and-research-in-germany/scholarships/" target="_blank" style="color:#2563a8;">DAAD Germany</a>
+              <a href="https://www.spencer.org/grant_types/small-research-grant" target="_blank" style="color:#2563a8;">Spencer Foundation (Education)</a>
+              <a href="https://www.worldbank.org/en/programs/scholarships" target="_blank" style="color:#2563a8;">World Bank Education</a>
+              <a href="https://erc.europa.eu/apply-grant" target="_blank" style="color:#2563a8;">EU Horizon Europe</a>
+            </div>
+          </div>
+        </div>
+        <textarea id="fund-inp" placeholder="Describe a funding opportunity you want to apply for..." style="margin-top:12px;"></textarea>
+        <button class="cbtn" style="margin-top:10px;" onclick="openFunding()">Generate Funding Proposal</button>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-humanizer">
+      <div class="alert alert-green"><span style="font-size:18px;">&#128736;</span><div><strong>AI Detection Remover and Humanizer.</strong> Works like StealthWriter. Rewrites in Dr. Ehsan actual writing voice -- short punchy sentences, direct openings, grounded in personal experience, no AI vocabulary.</div></div>
+      <div class="card">
+        <h3>Humanize Any Text</h3>
+        <textarea id="human-inp" style="min-height:160px;" placeholder="Paste any text -- academic paragraph, fellowship letter, research abstract, cover letter...&#10;&#10;The system rewrites it in Dr. Ehsan actual voice and removes all AI patterns."></textarea>
+        <label class="form-label" style="margin-top:10px;">Writing context</label>
+        <select id="human-context" style="margin-bottom:12px;">
+          <option value="academic">Academic research paper</option>
+          <option value="fellowship">Fellowship application</option>
+          <option value="cover">Cover letter</option>
+          <option value="linkedin">LinkedIn post</option>
+          <option value="general">General writing</option>
+        </select>
+        <button class="cbtn" onclick="openHumanizer()">Remove AI Patterns and Humanize</button>
+      </div>
+      <div class="card">
+        <h3>AI Pattern Detector</h3>
+        <textarea id="detect-inp" style="min-height:120px;" placeholder="Paste text to audit for AI patterns..."></textarea>
+        <button class="cbtn" style="margin-top:10px;" onclick="openDetector()">Run AI Detection Audit</button>
+      </div>
+      <div class="card">
+        <h3>Banned AI Words</h3>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <span class="badge br">delve</span><span class="badge br">testament</span><span class="badge br">pivotal</span><span class="badge br">foster</span><span class="badge br">overarching</span><span class="badge br">vital</span><span class="badge br">realm</span><span class="badge br">tapestry</span><span class="badge br">embark</span><span class="badge br">transformative</span><span class="badge br">holistic</span><span class="badge br">leverage</span><span class="badge br">synergy</span><span class="badge br">robust</span><span class="badge br">innovative</span><span class="badge br">seamlessly</span><span class="badge br">spearhead</span><span class="badge br">curated</span><span class="badge br">impactful</span><span class="badge br">multifaceted</span><span class="badge br">in today's world</span><span class="badge br">it is worth noting</span><span class="badge br">furthermore</span><span class="badge br">moreover</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-writing">
+      <div class="mode-grid">
+        <div class="mode-btn active" data-mode="career" onclick="selMode(this)"><span class="mode-icon">&#127919;</span>Career</div>
+        <div class="mode-btn" data-mode="research" onclick="selMode(this)"><span class="mode-icon">&#9675;</span>Research</div>
+        <div class="mode-btn" data-mode="fellowship" onclick="selMode(this)"><span class="mode-icon">&#127760;</span>Fellowship</div>
+        <div class="mode-btn" data-mode="seo" onclick="selMode(this)"><span class="mode-icon">&#128269;</span>SEO/Blog</div>
+        <div class="mode-btn" data-mode="linkedin" onclick="selMode(this)"><span class="mode-icon">&#128101;</span>LinkedIn</div>
+        <div class="mode-btn" data-mode="copy" onclick="selMode(this)"><span class="mode-icon">&#10022;</span>Copywriting</div>
+      </div>
+      <div class="card">
+        <h3 id="wmode-title">Career and Job Applications</h3>
+        <p id="wmode-desc" style="font-size:13px;color:#666;margin-bottom:12px;">Cover letters, job applications, consultancy proposals. Every document structurally unique.</p>
+        <textarea id="write-inp" placeholder="Describe what you need written..."></textarea>
+        <div style="margin-top:10px;"><button class="cbtn" onclick="openWriting()">Open in Claude</button></div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-linkedin">
+      <div class="alert alert-blue"><span style="font-size:18px;">&#128101;</span><div><strong>LinkedIn Post Generator.</strong> Generates posts in your voice every 3 days. Topics rotate through your research, teaching experience, fellowship journey, and Pakistan HE insights. Each post is concise, human, with a visual brief for Canva.</div></div>
+      <div class="card">
+        <h3>Generate LinkedIn Post</h3>
+        <div class="form-row">
+          <div style="flex:2;min-width:180px;"><label class="form-label">Post topic</label>
+            <select id="li-topic">
+              <option value="microcredentials insight">Insight on microcredentials in Pakistan HE</option>
+              <option value="postdoc journey from Pakistan">The postdoc application journey from Pakistan</option>
+              <option value="teaching in rural Balochistan">Teaching in rural Balochistan -- realities and lessons</option>
+              <option value="TEA Fellowship experience at Virginia Tech">Lessons from the TEA Fellowship at Virginia Tech</option>
+              <option value="Pakistan education policy gaps">Pakistan education policy -- what needs to change</option>
+              <option value="research publication insight on teacher education">Sharing a research insight on teacher education</option>
+              <option value="building an academic career from a developing country">Building an academic career from a developing country</option>
+              <option value="BUITEMS teaching graduate education reflections">Reflections on teaching graduate education at BUITEMS</option>
+            </select></div>
+          <div style="flex:1;min-width:130px;"><label class="form-label">Tone</label>
+            <select id="li-tone">
+              <option value="insightful and direct">Insightful and direct</option>
+              <option value="personal and reflective">Personal and reflective</option>
+              <option value="professional and informative">Professional and informative</option>
+              <option value="thought-provoking">Thought-provoking</option>
+            </select></div>
+        </div>
+        <label class="form-label">Custom notes (optional)</label>
+        <textarea id="li-custom" style="min-height:70px;" placeholder="Add specific details, a personal story, or a specific angle you want to take..."></textarea>
+        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="cbtn" onclick="genLinkedIn()">Generate Post</button>
+          <button class="btn btn-sm" onclick="openClaude(PROMPTS.lischedule)">Generate 3-Day Schedule</button>
+        </div>
+      </div>
+      <div class="card">
+        <h3>LinkedIn Profile Optimizer</h3>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <button class="cbtn cbtn-sm" onclick="openClaude(PROMPTS.liheadline)">Optimize Headline</button>
+          <button class="cbtn cbtn-sm" onclick="openClaude(PROMPTS.liabout)">Write About Section</button>
+          <button class="cbtn cbtn-sm" onclick="openClaude(PROMPTS.limessage)">Connection Message</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+var CTX = 'DR. MUHAMMAD EHSAN -- COMPLETE PROFILE. PhD in Education, IIUI Islamabad, completed January 2026. Dissertation: integration of microcredentials in degree programs in Pakistan higher education. M.Phil. Educational Leadership and Management, Virtual University of Pakistan. TESOL Methodology certificate, UMBC. Secondary school teacher currently posted near Zhob, Balochistan. Visiting faculty at BUITEMS teaching EDU-6105 Teacher Education in Comparative Perspectives. U.S. State Department TEA Fellowship 2019, 42-day training at Virginia Tech Blacksburg Virginia. Co-founder PATEN Pakistani American Teachers of English Network. Freelancer Upwork Fiverr content writing SEO. Fellowships: MSCA call open April 2026, Humboldt July 2026, Cornell October 2026, British Academy October 2026, Charles Wallace June 5 2026. Goals: (1) fully funded international postdoc fellowship, (2) strong academic career, (3) skill-sharing consultancy. WRITING VOICE -- CRITICAL. Write as Dr. Ehsan actually writes based on his real samples. Short punchy sentences mixed with longer ones -- never uniform rhythm. Open with a specific real problem, not a generic statement. Ground every claim in personal experience -- as a teacher I noticed, working in the department. State consequences plainly. Simple transitions: However, Moreover, Whereas. No long dashes connecting clauses. No three-part parallel lists. No AI vocabulary: delve testament pivotal foster overarching vital realm tapestry embark transformative holistic leverage synergy robust innovative seamlessly spearhead curated impactful. Never open with I am writing to express or I am excited to apply. Never end with I look forward to the opportunity. ';
+
+var PROMPTS = {
+  brief: CTX + 'Give Dr. Ehsan his daily executive briefing. Be direct. The single most important thing to do today and why. Next two priorities. Any fellowship deadlines in next 45 days. One sentence on what would most move his career forward this week. Write as a person would speak it -- no headers, no bullet numbering.',
+  msca: CTX + 'Write the abstract and opening section of an MSCA Global Postdoctoral Fellowship proposal. Social Sciences panel. Topic: microcredentials integration and policy implementation in Pakistan higher education -- Education plus digital technology plus institutional policy. Show two-way knowledge transfer between Pakistan and Europe. Open with a specific research problem, not a generic statement. No EU funding cliches.',
+  mscaemails: CTX + 'Write three distinct outreach emails from Dr. Ehsan to: (1) Prof. James Davenport Bath University J.H.Davenport@bath.ac.uk, (2) Prof. Michael Thomas Liverpool LJMU M.Thomas@ljmu.ac.uk, (3) Prof. John Brennan Open University. Requesting consideration as European return host for MSCA Global Postdoctoral Fellowship. Each email opens differently, references that professor actual research focus, connects to Dr. Ehsan microcredentials work. No email should feel like a copy of another.',
+  humboldt: CTX + 'Write a 3000-word research plan for the Alexander von Humboldt Postdoctoral Fellowship Germany. Where Dr. Ehsan PhD findings sit in the current field. Specific research questions for the German period. Methodology. Expected results. Connection to German HE policy. What Humboldt enables that no other programme could. Academic but never bureaucratic.',
+  cornell: CTX + 'Write a 2-page research proposal for Cornell Klarman Postdoctoral Fellowship. Microcredentials in Pakistan HE. Scholarly significance. Connection to Cornell Arts and Sciences. What the 3-year fellowship enables.',
+  cornellhost: CTX + 'Write a faculty host outreach email from Dr. Ehsan to a Cornell University education professor ahead of Klarman Fellowship portal opening August 2026. Do not open with I am writing to express my interest. Open with direct reference to the professor research and connection to Dr. Ehsan work.',
+  british: CTX + 'Write three introduction emails from Dr. Ehsan to Prof. James Davenport Bath, Prof. Michael Thomas Liverpool LJMU, Prof. John Brennan Open University. Building academic relationships before British Academy Fellowship application October 2026. Each email opens differently, references that professor specific research.',
+  cwt: CTX + 'Write a support statement for the Charles Wallace Visiting Fellowship British Council Pakistan. Specific professional objectives of the UK visit. Research Dr. Ehsan wants to conduct. How it benefits his career and Pakistan HE. Must sound completely human -- the application warns AI content leads to disqualification. Write as Dr. Ehsan actually speaks and thinks. Under 500 words. Direct, genuine, specific.',
+  cwthost: CTX + 'Write outreach emails from Dr. Ehsan to potential UK host professors for Charles Wallace Fellowship 2026-2027. Separate emails to: Prof. James Davenport Bath University, Prof. Michael Thomas Liverpool LJMU, Prof. John Brennan Open University. Each email different structure and opening. Explain who he is, his microcredentials research, why a UK visit advances it, reference that professor work specifically, ask for formal letter of invitation.',
+  jobs: CTX + 'Generate a targeted 30-day career strategy for Dr. Ehsan. Which specific positions or fellowship calls to apply to, in what order, with what materials. Specific about real institutions and timelines. Focus on postdoc fellowships, academic positions, EdTech consultancy, HEC-related opportunities.',
+  business: CTX + 'Identify 5 concrete business or skill-sharing opportunities matching Dr. Ehsan profile. For each: what it is, where to access it, realistic earning potential, first steps in the next week. Focus on: online teaching, EdTech consultancy, SEO content writing, research consultancy for NGOs, microcredentials advisory work.',
+  lit: CTX + 'Write a critically analytical literature review paragraph on microcredentials in higher education. Engage real scholars -- Wheelahan and Moodie, Brown et al, McGreal and Olcott, Oliver, Kato et al. Identify a specific gap. Connect to Pakistan and developing country context. No summary writing. No AI phrasing. Argument first.',
+  abstract: CTX + 'Draft a tight precise abstract for a research paper on microcredentials integration in Pakistan higher education. Background, research gap, method, key finding, significance. Maximum 250 words. Every sentence specific. No filler.',
+  sources: CTX + 'Identify 8 high-quality peer-reviewed papers 2019-2025 on microcredentials in higher education with direct relevance to Pakistan or developing country contexts. Full APA citation plus 2-sentence relevance note for each.',
+  postdoc: CTX + 'Draft a high-calibre postdoctoral research proposal on microcredentials institutional readiness and policy implementation in Pakistan HE for an international funding committee. Research rationale, objectives, methodology, expected contribution. Open with a specific research problem.',
+  taskrank: CTX + 'Rank Dr. Ehsan current open tasks by priority for today. For each: rank, urgency score out of 100, one direct sentence of reasoning. Be blunt not diplomatic.',
+  linkedin: CTX + 'Write a LinkedIn connection message from Dr. Ehsan to a senior education researcher or professor in microcredentials or HE policy. Warm, specific, genuine. Under 300 characters.',
+  lischedule: CTX + 'Create a LinkedIn post schedule for Dr. Ehsan for the next 9 days -- 3 posts, every 3 days. For each: day and date, topic from his profile areas, complete post max 200 words starting with a hook, 3-5 hashtags, visual brief for Canva. Each post completely different in topic and opening style.',
+  liheadline: CTX + 'Write 5 LinkedIn headline options for Dr. Ehsan. Each concise, professional, highlighting PhD in Education, microcredentials expertise, postdoc-seeking status. Under 220 characters each.',
+  liabout: CTX + 'Write a LinkedIn About section for Dr. Ehsan. First person, 300 words, conversational but professional. Highlight PhD completion, microcredentials research, TEA Fellowship, BUITEMS teaching, career goals. No AI phrasing. Reads like a real person wrote it.',
+  limessage: CTX + 'Write a LinkedIn connection request message from Dr. Ehsan to a senior education researcher or professor in microcredentials or HE policy. Warm, specific, genuine. Under 300 characters.',
+  humanize: CTX + 'Rewrite the following text in Dr. Ehsan actual writing voice. Short punchy sentences mixed with longer ones. Open with a direct specific statement. Ground abstract claims in personal observation. State consequences plainly. Simple transitions. No long dashes. No three-part parallel lists. Remove every AI pattern word. Every sentence must earn its place. Produce only the rewritten text. TEXT: ',
+  detect: CTX + 'Conduct a strict AI detection audit on this text. Apply the standard of a Turnitin AI detector and a senior journal reviewer. For every flagged item: quote the exact phrase, name the problem -- AI vocabulary, uniform rhythm, hollow filler, formulaic structure -- rewrite it in Dr. Ehsan actual voice. Be strict. Apply the standard of someone who has read 500 AI-written papers. TEXT: '
+};
+
+var TABS = {
+  dashboard: 'Dashboard', assistant: 'AI Assistant', lecture: 'Lecture Prep',
+  research: 'Research Hub', databases: 'Live Databases', tasks: 'Daily Tasks',
+  opportunities: 'Fellowship Opportunities', jobs: 'Jobs and Career',
+  humanizer: 'AI Humanizer', writing: 'Writing Studio', linkedin: 'LinkedIn Posts'
+};
+
+function go(name) {
+  var panels = document.querySelectorAll('.panel');
+  for (var i = 0; i < panels.length; i++) {
+    panels[i].style.display = 'none';
+    panels[i].classList.remove('active');
+  }
+  var t = document.getElementById('panel-' + name);
+  if (t) { t.style.display = 'block'; t.classList.add('active'); }
+  var links = document.querySelectorAll('.nav a');
+  for (var j = 0; j < links.length; j++) links[j].classList.remove('active');
+  var navEl = document.getElementById('nav-' + name);
+  if (navEl) navEl.classList.add('active');
+  if (TABS[name]) {
+    var t1 = document.getElementById('tb-title');
+    var t2 = document.getElementById('tb-sub');
+    if (t1) t1.textContent = TABS[name];
+    if (t2) t2.textContent = '';
+  }
+  var mobs = document.querySelectorAll('.mob-btn');
+  for (var m = 0; m < mobs.length; m++) mobs[m].classList.remove('active');
+  var mob = document.getElementById('mob-' + name);
+  if (mob) mob.classList.add('active');
+  var c = document.querySelector('.content');
+  if (c) c.scrollTop = 0;
+  try { localStorage.setItem('ehsan-tab', name); } catch(e) {}
+}
+
+function openClaude(p) {
+  var w = window.open('https://claude.ai/new?q=' + encodeURIComponent(p), '_blank');
+  if (!w) alert('Please allow popups for this site.');
+}
+
+function tick() {
+  var n = new Date();
+  var s = n.toLocaleDateString('en-PK', {weekday:'short',month:'short',day:'numeric'}) + ' . ' + n.toLocaleTimeString('en-PK', {hour:'2-digit',minute:'2-digit'});
+  var c1 = document.getElementById('clock'); if (c1) c1.textContent = s;
+  var c2 = document.getElementById('clock-side'); if (c2) c2.textContent = s;
+}
+
+function setAI(cmd) { var el = document.getElementById('ai-inp'); if (el) el.value = cmd; }
+function openAI() {
+  var el = document.getElementById('ai-inp');
+  if (!el || !el.value.trim()) { alert('Please type your request first.'); return; }
+  var v = el.value.trim();
+  if (v === '/start') { openClaude(PROMPTS.brief); return; }
+  if (v === '/jobs') { openClaude(PROMPTS.jobs); return; }
+  if (v === '/scout') { openClaude(PROMPTS.msca); return; }
+  openClaude(CTX + v);
+}
+
+function genLecture() {
+  var unit = document.getElementById('unit-sel').value;
+  var type = document.getElementById('deliv-sel').value;
+  var names = {'2':'Teacher Education Curriculum','3':'Objectives of Teacher Education','4':'Education in Teacher Training Institutions','5':'Non-Formal Distance Education','6':'Quality Assurance in Teacher Education','7':'Models of Teacher Education','8':'Role of Private Sector in Teacher Education'};
+  var n = names[unit] || 'Teacher Education';
+  var pr;
+  if (type === 'all') pr = CTX + 'Generate complete 3-deliverable Monday-ready lecture package for BUITEMS EDU-6105 Unit ' + unit + ': ' + n + '. (1) PhD-level source summary referencing Farooq 2014, Hargreaves and Fullan 2012, Moore 2014, Tibble 2015, plus modern sources. (2) Hour-by-hour 3-hour session plan: for each hour 4-5 slide titles with talking points, 1 discussion question, 1 student activity. (3) 7-source APA reading list with 1-sentence annotation each.';
+  else if (type === 'summary') pr = CTX + 'Write deep PhD-level source summary for BUITEMS Unit ' + unit + ': ' + n + '. Reference Farooq 2014, Hargreaves and Fullan 2012, Moore 2014, Tibble 2015 plus modern sources.';
+  else if (type === 'ppt') pr = CTX + 'Create hour-by-hour PPT session plan for 3-hour BUITEMS class Unit ' + unit + ': ' + n + '. For each of 3 hours: 4-5 slide titles with talking points, 1 discussion question, 1 student activity.';
+  else pr = CTX + 'Create 7-source reading list for BUITEMS Unit ' + unit + ': ' + n + '. Mix foundational and recent scholarship 2018-2024. Full APA plus 1-sentence annotation each.';
+  openClaude(pr);
+}
+
+function genPaper() {
+  var topic = document.getElementById('paper-topic').value.trim();
+  var notes = document.getElementById('paper-notes').value.trim();
+  var journal = document.getElementById('paper-journal').value;
+  if (!topic) { alert('Please enter a paper topic.'); return; }
+  var jn = journal ? ' Target journal: ' + journal + '.' : '';
+  openClaude(CTX + 'Generate a complete publication-ready research paper. Topic: ' + topic + '. Research notes: ' + (notes || 'Use Dr. Ehsan dissertation research on microcredentials in Pakistan HE.') + jn + ' Write full paper: Introduction 700-900 words, Literature Review 1500 words thematic not chronological, Methodology 700-900 words, Results and Discussion 1200-1500 words, Conclusion 400-600 words, Abstract 250 words, References APA. Write as Dr. Ehsan -- direct grounded human voice. No AI phrasing. Argument-driven throughout.');
+}
+
+var PUBS = [];
+try { var sp = localStorage.getItem('pubs_v1'); if (sp) PUBS = JSON.parse(sp); } catch(e) {}
+function savePubs() { try { localStorage.setItem('pubs_v1', JSON.stringify(PUBS)); } catch(e) {} }
+function renderPubs() {
+  var el = document.getElementById('pub-list');
+  if (!el) return;
+  if (!PUBS.length) { el.innerHTML = '<p style="color:#aaa;font-size:13px;padding:8px 0;">No publications tracked yet.</p>'; return; }
+  var sc = {'In progress':'background:#fff8ec;color:#b06a00;border:1px solid #f0c570;','Under review':'background:#eef4fc;color:#2563a8;border:1px solid #b8d0f0;','Accepted':'background:#edf7f2;color:#1e7a4a;border:1px solid #7dd4a8;','Published':'background:#edf7f2;color:#1e7a4a;border:1px solid #7dd4a8;'};
+  var html = '';
+  for (var i = 0; i < PUBS.length; i++) {
+    var p = PUBS[i];
+    html += '<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #f0ede8;">';
+    html += '<div style="flex:1;"><div style="font-size:13px;font-weight:600;">' + p.title + '</div><div style="font-size:11px;color:#aaa;">' + (p.journal || 'Journal TBD') + '</div></div>';
+    html += '<span style="' + (sc[p.status]||'') + 'font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;">' + p.status + '</span>';
+    html += '<button onclick="removePub(' + i + ')" style="background:none;border:none;color:#ccc;cursor:pointer;font-size:13px;">x</button></div>';
+  }
+  el.innerHTML = html;
+}
+function addPub() {
+  var t = document.getElementById('pub-title').value.trim();
+  var s = document.getElementById('pub-status').value;
+  var j = document.getElementById('pub-journal').value.trim();
+  if (!t) return;
+  PUBS.unshift({title:t, status:s, journal:j});
+  savePubs(); renderPubs();
+  document.getElementById('pub-title').value = '';
+  document.getElementById('pub-journal').value = '';
+}
+function removePub(i) { PUBS.splice(i,1); savePubs(); renderPubs(); }
+
+var TASKS = [
+  {text:'Prepare Unit 2 lecture package for BUITEMS Monday', cat:'BUITEMS', pri:'high', done:false},
+  {text:'Draft MSCA fellowship proposal -- call open now', cat:'Fellowship', pri:'high', done:false},
+  {text:'Contact UK professors for Charles Wallace host letter', cat:'Fellowship', pri:'high', done:false},
+  {text:'Find German academic host for Humboldt July deadline', cat:'Fellowship', pri:'high', done:false},
+  {text:'Submit PhD chapter to IIUI supervisor', cat:'Research', pri:'med', done:false},
+  {text:'Apply for 2 new postdoc opportunities this week', cat:'Fellowship', pri:'high', done:false}
+];
+try { var st = localStorage.getItem('tasks_v2'); if (st) TASKS = JSON.parse(st); } catch(e) {}
+function saveTasks() { try { localStorage.setItem('tasks_v2', JSON.stringify(TASKS)); } catch(e) {} }
+function renderTasks() {
+  var el = document.getElementById('task-list');
+  if (!el) return;
+  var pc = {high:'background:#fdf0ee;color:#c0392b;border:1px solid #f0a89e;', med:'background:#fff8ec;color:#b06a00;border:1px solid #f0c570;', low:'background:#edf7f2;color:#1e7a4a;border:1px solid #7dd4a8;'};
+  var pl = {high:'High', med:'Medium', low:'Low'};
+  var sorted = TASKS.slice().sort(function(a,b){ return (a.done?1:0)-(b.done?1:0)||(b.pri==='high'?1:0)-(a.pri==='high'?1:0); });
+  var pending = 0;
+  var html = '';
+  for (var i = 0; i < sorted.length; i++) {
+    var t = sorted[i];
+    var oi = TASKS.indexOf(t);
+    if (!t.done) pending++;
+    var ps = t.done ? 'background:#f0ede8;color:#aaa;border:1px solid #ddd;' : (pc[t.pri]||pc.med);
+    html += '<div class="task-item"><div class="tchk' + (t.done?' done':'') + '" onclick="toggleTask(' + oi + ')"></div>';
+    html += '<div style="flex:1;"><div class="t-text' + (t.done?' done':'') + '">' + t.text + '</div><span class="tag">' + t.cat + '</span></div>';
+    html += '<span style="' + ps + 'font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;">' + (t.done?'Done':(pl[t.pri]||'Medium')) + '</span>';
+    html += '<button onclick="removeTask(' + oi + ')" style="background:none;border:none;color:#ccc;cursor:pointer;font-size:13px;padding:0 4px;">x</button></div>';
+  }
+  el.innerHTML = html || '<p style="color:#aaa;font-size:13px;padding:8px 0;">No tasks. Add one below.</p>';
+  var tc = document.getElementById('task-count');
+  if (tc) tc.textContent = pending;
+}
+function toggleTask(i) { TASKS[i].done = !TASKS[i].done; saveTasks(); renderTasks(); }
+function removeTask(i) { TASKS.splice(i,1); saveTasks(); renderTasks(); }
+function addTask() {
+  var inp = document.getElementById('new-task');
+  var cat = document.getElementById('new-cat').value;
+  var pri = document.getElementById('new-pri').value;
+  if (!inp || !inp.value.trim()) return;
+  TASKS.unshift({text:inp.value.trim(), cat:cat, pri:pri, done:false});
+  saveTasks(); renderTasks(); inp.value = '';
+}
+
+function openOpp() {
+  var el = document.getElementById('opp-inp');
+  if (!el || !el.value.trim()) { alert('Describe the opportunity first.'); return; }
+  openClaude(CTX + 'Write a complete humanized elite fellowship or job application for: ' + el.value.trim() + '. Draw fully on Dr. Ehsan profile. Must win an international selection committee. No AI phrasing. Different structure from any previous application.');
+}
+function toggleSteps(id, btn) {
+  var el = document.getElementById('steps-' + id);
+  if (!el) return;
+  var open = el.classList.contains('show');
+  if (open) { el.classList.remove('show'); btn.textContent = 'Show step-by-step guide'; }
+  else { el.classList.add('show'); btn.textContent = 'Hide step-by-step guide'; }
+}
+function openJob() {
+  var el = document.getElementById('job-inp');
+  if (!el || !el.value.trim()) { alert('Paste the job description first.'); return; }
+  openClaude(CTX + 'Write a complete tailored job application cover letter for this position: ' + el.value.trim() + '. Different structure and opening from any standard template. No AI phrasing.');
+}
+function openFunding() {
+  var el = document.getElementById('fund-inp');
+  if (!el || !el.value.trim()) { alert('Describe the funding opportunity first.'); return; }
+  openClaude(CTX + 'Write a complete research funding proposal for: ' + el.value.trim() + '. Structure: project title, executive summary 200 words, problem statement, research objectives, methodology, expected outputs, qualifications, budget justification, timeline. Direct evidence-based writing. No AI phrasing.');
+}
+function openHumanizer() {
+  var text = document.getElementById('human-inp').value.trim();
+  if (!text) { alert('Please paste text to humanize.'); return; }
+  openClaude(PROMPTS.humanize + text);
+}
+function openDetector() {
+  var text = document.getElementById('detect-inp').value.trim();
+  if (!text) { alert('Please paste text to audit.'); return; }
+  openClaude(PROMPTS.detect + text);
+}
+
+var wMode = 'career';
+var WM = {
+  career: {title:'Career and Job Applications', desc:'Cover letters, job applications, consultancy proposals. Every document structurally unique.'},
+  research: {title:'Research Writing', desc:'Post-PhD academic writing -- papers, proposals, conference abstracts.'},
+  fellowship: {title:'Fellowship and Grant Writing', desc:'Elite application prose drawing on your full profile.'},
+  seo: {title:'SEO and Blog Writing', desc:'Keyword-optimized with natural flow.'},
+  linkedin: {title:'LinkedIn and Professional Writing', desc:'Warm, intellectual, genuine. Opens doors.'},
+  copy: {title:'Copywriting and Ad Copy', desc:'Sharp, persuasive, zero filler.'}
+};
+function selMode(el) {
+  var btns = document.querySelectorAll('.mode-btn');
+  for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
+  el.classList.add('active');
+  wMode = el.getAttribute('data-mode');
+  if (WM[wMode]) {
+    document.getElementById('wmode-title').textContent = WM[wMode].title;
+    document.getElementById('wmode-desc').textContent = WM[wMode].desc;
+  }
+}
+function openWriting() {
+  var el = document.getElementById('write-inp');
+  if (!el || !el.value.trim()) { alert('Describe what you need written.'); return; }
+  var pr = {
+    career: CTX + 'Write a job application cover letter for: ' + el.value.trim() + '. Unique structure. No AI phrasing.',
+    research: CTX + 'Write rigorous humanized research prose for: ' + el.value.trim(),
+    fellowship: CTX + 'Write an elite humanized fellowship application component for: ' + el.value.trim() + '. Must win an international selection committee.',
+    seo: CTX + 'Write SEO-optimized content for: ' + el.value.trim() + '. Natural keyword integration.',
+    linkedin: CTX + 'Write a professional LinkedIn message or post for: ' + el.value.trim() + '. Genuine Dr. Ehsan voice.',
+    copy: CTX + 'Write sharp persuasive copywriting for: ' + el.value.trim() + '. Direct, compelling, no hollow superlatives.'
+  };
+  openClaude(pr[wMode] || CTX + el.value.trim());
+}
+function genLinkedIn() {
+  var topic = document.getElementById('li-topic').value;
+  var tone = document.getElementById('li-tone').value;
+  var custom = document.getElementById('li-custom').value.trim();
+  var t = custom ? topic + '. Additional details: ' + custom : topic;
+  openClaude(CTX + 'Write a LinkedIn post for Dr. Muhammad Ehsan on this topic: ' + t + '. Tone: ' + tone + '. Maximum 200 words. First person. Do not start with I am excited to share or Today I. Start with a specific fact, question, or observation. End with 1 genuine question or insight. Add 3-5 relevant hashtags. After the post add VISUAL BRIEF: describe in 3-4 sentences exactly what graphic to create in Canva.');
+}
+
+function quickSearch(q) { document.getElementById('db-query').value = q; searchDB(); }
+function searchDB() {
+  var q = document.getElementById('db-query').value.trim();
+  var src = document.getElementById('db-source').value;
+  var yr = document.getElementById('db-year').value;
+  if (!q) { alert('Please enter a search query.'); return; }
+  var el = document.getElementById('db-results');
+  el.innerHTML = '<div class="loading"><div class="spinner"></div><div>Searching ' + src + '...</div></div>';
+  if (src === 'semantic') searchSemantic(q, yr, el);
+  else searchOpenAlex(q, yr, el);
+}
+function searchOpenAlex(q, yr, el) {
+  var url = 'https://api.openalex.org/works?search=' + encodeURIComponent(q) + '&filter=publication_year:>' + (parseInt(yr)-1) + ',type:article&sort=cited_by_count:desc&per-page=8&select=title,authorships,publication_year,doi,open_access,cited_by_count,primary_location';
+  fetch(url).then(function(r){ return r.json(); }).then(function(data){
+    var results = data.results || [];
+    if (!results.length) { el.innerHTML = '<p style="color:#aaa;font-size:13px;padding:10px;">No results found.</p>'; return; }
+    var html = '<div style="font-size:12px;color:#aaa;margin-bottom:12px;">OpenAlex -- ' + (data.meta&&data.meta.count?data.meta.count.toLocaleString()+' total. ':'') + 'Top ' + results.length + ' by citations.</div>';
+    for (var i = 0; i < results.length; i++) {
+      var r = results[i];
+      var authors = '';
+      if (r.authorships&&r.authorships.length) { var an=[]; for(var a=0;a<Math.min(3,r.authorships.length);a++){if(r.authorships[a].author&&r.authorships[a].author.display_name) an.push(r.authorships[a].author.display_name);} authors=an.join(', ')+(r.authorships.length>3?' et al.':''); }
+      var journal = (r.primary_location&&r.primary_location.source&&r.primary_location.source.display_name)?r.primary_location.source.display_name:'';
+      var doi = r.doi?r.doi.replace('https://doi.org/',''):'';
+      var oa = (r.open_access&&r.open_access.is_oa)?'<span style="background:#edf7f2;color:#1e7a4a;border:1px solid #7dd4a8;font-size:10px;font-weight:600;padding:1px 6px;border-radius:10px;margin-left:6px;">Open Access</span>':'';
+      html += '<div class="db-result"><div class="db-title">' + (r.title||'Untitled') + oa + '</div>';
+      html += '<div class="db-meta">' + (authors?authors+' . ':'') + (r.publication_year||'') + (journal?' . '+journal:'') + (r.cited_by_count?' . Cited: '+r.cited_by_count:'') + '</div>';
+      html += '<div class="db-actions">';
+      if (doi) html += '<a href="https://doi.org/' + doi + '" target="_blank" class="btn btn-sm btn-primary">View Paper</a>';
+      html += '<button class="btn btn-sm" onclick="citeThis('' + (r.title||'').replace(/['"]/g,'').substring(0,50) + '','' + authors.replace(/['"]/g,'') + '',' + (r.publication_year||0) + ')">Cite this</button></div></div>';
+    }
+    el.innerHTML = html;
+  }).catch(function(e){ el.innerHTML = '<p style="color:#c0392b;font-size:13px;padding:10px;">Search failed: ' + e.message + '</p>'; });
+}
+function searchSemantic(q, yr, el) {
+  var url = 'https://api.semanticscholar.org/graph/v1/paper/search?query=' + encodeURIComponent(q) + '&fields=title,authors,year,externalIds,citationCount,openAccessPdf,venue&limit=8';
+  fetch(url).then(function(r){ return r.json(); }).then(function(data){
+    var results = (data.data||[]).filter(function(r){ return !yr||!r.year||r.year>=parseInt(yr); });
+    if (!results.length) { el.innerHTML = '<p style="color:#aaa;font-size:13px;padding:10px;">No results.</p>'; return; }
+    var html = '<div style="font-size:12px;color:#aaa;margin-bottom:12px;">Semantic Scholar -- ' + results.length + ' results.</div>';
+    for (var i = 0; i < results.length; i++) {
+      var r = results[i];
+      var authors = (r.authors||[]).slice(0,3).map(function(a){ return a.name; }).join(', ');
+      if ((r.authors||[]).length>3) authors += ' et al.';
+      var oa = r.openAccessPdf?'<span style="background:#edf7f2;color:#1e7a4a;border:1px solid #7dd4a8;font-size:10px;font-weight:600;padding:1px 6px;border-radius:10px;margin-left:6px;">Open Access</span>':'';
+      var doi = r.externalIds&&r.externalIds.DOI?r.externalIds.DOI:'';
+      html += '<div class="db-result"><div class="db-title">' + (r.title||'Untitled') + oa + '</div>';
+      html += '<div class="db-meta">' + (authors?authors+' . ':'') + (r.year||'') + (r.venue?' . '+r.venue:'') + (r.citationCount?' . Cited: '+r.citationCount:'') + '</div>';
+      html += '<div class="db-actions">';
+      if (doi) html += '<a href="https://doi.org/' + doi + '" target="_blank" class="btn btn-sm btn-primary">View Paper</a>';
+      if (r.openAccessPdf&&r.openAccessPdf.url) html += '<a href="' + r.openAccessPdf.url + '" target="_blank" class="btn btn-sm">Download PDF</a>';
+      html += '<button class="btn btn-sm" onclick="citeThis('' + (r.title||'').replace(/['"]/g,'').substring(0,50) + '','' + authors.replace(/['"]/g,'') + '',' + (r.year||0) + ')">Cite</button></div></div>';
+    }
+    el.innerHTML = html;
+  }).catch(function(e){ el.innerHTML = '<p style="color:#c0392b;font-size:13px;padding:10px;">Search failed: ' + e.message + '</p>'; });
+}
+function citeThis(title, authors, year) {
+  openClaude(CTX + 'Generate APA 7th edition citation for: ' + title + ' by ' + authors + ' (' + year + '). Then write 2 sentences on how Dr. Ehsan can use this in his microcredentials research.');
+}
+
+tick();
+setInterval(tick, 30000);
+renderTasks();
+renderPubs();
+
+try {
+  var lastTab = localStorage.getItem('ehsan-tab') || 'dashboard';
+  if (lastTab !== 'dashboard') go(lastTab);
+} catch(e) {}
+
+try {
+  var lastN = localStorage.getItem('ehsan-notif');
+  var todayN = new Date().toDateString();
+  if (lastN !== todayN) {
+    localStorage.setItem('ehsan-notif', todayN);
+    setTimeout(function(){
+      alert('Good day, Dr. Ehsan! Priority 1: Charles Wallace Fellowship -- deadline June 5. Priority 2: BUITEMS Unit 2 lecture package. Priority 3: MSCA proposal -- call is open now.');
+    }, 2000);
+  }
+} catch(e) {}
+</script>
+</body>
+</html>
