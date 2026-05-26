@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Go Test</title>
+<style>
+body{font-family:sans-serif;padding:20px;background:#f5f3ee;}
+.panel{display:none;background:#fff;padding:20px;border-radius:8px;border:1px solid #ddd;margin-top:16px;}
+.panel.active{display:block;}
+a{display:block;padding:10px;background:#2563a8;color:#fff;border-radius:6px;margin-bottom:6px;cursor:pointer;text-decoration:none;}
+#result{background:#edf7f2;padding:12px;border-radius:6px;font-weight:700;color:#1e7a4a;margin-bottom:16px;}
+</style>
+</head>
+<body>
+<div id="result">Waiting for click...</div>
+<a onclick="go('dashboard');return false;">Dashboard</a>
+<a onclick="go('research');return false;">Research</a>
+<a onclick="go('tasks');return false;">Tasks</a>
+<div class="panel active" id="panel-dashboard"><h2>Dashboard Panel</h2><p>This is the dashboard. Navigation is working.</p></div>
+<div class="panel" id="panel-research"><h2>Research Panel</h2><p>Research panel loaded successfully.</p></div>
+<div class="panel" id="panel-tasks"><h2>Tasks Panel</h2><p>Tasks panel loaded successfully.</p></div>
+<script>
+function go(name) {
+  var panels = document.querySelectorAll('.panel');
+  for (var i = 0; i < panels.length; i++) {
+    panels[i].style.display = 'none';
+    panels[i].classList.remove('active');
+  }
+  var t = document.getElementById('panel-' + name);
+  if (t) { t.style.display = 'block'; t.classList.add('active'); }
+  document.getElementById('result').textContent = 'Clicked: ' + name + ' -- WORKING!';
+}
+document.getElementById('result').textContent = 'JavaScript loaded. typeof go = ' + typeof go + '. Click any button above.';
+</script>
+</body>
+</html>
